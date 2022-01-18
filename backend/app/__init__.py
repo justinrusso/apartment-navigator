@@ -9,6 +9,11 @@ from app.models import db
 app = Flask(__name__)
 app.config.from_object(Config)
 
+"""
+Disable strict slashes so urls can end without a `/` and still work
+"""
+app.url_map.strict_slashes = False
+
 app.register_blueprint(api_routes)
 
 db.init_app(app)
