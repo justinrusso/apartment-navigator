@@ -1,10 +1,12 @@
 import os
 from flask import Flask, redirect, request
 from flask_cors import CORS
+from flask_login import LoginManager
+from flask_migrate import Migrate
 
 from app.api_routes import api_routes
 from app.config import Config
-from app.models import db
+from app.models import db, User
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -14,9 +16,23 @@ Disable strict slashes so urls can end without a `/` and still work
 """
 app.url_map.strict_slashes = False
 
+login = LoginManager(app)
+
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+
+@login.unauthorized_handler
+def unauthorized():
+    return {"error": "Unauthorized"}, 401
+
+
 app.register_blueprint(api_routes)
 
 db.init_app(app)
+Migrate(app, db)
 
 CORS(app)
 

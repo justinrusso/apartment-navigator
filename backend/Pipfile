@@ -6,8 +6,13 @@ name = "pypi"
 [packages]
 flask = "*"
 flask-cors = "*"
+flask-login = "*"
+flask-migrate = "*"
 flask-sqlalchemy = "*"
+python-dotenv = "*"
 sqlalchemy = "*"
+werkzeug = "*"
+alembic = "*"
 
 [dev-packages]
 black = "*"

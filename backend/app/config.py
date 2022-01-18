@@ -1,5 +1,7 @@
 import os
 
+print(os.environ.keys())
+
 
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY")
