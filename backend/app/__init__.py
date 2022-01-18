@@ -3,10 +3,15 @@ from flask import Flask, redirect, request
 from flask_cors import CORS
 
 from app.api_routes import api_routes
+from app.config import Config
+from app.models import db
 
 app = Flask(__name__)
+app.config.from_object(Config)
 
 app.register_blueprint(api_routes)
+
+db.init_app(app)
 
 CORS(app)
 
