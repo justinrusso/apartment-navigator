@@ -13,6 +13,9 @@ python-dotenv = "*"
 sqlalchemy = "*"
 werkzeug = "*"
 alembic = "*"
+flask-wtf = "*"
+wtforms = "*"
+email-validator = "*"
 
 [dev-packages]
 black = "*"
