@@ -32,8 +32,6 @@ const AuthModalProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     setSignupModalVisible((prev) => !prev);
   };
 
-  console.log(loginModalVisible, signupModalVisible);
-
   return (
     <AuthModalContext.Provider
       value={{

@@ -6,7 +6,7 @@ import InputField from "../common/InputField";
 import { LoginErrors } from "../../api/auth";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useAuthModal } from "../../context/AuthModalProvider";
-import { loginUser, selectUser } from "../../store/user";
+import { loginDemoUser, loginUser, selectUser } from "../../store/user";
 
 const SignupDialogRoot = styled.div`
   display: flex;
@@ -59,6 +59,13 @@ const SignupDialog: FC = () => {
     }
   };
 
+  const handleDemoLogin = async () => {
+    try {
+      await dispatch(loginDemoUser());
+      authModal.close();
+    } catch {}
+  };
+
   return (
     <Dialog onClose={authModal.close}>
       <SignupDialogRoot>
@@ -94,6 +101,9 @@ const SignupDialog: FC = () => {
           />
           <button type="submit">Sign In</button>
         </form>
+        <button type="button" onClick={handleDemoLogin}>
+          Log in as a Demo user
+        </button>
       </SignupDialogRoot>
     </Dialog>
   );
