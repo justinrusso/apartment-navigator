@@ -8,6 +8,7 @@ from flask_wtf.csrf import generate_csrf
 from app.api_routes import api_routes
 from app.config import Config
 from app.models import db, User
+from app.seeds import seed_commands
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -16,6 +17,8 @@ app.config.from_object(Config)
 Disable strict slashes so urls can end without a `/` and still work
 """
 app.url_map.strict_slashes = False
+
+app.cli.add_command(seed_commands)
 
 login = LoginManager(app)
 
