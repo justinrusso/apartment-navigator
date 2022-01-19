@@ -5,18 +5,24 @@ import type { RootState } from ".";
 
 export const registerUser = createAsyncThunk(
   "user/registerUser",
-  async (data: RegistrationData): Promise<UserData> => {
-    const res = await register(data);
+  async (data: RegistrationData, thunkAPI): Promise<UserData> => {
+    let res: Response;
+    try {
+      res = await register(data);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
     const user: UserData = await res.json();
     return user;
   }
 );
 
-const initialState = {};
+const initialState = null;
 
 const userSlice = createSlice({
   name: "user",
-  initialState,
+  initialState: initialState as UserData | null,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(registerUser.fulfilled, (_state, action) => {

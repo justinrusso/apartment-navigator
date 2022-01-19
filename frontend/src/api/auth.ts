@@ -14,8 +14,18 @@ export interface UserData {
 export interface RegistrationData {
   username: string;
   email: string;
+  password: string;
   firstName: string;
   lastName: string;
+  company?: string;
+}
+
+export interface RegistrationErrors {
+  username?: string;
+  email?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
   company?: string;
 }
 

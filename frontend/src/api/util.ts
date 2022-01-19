@@ -35,6 +35,6 @@ export function routeBuilder(basePath: string) {
     if (!path || path === "/") {
       return basePath;
     }
-    return `${basePath}/${path}`;
+    return `${basePath}${path}`;
   };
 }

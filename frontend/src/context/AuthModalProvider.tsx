@@ -7,6 +7,7 @@ import {
 } from "react";
 
 interface AuthModalContextValue {
+  close: () => void;
   hideLogin: () => void;
   hideSignup: () => void;
   loginModalVisible: boolean;
@@ -31,9 +32,15 @@ const AuthModalProvider: FC<PropsWithChildren<any>> = ({ children }) => {
     setSignupModalVisible((prev) => !prev);
   };
 
+  console.log(loginModalVisible, signupModalVisible);
+
   return (
     <AuthModalContext.Provider
       value={{
+        close: () => {
+          setLoginModalVisible(false);
+          setSignupModalVisible(false);
+        },
         hideLogin: () => setLoginModalVisible(false),
         hideSignup: () => setSignupModalVisible(false),
         loginModalVisible,
