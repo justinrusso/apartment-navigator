@@ -35,3 +35,21 @@ export async function register(data: RegistrationData) {
     body: JSON.stringify(data),
   });
 }
+
+export interface LoginData {
+  credentials: string;
+  password: string;
+}
+
+export interface LoginErrors {
+  credentials?: string;
+  password?: string;
+  invalid?: string;
+}
+
+export async function login(data: LoginData) {
+  return fetchApi(authRoute("/login"), {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}

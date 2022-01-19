@@ -1,6 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { register, RegistrationData, UserData } from "../api/auth";
+import {
+  login,
+  LoginData,
+  register,
+  RegistrationData,
+  UserData,
+} from "../api/auth";
 import type { RootState } from ".";
 
 export const registerUser = createAsyncThunk(
@@ -18,6 +24,21 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const loginUser = createAsyncThunk(
+  "user/loginUser",
+  async (data: LoginData, thunkAPI): Promise<UserData> => {
+    let res: Response;
+    try {
+      res = await login(data);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
+    const user: UserData = await res.json();
+    return user;
+  }
+);
+
 const initialState = null;
 
 const userSlice = createSlice({
@@ -26,6 +47,9 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(registerUser.fulfilled, (_state, action) => {
+      return action.payload;
+    });
+    builder.addCase(loginUser.fulfilled, (_state, action) => {
       return action.payload;
     });
   },
