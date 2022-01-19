@@ -6,14 +6,14 @@ from app.models import User
 
 def email_exists(form, field):
     email = field.data
-    user = User.query.filter(User.email == email).first()
+    user = User.query.filter(User.email.ilike(email)).first()
     if user:
         raise ValidationError("Email address is already in use")
 
 
 def username_exists(form, field):
     username = field.data
-    user = User.query.filter(User.username == username).first()
+    user = User.query.filter(User.username.ilike(username)).first()
     if user:
         raise ValidationError("Username is already in use")
 
