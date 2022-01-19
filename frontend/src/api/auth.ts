@@ -2,7 +2,16 @@ import { fetchApi, routeBuilder } from "./util";
 
 const authRoute = routeBuilder("/api/auth");
 
-interface RegistrationData {
+export interface UserData {
+  id: number;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  company?: string;
+}
+
+export interface RegistrationData {
   username: string;
   email: string;
   firstName: string;
