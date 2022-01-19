@@ -103,6 +103,7 @@ const SignupDialog: FC = () => {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               inputProps={{
+                autoFocus: true,
                 type: "text",
               }}
               error={!!errors.firstName}
@@ -132,7 +133,6 @@ const SignupDialog: FC = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             inputProps={{
-              autoFocus: true,
               type: "text",
             }}
             error={!!errors.username}
