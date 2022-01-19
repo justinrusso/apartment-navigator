@@ -25,6 +25,13 @@ def login():
     return {"errors": validation_errors_to_dict(form.errors)}, 401
 
 
+@auth_routes.route("/login/demo")
+def login_demo_user():
+    user = User.query.filter(User.email == "demo@aa.io").first()
+    login_user(user)
+    return user.to_dict()
+
+
 @auth_routes.route("/signup", methods=["POST"])
 def signup():
     form = SignupForm()

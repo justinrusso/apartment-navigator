@@ -53,3 +53,7 @@ export async function login(data: LoginData) {
     body: JSON.stringify(data),
   });
 }
+
+export async function loginDemo() {
+  return fetchApi(authRoute("/login/demo"));
+}
