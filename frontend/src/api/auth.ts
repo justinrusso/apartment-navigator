@@ -11,7 +11,7 @@ export interface UserData {
   company?: string;
 }
 
-export interface RegistrationData {
+export interface SignupData {
   username: string;
   email: string;
   password: string;
@@ -20,7 +20,7 @@ export interface RegistrationData {
   company?: string;
 }
 
-export interface RegistrationErrors {
+export interface SignupErrors {
   username?: string;
   email?: string;
   password?: string;
@@ -29,8 +29,8 @@ export interface RegistrationErrors {
   company?: string;
 }
 
-export async function register(data: RegistrationData) {
-  return fetchApi(authRoute("/register"), {
+export async function signup(data: SignupData) {
+  return fetchApi(authRoute("/signup"), {
     method: "POST",
     body: JSON.stringify(data),
   });

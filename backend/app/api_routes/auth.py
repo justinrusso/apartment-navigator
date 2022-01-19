@@ -4,7 +4,7 @@ from sqlalchemy import or_
 
 from app.forms import validation_errors_to_dict
 from app.forms.login_form import LoginForm
-from app.forms.register_form import RegisterForm
+from app.forms.signup_form import SignupForm
 from app.models import db, User
 
 
@@ -25,9 +25,9 @@ def login():
     return {"errors": validation_errors_to_dict(form.errors)}, 401
 
 
-@auth_routes.route("/register", methods=["POST"])
-def register():
-    form = RegisterForm()
+@auth_routes.route("/signup", methods=["POST"])
+def signup():
+    form = SignupForm()
     form["csrf_token"].data = request.cookies["csrf_token"]
     if form.validate_on_submit():
         user = User(

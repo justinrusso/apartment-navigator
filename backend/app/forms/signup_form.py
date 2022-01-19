@@ -18,7 +18,7 @@ def username_exists(form, field):
         raise ValidationError("Username is already in use")
 
 
-class RegisterForm(FlaskForm):
+class SignupForm(FlaskForm):
     username = StringField(
         validators=[
             DataRequired(),

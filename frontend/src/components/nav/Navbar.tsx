@@ -6,8 +6,8 @@ const Navbar: FC = () => {
 
   return (
     <div>
-      <button onClick={authModal.showLogin}>Sign In</button>
-      <button onClick={authModal.showSignup}>Register</button>
+      <button onClick={authModal.showLogin}>Log In</button>
+      <button onClick={authModal.showSignup}>Sign Up</button>
     </div>
   );
 };

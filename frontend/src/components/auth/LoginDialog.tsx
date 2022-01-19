@@ -62,7 +62,7 @@ const SignupDialog: FC = () => {
   return (
     <Dialog onClose={authModal.close}>
       <SignupDialogRoot>
-        <h2>Sign in to your account</h2>
+        <h2>Log in to your account</h2>
         <p>or, create an account</p>
         <form onSubmit={handleSubmit}>
           <InputField

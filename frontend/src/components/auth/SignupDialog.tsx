@@ -3,10 +3,10 @@ import styled from "styled-components";
 
 import Dialog from "../common/Dialog";
 import InputField from "../common/InputField";
-import { RegistrationErrors } from "../../api/auth";
+import { SignupErrors } from "../../api/auth";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useAuthModal } from "../../context/AuthModalProvider";
-import { registerUser, selectUser } from "../../store/user";
+import { signupUser, selectUser } from "../../store/user";
 
 const HalfWidthInputWrapper = styled.div`
   ${(props) => props.theme.breakpoints.up("sm", props.theme)} {
@@ -51,7 +51,7 @@ const SignupDialog: FC = () => {
   }, [authModal, user]);
 
   const [errors, setErrors] = useState<
-    RegistrationErrors & { confirmPassword?: string }
+    SignupErrors & { confirmPassword?: string }
   >({});
 
   const [username, setUsername] = useState("");
@@ -74,7 +74,7 @@ const SignupDialog: FC = () => {
 
     try {
       await dispatch(
-        registerUser({
+        signupUser({
           username,
           email,
           password,
@@ -85,7 +85,7 @@ const SignupDialog: FC = () => {
       ).unwrap();
       authModal.close();
     } catch (errors) {
-      setErrors(errors as RegistrationErrors);
+      setErrors(errors as SignupErrors);
     }
   };
 
@@ -93,13 +93,13 @@ const SignupDialog: FC = () => {
     <Dialog onClose={authModal.close}>
       <SignupDialogRoot>
         <h2>Create an account</h2>
-        <p>or, sign in to your account</p>
+        <p>or, log in to your account</p>
         <form onSubmit={handleSubmit}>
           <HalfWidthInputWrapper>
             <InputField
               label="First Name"
               fullWidth
-              id="registration-first_name"
+              id="signup-first_name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               inputProps={{
@@ -115,7 +115,7 @@ const SignupDialog: FC = () => {
             <InputField
               label="Last Name"
               fullWidth
-              id="registration-last_name"
+              id="signup-last_name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               inputProps={{
@@ -129,7 +129,7 @@ const SignupDialog: FC = () => {
           <InputField
             label="Username"
             fullWidth
-            id="registration-username"
+            id="signup-username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             inputProps={{
@@ -142,7 +142,7 @@ const SignupDialog: FC = () => {
           <InputField
             label="Email"
             fullWidth
-            id="registration-email"
+            id="signup-email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             inputProps={{
@@ -157,7 +157,7 @@ const SignupDialog: FC = () => {
             <InputField
               label="Password"
               fullWidth
-              id="registration-password"
+              id="signup-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               inputProps={{
@@ -172,7 +172,7 @@ const SignupDialog: FC = () => {
             <InputField
               label="Confirm Password"
               fullWidth
-              id="registration-confirmation-password"
+              id="signup-confirmation-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               inputProps={{
@@ -187,7 +187,7 @@ const SignupDialog: FC = () => {
           <InputField
             label="Company"
             fullWidth
-            id="registration-company"
+            id="signup-company"
             value={company}
             onChange={(e) => setCompany(e.target.value)}
             inputProps={{
@@ -196,7 +196,7 @@ const SignupDialog: FC = () => {
             error={!!errors.company}
             helperText={errors.company}
           />
-          <button type="submit">Register</button>
+          <button type="submit">Sign Up</button>
         </form>
       </SignupDialogRoot>
     </Dialog>
