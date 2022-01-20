@@ -70,6 +70,18 @@ export const authenticateUser = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk(
+  "user/logoutUser",
+  async (args, thunkAPI): Promise<void> => {
+    try {
+      await loginDemo();
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
+  }
+);
+
 const initialState = null;
 
 const userSlice = createSlice({
@@ -90,6 +102,9 @@ const userSlice = createSlice({
       if (action.payload?.id) {
         return action.payload;
       }
+    });
+    builder.addCase(logoutUser.fulfilled, () => {
+      return null;
     });
   },
 });

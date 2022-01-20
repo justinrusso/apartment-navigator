@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, logout_user
 from sqlalchemy import or_
 
 from app.forms import validation_errors_to_dict
@@ -60,3 +60,9 @@ def signup():
         login_user(user)
         return user.to_dict()
     return {"errors": validation_errors_to_dict(form.errors)}, 401
+
+
+@auth_routes.route("/logout")
+def logout():
+    logout_user()
+    return {}

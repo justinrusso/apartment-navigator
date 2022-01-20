@@ -61,3 +61,7 @@ export async function loginDemo() {
 export async function authenticate() {
   return fetchApi(authRoute());
 }
+
+export async function logout() {
+  return fetchApi(authRoute("/logout"));
+}
