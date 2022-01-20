@@ -17,8 +17,8 @@ class UnitPrice(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "property_id": self.property_id,
-            "unit_category_id": self.unit_category_id,
+            "propertyId": self.property_id,
+            "unitCategoryId": self.unit_category_id,
             "price": self.price,
-            "created_at": self.created_at,
+            "createdAt": self.created_at,
         }

@@ -23,10 +23,10 @@ class PropertyUnit(db.Model):
         return {
             "id": self.id,
             "propertyId": self.property_id,
-            "unit_categoryId": self.unit_category_id,
+            "unitCategoryId": self.unit_category_id,
             "baths": self.baths,
             "propertyId": self.property_id,
-            "floor_planImg": self.floor_plan_img,
+            "floorPlanImg": self.floor_plan_img,
             "createdAt": self.created_at,
             "updatedAt": self.updated_at,
         }
