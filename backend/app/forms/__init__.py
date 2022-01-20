@@ -1,3 +1,6 @@
+from wtforms import Field
+
+
 def validation_errors_to_dict(validation_errors):
     """
     Turns the WTForms validation errors into a dict
@@ -8,3 +11,8 @@ def validation_errors_to_dict(validation_errors):
         for error in validation_errors[field]:
             errorMessages[field].append(f"{error}")
     return errorMessages
+
+
+class ListField(Field):
+    def process_formdata(self, valuelist):
+        self.data = valuelist
