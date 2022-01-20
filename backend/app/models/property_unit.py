@@ -12,7 +12,7 @@ class PropertyUnit(db.Model):
         db.Integer, db.ForeignKey("unit_categories.id"), nullable=False
     )
     baths = db.Column(db.SmallInteger, nullable=False)
-    property_id = db.Column(db.Integer, db.ForeignKey("unit_prices.id"), nullable=False)
+    price_id = db.Column(db.Integer, db.ForeignKey("unit_prices.id"), nullable=False)
     floor_plan_img = db.Column(db.String, nullable=True)
     created_at = db.Column(db.DateTime, server_default=func.now(), nullable=False)
     updated_at = db.Column(
@@ -25,7 +25,7 @@ class PropertyUnit(db.Model):
             "propertyId": self.property_id,
             "unitCategoryId": self.unit_category_id,
             "baths": self.baths,
-            "propertyId": self.property_id,
+            "priceId": self.price_id,
             "floorPlanImg": self.floor_plan_img,
             "createdAt": self.created_at,
             "updatedAt": self.updated_at,
