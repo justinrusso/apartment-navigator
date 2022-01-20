@@ -55,6 +55,33 @@ export const loginDemoUser = createAsyncThunk(
   }
 );
 
+export const authenticateUser = createAsyncThunk(
+  "user/authenticateUser",
+  async (args, thunkAPI): Promise<UserData> => {
+    let res: Response;
+    try {
+      res = await loginDemo();
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
+    const user: UserData = await res.json();
+    return user;
+  }
+);
+
+export const logoutUser = createAsyncThunk(
+  "user/logoutUser",
+  async (args, thunkAPI): Promise<void> => {
+    try {
+      await loginDemo();
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
+  }
+);
+
 const initialState = null;
 
 const userSlice = createSlice({
@@ -70,6 +97,14 @@ const userSlice = createSlice({
     });
     builder.addCase(loginDemoUser.fulfilled, (_state, action) => {
       return action.payload;
+    });
+    builder.addCase(authenticateUser.fulfilled, (_state, action) => {
+      if (action.payload?.id) {
+        return action.payload;
+      }
+    });
+    builder.addCase(logoutUser.fulfilled, () => {
+      return null;
     });
   },
 });
