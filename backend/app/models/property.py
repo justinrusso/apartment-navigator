@@ -24,7 +24,7 @@ class Property(db.Model):
         db.DateTime, server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
-    category = db.relationship("Category", backref="properties")
+    category = db.relationship("PropertyCategory", backref="properties")
     images = db.relationship(
         "PropertyImage", backref=db.backref("property"), passive_deletes=True
     )
