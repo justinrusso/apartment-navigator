@@ -8,6 +8,8 @@ import Navbar from "./nav/Navbar";
 import theme from "../theme";
 import { authenticateUser } from "../store/user";
 import { useAppDispatch } from "../hooks/redux";
+import { Navigate, Route, Routes } from "react-router-dom";
+import HomePage from "./home/HomePage";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -28,6 +30,12 @@ const App: FC = () => {
         <GlobalStyle />
         <AuthModalProvider>
           <Navbar />
+
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+
           <AuthModals />
         </AuthModalProvider>
       </ThemeProvider>
