@@ -7,7 +7,9 @@ class Property(db.Model):
     __tablename__ = "properties"
 
     id = db.Column(db.Integer, primary_key=True)
-    owner_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    owner_id = db.Column(
+        db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
     category_id = db.Column(
         db.Integer, db.ForeignKey("property_categories.id"), nullable=False
     )
@@ -22,17 +24,27 @@ class Property(db.Model):
         db.DateTime, server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
+    category = db.relationship("Category", backref="properties")
+    images = db.relationship(
+        "PropertyImage", backref=db.backref("property"), passive_deletes=True
+    )
+    units = db.relationship(
+        "PropertyUnit", backref=db.backref("property"), passive_deletes=True
+    )
+
     def to_dict(self):
         return {
             "id": self.id,
-            "ownerId": self.owner_id,
-            "categoryId": self.category_id,
+            "owner": self.owner.to_dict(),
+            "category": self.category.to_dict(),
             "builtInYear": self.built_in_year,
             "address1": self.address_1,
             "address2": self.address_2,
             "city": self.city,
             "state": self.state,
             "zipCode": self.zip_code,
+            "images": [image.to_dict() for image in self.images],
+            "units": [unit.to_dict() for unit in self.units],
             "createdAt": self.created_at,
             "updatedAt": self.updated_at,
         }
