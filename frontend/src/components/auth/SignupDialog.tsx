@@ -1,6 +1,7 @@
 import { FC, FormEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 
+import AlternateAuthLink from "./AlternateAuthLink";
 import Dialog from "../common/Dialog";
 import InputField from "../common/InputField";
 import { SignupErrors } from "../../api/auth";
@@ -93,7 +94,12 @@ const SignupDialog: FC = () => {
     <Dialog onClose={authModal.close}>
       <SignupDialogRoot>
         <h2>Create an account</h2>
-        <p>or, log in to your account</p>
+        <p>
+          or,{" "}
+          <AlternateAuthLink onClick={authModal.switchForms}>
+            log in to your account
+          </AlternateAuthLink>
+        </p>
         <form onSubmit={handleSubmit}>
           <HalfWidthInputWrapper>
             <InputField

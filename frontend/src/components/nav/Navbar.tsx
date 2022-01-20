@@ -1,13 +1,18 @@
 import { FC } from "react";
 import { useAuthModal } from "../../context/AuthModalProvider";
+import Button from "../common/Button";
 
 const Navbar: FC = () => {
   const authModal = useAuthModal();
 
   return (
     <div>
-      <button onClick={authModal.showLogin}>Log In</button>
-      <button onClick={authModal.showSignup}>Sign Up</button>
+      <Button variant="text" onClick={authModal.showLogin}>
+        Log In
+      </Button>
+      <Button variant="text" onClick={authModal.showSignup}>
+        Sign Up
+      </Button>
     </div>
   );
 };

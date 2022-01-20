@@ -1,6 +1,7 @@
+import re
 from flask_wtf import FlaskForm
 from wtforms import StringField
-from wtforms.validators import DataRequired, Email, ValidationError, Length
+from wtforms.validators import DataRequired, Email, ValidationError, Length, Regexp
 from app.models import User
 
 
@@ -18,11 +19,33 @@ def username_exists(form, field):
         raise ValidationError("Username is already in use")
 
 
+def password_valid(form, field):
+    password = field.data
+
+    valid_length = len(password) >= 8
+    has_lowercase = 1 if re.search("[a-z]", password) else 0
+    has_uppercase = 1 if re.search("[A-Z]", password) else 0
+    has_numbers = 1 if re.search("[0-9]", password) else 0
+    has_symbol = 1 if re.search("\w", password) else 0
+
+    if (
+        not valid_length
+        or (has_lowercase + has_uppercase + has_numbers + has_symbol) < 3
+    ):
+        raise ValidationError(
+            "Password must contain at least 8 characters and have at least 3 of the 4 requirements: 1 lowercase, 1 uppercase, 1 number, and 1 symbol"
+        )
+
+
 class SignupForm(FlaskForm):
     username = StringField(
         validators=[
             DataRequired(),
             Length(max=40, message="Username must not exceed 40 characters"),
+            Regexp(
+                "^\w+$",
+                message="Username must contain only letters, numbers, or underscores",
+            ),
             username_exists,
         ],
     )
@@ -51,4 +74,10 @@ class SignupForm(FlaskForm):
             Length(max=100, message="Company name must not exceed 100 characters"),
         ],
     )
-    password = StringField("password", validators=[DataRequired()])
+    password = StringField(
+        "password",
+        validators=[
+            DataRequired(),
+            password_valid,
+        ],
+    )

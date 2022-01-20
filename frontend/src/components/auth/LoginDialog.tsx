@@ -7,6 +7,7 @@ import { LoginErrors } from "../../api/auth";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useAuthModal } from "../../context/AuthModalProvider";
 import { loginDemoUser, loginUser, selectUser } from "../../store/user";
+import AlternateAuthLink from "./AlternateAuthLink";
 
 const SignupDialogRoot = styled.div`
   display: flex;
@@ -70,7 +71,12 @@ const SignupDialog: FC = () => {
     <Dialog onClose={authModal.close}>
       <SignupDialogRoot>
         <h2>Log in to your account</h2>
-        <p>or, create an account</p>
+        <p>
+          or,{" "}
+          <AlternateAuthLink onClick={authModal.switchForms}>
+            create an account
+          </AlternateAuthLink>
+        </p>
         <form onSubmit={handleSubmit}>
           <InputField
             label="Email or Username"
@@ -101,9 +107,12 @@ const SignupDialog: FC = () => {
           />
           <button type="submit">Sign In</button>
         </form>
-        <button type="button" onClick={handleDemoLogin}>
-          Log in as a Demo user
-        </button>
+        <p>
+          Looking to try out the website?{" "}
+          <AlternateAuthLink type="button" onClick={handleDemoLogin}>
+            Log in as a Demo user
+          </AlternateAuthLink>
+        </p>
       </SignupDialogRoot>
     </Dialog>
   );
