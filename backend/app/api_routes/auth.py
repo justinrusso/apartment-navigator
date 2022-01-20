@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from flask_login import login_user
+from flask_login import current_user, login_user
 from sqlalchemy import or_
 
 from app.forms import validation_errors_to_dict
@@ -9,6 +9,16 @@ from app.models import db, User
 
 
 auth_routes = Blueprint("auth", __name__, url_prefix="/auth")
+
+
+@auth_routes.route("/")
+def authenticate():
+    """
+    Authenticates a user.
+    """
+    if current_user.is_authenticated:
+        return current_user.to_dict()
+    return {}
 
 
 @auth_routes.route("/login", methods=["POST"])

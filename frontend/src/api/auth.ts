@@ -57,3 +57,7 @@ export async function login(data: LoginData) {
 export async function loginDemo() {
   return fetchApi(authRoute("/login/demo"));
 }
+
+export async function authenticate() {
+  return fetchApi(authRoute());
+}
