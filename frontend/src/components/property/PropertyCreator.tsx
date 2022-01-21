@@ -160,7 +160,7 @@ const PropertyCreator: FC = () => {
                     onChange={setCategoryId}
                   />
                 </Grid>
-                <Grid item>
+                <Grid item sm={6}>
                   <InputField
                     label="Year Built"
                     fullWidth
