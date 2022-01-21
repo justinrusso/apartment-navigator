@@ -9,6 +9,12 @@ from app.models import db, Property, PropertyCategory, PropertyImage
 properties_routes = Blueprint("properties", __name__, url_prefix="/properties")
 
 
+@properties_routes.route("/")
+def index():
+    properties = Property.query.all()
+    return {"properties": [property.to_dict() for property in properties]}
+
+
 @properties_routes.route("/", methods=["POST"])
 @login_required
 def create_property():
