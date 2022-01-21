@@ -4,6 +4,7 @@ import Button from "../common/Button";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useAuthModal } from "../../context/AuthModalProvider";
 import { logoutUser, selectUser } from "../../store/user";
+import { Link } from "react-router-dom";
 
 const Navbar: FC = () => {
   const authModal = useAuthModal();
@@ -30,6 +31,11 @@ const Navbar: FC = () => {
       {user && (
         <Button variant="text" onClick={handleLogout}>
           Log out
+        </Button>
+      )}
+      {user && (
+        <Button variant="text" as={Link} to="/properties/new">
+          Add a Property
         </Button>
       )}
     </div>
