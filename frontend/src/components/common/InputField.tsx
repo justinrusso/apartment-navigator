@@ -203,6 +203,7 @@ const InputField: FC<PropsWithChildren<InputFieldProps>> = ({
           {...inputProps}
           ref={inputRef}
           id={id}
+          name={id}
           value={value}
           onChange={onChange}
           required={required}
