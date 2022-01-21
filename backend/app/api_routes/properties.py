@@ -30,6 +30,7 @@ def create_property():
             owner_id=form.data["ownerId"],
             category_id=form.data["categoryId"],
             built_in_year=form.data["builtInYear"],
+            name=form.data["name"],
             address_1=form.data["address1"],
             address_2=form.data["address2"],
             city=form.data["city"],

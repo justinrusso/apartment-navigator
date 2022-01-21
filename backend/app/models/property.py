@@ -14,6 +14,7 @@ class Property(db.Model):
         db.Integer, db.ForeignKey("property_categories.id"), nullable=False
     )
     built_in_year = db.Column(db.SmallInteger, nullable=False)
+    name = db.Column(db.String, nullable=True)
     address_1 = db.Column(db.String, nullable=False)
     address_2 = db.Column(db.String, nullable=True)
     city = db.Column(db.String, nullable=False)
@@ -38,6 +39,7 @@ class Property(db.Model):
             "owner": self.owner.to_dict(),
             "category": self.category.to_dict(),
             "builtInYear": self.built_in_year,
+            "name": self.name,
             "address1": self.address_1,
             "address2": self.address_2,
             "city": self.city,

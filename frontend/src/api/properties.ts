@@ -22,6 +22,7 @@ export class PropertiesApi {
 }
 
 export interface CreatePropertyData {
+  name?: string;
   address1: string;
   address2?: string;
   builtInYear: string;
@@ -55,6 +56,7 @@ export interface PropertyApiData {
   owner: UserData;
   category: PropertyCategoryData;
   builtInYear: number;
+  name?: string;
   address1: string;
   address2?: string;
   city: string;

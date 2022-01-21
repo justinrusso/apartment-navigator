@@ -60,6 +60,7 @@ const PropertyCreator: FC = () => {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const [name, setName] = useState("");
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [city, setCity] = useState("");
@@ -74,6 +75,7 @@ const PropertyCreator: FC = () => {
 
     dispatch(
       addProperty({
+        name,
         address1,
         address2,
         city,
@@ -178,6 +180,20 @@ const PropertyCreator: FC = () => {
                   <PropertyCategoryInput
                     value={categoryId}
                     onChange={setCategoryId}
+                  />
+                </Grid>
+                <Grid item>
+                  <InputField
+                    label="Property Name"
+                    fullWidth
+                    id="property-name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    inputProps={{
+                      type: "text",
+                    }}
+                    error={!!errors.name}
+                    helperText={errors.name}
                   />
                 </Grid>
                 <Grid item sm={6}>
