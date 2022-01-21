@@ -66,6 +66,7 @@ const PropertyCategoryInput: FC<PropertyCategoryInputProps> = ({
                 type="radio"
                 value={category.id}
                 checked={parseInt(value, 10) === category.id}
+                onChange={() => onChange(String(category.id))}
               />
               <Button
                 as="label"
