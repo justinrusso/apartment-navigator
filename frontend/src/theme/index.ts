@@ -63,6 +63,44 @@ const theme: DefaultTheme = {
       easeOut: "cubic-bezier(0, 0, 0.2, 1)",
     },
   },
+  typography: {
+    h1: {
+      fontFamily: "var(--sans)",
+      fontSize: "3rem",
+      fontWeight: 300,
+      letterSpacing: "-0.01562em",
+    },
+    h2: {
+      fontFamily: "var(--sans)",
+      fontSize: "2.25rem",
+      fontWeight: 300,
+      letterSpacing: "-0.00833em",
+    },
+    h3: {
+      fontFamily: "var(--sans)",
+      fontSize: "1.75rem",
+      fontWeight: 400,
+      letterSpacing: "-0.025em",
+    },
+    h4: {
+      fontFamily: "var(--sans)",
+      fontSize: "1.25rem",
+      fontWeight: 400,
+      letterSpacing: "-0.025em",
+    },
+    body1: {
+      fontFamily: "var(--sans)",
+      fontSize: "1rem",
+      fontWeight: 400,
+      letterSpacing: "0em",
+    },
+    button: {
+      fontFamily: "var(--sans)",
+      fontSize: "1rem",
+      fontWeight: 500,
+      letterSpacing: "-0.0125em",
+    },
+  },
   zIndex: {
     modal: 1300,
   },

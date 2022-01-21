@@ -66,7 +66,9 @@ const resetCss = css`
 const GlobalStyle = createGlobalStyle`
     ${resetCss}
 
-    :root {}
+    :root {
+      --sans: 'Roboto','Helvetica','Arial',sans-serif;
+    }
 `;
 
 export default GlobalStyle;
