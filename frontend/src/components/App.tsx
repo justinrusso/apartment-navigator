@@ -11,6 +11,7 @@ import { useAppDispatch } from "../hooks/redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./home/HomePage";
 import PropertyCreator from "./property/PropertyCreator";
+import { fetchPropertyCategories } from "../store/properties";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -19,6 +20,7 @@ const App: FC = () => {
 
   useEffect(() => {
     void dispatch(authenticateUser()).then(() => setLoaded(true));
+    void Promise.all([dispatch(fetchPropertyCategories())]);
   }, [dispatch]);
 
   if (!loaded) {

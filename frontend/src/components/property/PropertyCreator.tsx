@@ -1,10 +1,12 @@
-import { FC, FormEvent, useState } from "react";
 import styled from "styled-components";
+import { FC, FormEvent, useState } from "react";
+
 import Button from "../common/Button";
 import Container from "../common/Container";
 import Grid from "../common/Grid";
 import InputField from "../common/InputField";
 import Paper from "../common/Paper";
+import PropertyCategoryInput from "./PropertyCategoryInput";
 
 const ContentWrapper = styled.div`
   padding: 2rem 0;
@@ -59,7 +61,7 @@ const PropertyCreator: FC = () => {
   const [zipCode, setZipCode] = useState("");
 
   const [builtInYear, setBuiltInYear] = useState("");
-  const [categoryId, setCategoryId] = useState("");
+  const [categoryId, setCategoryId] = useState("1");
   const [images, setImages] = useState([]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -153,8 +155,10 @@ const PropertyCreator: FC = () => {
               <h3>Property Details</h3>
               <Grid columnSpacing="1rem" rowSpacing="1.25rem">
                 <Grid item>
-                  {/* TODO: Implement Category radio buttons */}
-                  Category Selector Radio Input
+                  <PropertyCategoryInput
+                    value={categoryId}
+                    onChange={setCategoryId}
+                  />
                 </Grid>
                 <Grid item>
                   <InputField
