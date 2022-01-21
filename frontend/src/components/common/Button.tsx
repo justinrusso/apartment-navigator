@@ -77,6 +77,10 @@ const Button = styled.button<ButtonProps>`
     cursor: auto;
   }
 
+  svg {
+    display: inline-block;
+  }
+
   ${(props) => props.variant === "contained" && containedButtonStyles}
   ${(props) => props.variant === "outlined" && outlinedButtonStyles}
   ${(props) => props.variant === "text" && textButtonStyles}
