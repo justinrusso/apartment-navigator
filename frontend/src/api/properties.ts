@@ -1,3 +1,4 @@
+import { UserData } from "./auth";
 import { fetchApi, routeBuilder } from "./util";
 
 const propertiesRoute = routeBuilder("/api/properties");
@@ -9,4 +10,63 @@ export interface PropertyCategoryData {
 
 export async function getPropertyCategories() {
   return fetchApi(propertiesRoute("/categories"));
+}
+
+export class PropertiesApi {
+  static async createProperty(data: CreatePropertyData) {
+    return fetchApi(propertiesRoute(), {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+}
+
+export interface CreatePropertyData {
+  address1: string;
+  address2?: string;
+  builtInYear: string;
+  categoryId: string;
+  city: string;
+  state: string;
+  zipCode: string;
+}
+
+export interface PropertyImage {
+  id: number;
+  propertyId: number;
+  unitId?: number;
+  url: string;
+}
+
+export interface PropertyUnit {
+  id: number;
+  propertyId: number;
+  unitCategory: UnitCategory;
+  baths: number;
+  price: number;
+  images: PropertyImage[];
+  floorPlanImg: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PropertyApiData {
+  id: number;
+  owner: UserData;
+  category: PropertyCategoryData;
+  builtInYear: number;
+  address1: string;
+  address2?: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  images: PropertyImage[];
+  units: PropertyUnit[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UnitCategory {
+  id: number;
+  name: string;
 }

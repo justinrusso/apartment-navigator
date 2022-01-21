@@ -7,6 +7,9 @@ import Grid from "../common/Grid";
 import InputField from "../common/InputField";
 import Paper from "../common/Paper";
 import PropertyCategoryInput from "./PropertyCategoryInput";
+import { useAppDispatch } from "../../hooks/redux";
+import { addProperty } from "../../store/properties";
+import { useNavigate } from "react-router-dom";
 
 const ContentWrapper = styled.div`
   padding: 2rem 0;
@@ -52,6 +55,9 @@ const ContentWrapper = styled.div`
 `;
 
 const PropertyCreator: FC = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [address1, setAddress1] = useState("");
@@ -63,8 +69,23 @@ const PropertyCreator: FC = () => {
   const [builtInYear, setBuiltInYear] = useState("");
   const [categoryId, setCategoryId] = useState("1");
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    dispatch(
+      addProperty({
+        address1,
+        address2,
+        city,
+        state,
+        zipCode,
+        builtInYear,
+        categoryId,
+      })
+    )
+      .unwrap()
+      .then(() => navigate("/"))
+      .catch((errors) => setErrors(errors));
   };
 
   return (
