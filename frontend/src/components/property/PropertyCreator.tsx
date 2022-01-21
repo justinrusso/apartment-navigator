@@ -62,7 +62,6 @@ const PropertyCreator: FC = () => {
 
   const [builtInYear, setBuiltInYear] = useState("");
   const [categoryId, setCategoryId] = useState("1");
-  const [images, setImages] = useState([]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

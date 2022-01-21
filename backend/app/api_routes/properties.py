@@ -31,9 +31,6 @@ def index():
             zip_code=form.data["zipCode"],
         )
 
-        for img_url in form.data["images"]:
-            property.images.append(PropertyImage(url=img_url))
-
         db.session.add(property)
         db.session.commit()
         return property.to_dict()
