@@ -10,6 +10,7 @@ import { authenticateUser } from "../store/user";
 import { useAppDispatch } from "../hooks/redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./home/HomePage";
+import PropertyCreator from "./property/PropertyCreator";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -32,7 +33,12 @@ const App: FC = () => {
           <Navbar />
 
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/">
+              <Route index element={<HomePage />} />
+              <Route path="properties">
+                <Route path="new" element={<PropertyCreator />} />
+              </Route>
+            </Route>
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
 
