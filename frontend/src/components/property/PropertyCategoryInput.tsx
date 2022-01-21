@@ -60,8 +60,8 @@ const PropertyCategoryInput: FC<PropertyCategoryInputProps> = ({
       {categoriesArray.map((category) => {
         const Icon = CATEGORY_ICONS[category.id];
         return (
-          <Grid item xs={6}>
-            <RadioButtonGroup key={category.id}>
+          <Grid item xs={6} key={category.id}>
+            <RadioButtonGroup>
               <input
                 type="radio"
                 value={category.id}
