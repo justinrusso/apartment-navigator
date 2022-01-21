@@ -38,3 +38,10 @@ def index():
         db.session.commit()
         return property.to_dict()
     return {"errors": validation_errors_to_dict(form.errors)}, 400
+
+
+@properties_routes.route("/categories")
+def property_categories():
+    return {
+        "categories": [category.to_dict() for category in PropertyCategory.query.all()]
+    }
