@@ -19,6 +19,10 @@ export class PropertiesApi {
       body: JSON.stringify(data),
     });
   }
+
+  static async getProperties() {
+    return fetchApi(propertiesRoute());
+  }
 }
 
 export interface CreatePropertyData {
@@ -30,6 +34,10 @@ export interface CreatePropertyData {
   city: string;
   state: string;
   zipCode: string;
+}
+
+export interface PropertiesApiData {
+  properties: PropertyApiData[];
 }
 
 export interface PropertyImage {

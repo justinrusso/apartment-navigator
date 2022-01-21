@@ -1,6 +1,6 @@
 import { schema } from "normalizr";
 import { UserData } from "../../api/auth";
-import { PropertyCategoryData } from "../../api/properties";
+import { PropertyCategoryData, PropertyUnit } from "../../api/properties";
 
 const propertyCategorySchema = new schema.Entity("categories");
 export const propertyCategoryArraySchema = new schema.Array(
@@ -8,6 +8,11 @@ export const propertyCategoryArraySchema = new schema.Array(
 );
 
 const propertyImageSchema = new schema.Entity("images");
+
+export type NormalizedPropertyUnit = Omit<PropertyUnit, "images"> & {
+  images: number[];
+};
+
 const propertyUnitSchema = new schema.Entity("units", {
   images: [propertyImageSchema],
 });
@@ -33,3 +38,4 @@ export const propertySchema = new schema.Entity("properties", {
   images: [propertyImageSchema],
   units: [propertyUnitSchema],
 });
+export const propertiesSchema = new schema.Array(propertySchema);
