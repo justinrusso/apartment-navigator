@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import {
+  authenticate,
   login,
   LoginData,
   loginDemo,
+  logout,
   signup,
   SignupData,
   UserData,
@@ -60,7 +62,7 @@ export const authenticateUser = createAsyncThunk(
   async (args, thunkAPI): Promise<UserData> => {
     let res: Response;
     try {
-      res = await loginDemo();
+      res = await authenticate();
     } catch (errorRes) {
       const resData = await (errorRes as Response).json();
       throw thunkAPI.rejectWithValue(resData.errors);
@@ -74,7 +76,7 @@ export const logoutUser = createAsyncThunk(
   "user/logoutUser",
   async (args, thunkAPI): Promise<void> => {
     try {
-      await loginDemo();
+      await logout();
     } catch (errorRes) {
       const resData = await (errorRes as Response).json();
       throw thunkAPI.rejectWithValue(resData.errors);
