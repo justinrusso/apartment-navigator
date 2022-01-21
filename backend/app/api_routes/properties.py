@@ -11,7 +11,7 @@ properties_routes = Blueprint("properties", __name__, url_prefix="/properties")
 
 @properties_routes.route("/", methods=["POST"])
 @login_required
-def index():
+def create_property():
     form = PropertyForm()
     form.csrf_token.data = request.cookies["csrf_token"]
     form["ownerId"].data = current_user.id
