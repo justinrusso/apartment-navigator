@@ -17,6 +17,7 @@ export interface NormalizedProperty {
   owner: UserData;
   category: PropertyCategoryData;
   builtInYear: number;
+  name?: string;
   address1: string;
   address2?: string;
   city: string;
