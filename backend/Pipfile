@@ -17,6 +17,7 @@ flask-wtf = "*"
 wtforms = "*"
 email-validator = "*"
 faker = "*"
+gunicorn = "*"
 
 [dev-packages]
 black = "*"
