@@ -14,6 +14,10 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(50), nullable=False)
     company = db.Column(db.String(100), nullable=True)
 
+    properties = db.relationship(
+        "Property", backref=db.backref("owner"), passive_deletes=True
+    )
+
     @property
     def password(self):
         return self.hashed_password

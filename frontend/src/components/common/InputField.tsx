@@ -145,6 +145,8 @@ interface InputFieldProps {
   // The label text for the input
   label: string;
 
+  name?: string;
+
   // Called when the input's value changes
   onChange: ChangeEventHandler<HTMLInputElement>;
   // The input's value
@@ -161,6 +163,7 @@ const InputField: FC<PropsWithChildren<InputFieldProps>> = ({
   id,
   inputProps,
   label,
+  name,
   onChange,
   required,
   value,
@@ -180,7 +183,7 @@ const InputField: FC<PropsWithChildren<InputFieldProps>> = ({
     <InputFieldRoot fullWidth={fullWidth}>
       <InputLabel
         id={`${id}-label`}
-        htmlFor={id}
+        htmlFor={name || id}
         style={{
           // TODO: implement theme colors (error, focused)
           ["--color" as any]: error ? "red" : focused && "green",
@@ -203,6 +206,7 @@ const InputField: FC<PropsWithChildren<InputFieldProps>> = ({
           {...inputProps}
           ref={inputRef}
           id={id}
+          name={name || id}
           value={value}
           onChange={onChange}
           required={required}
