@@ -29,7 +29,7 @@ const SignupDialogRoot = styled.div`
   }
 `;
 
-const SignupDialog: FC = () => {
+const LoginDialog: FC = () => {
   const authModal = useAuthModal();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser());
@@ -119,4 +119,4 @@ const SignupDialog: FC = () => {
   );
 };
 
-export default SignupDialog;
+export default LoginDialog;
