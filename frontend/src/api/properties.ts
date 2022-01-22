@@ -50,6 +50,7 @@ export interface PropertyImage {
 export interface PropertyUnit {
   id: number;
   propertyId: number;
+  unitNum?: number;
   unitCategory: UnitCategory;
   baths: number;
   price: number;
