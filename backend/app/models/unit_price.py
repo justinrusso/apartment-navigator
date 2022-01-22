@@ -14,6 +14,7 @@ class UnitPrice(db.Model):
         db.Integer, db.ForeignKey("unit_categories.id"), nullable=False
     )
     price = db.Column(db.Integer, nullable=False)
+    sq_ft = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.DateTime, server_default=func.now(), nullable=False)
 
     def to_dict(self):
@@ -22,5 +23,6 @@ class UnitPrice(db.Model):
             "propertyId": self.property_id,
             "unitCategoryId": self.unit_category_id,
             "price": self.price,
+            "sqFt": self.sq_ft,
             "createdAt": self.created_at,
         }
