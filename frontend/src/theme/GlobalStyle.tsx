@@ -24,6 +24,8 @@ const resetCss = css`
   body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+
+    ${(props) => props.theme.typography.body1}
   }
 
   // https://www.joshwcomeau.com/css/custom-css-reset/#digit-tweaking-line-height
