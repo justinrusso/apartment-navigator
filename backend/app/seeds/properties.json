@@ -1,0 +1,350 @@
+{
+  "properties": [
+    {
+      "owner_id": 2,
+      "category_id": 2,
+      "built_in_year": 2014,
+      "name": "The Modern",
+      "address_1": "100 Park Ave",
+      "city": "Fort Lee",
+      "state": "NJ",
+      "zip_code": "07024",
+      "created_at": "2021-01-01 00:00:00.000000",
+      "images": [
+        "https://images1.apartments.com/i2/xuGMlQJvKAapwOMeACZoLovhzVVbi7ttAL5s1S9kyWY/116/the-modern-fort-lee-nj-primary-photo.jpg?p=1",
+        "https://images1.apartments.com/i2/41IVmA2pMF-jFpHZHLSJ5jmF9827R0IMYKgdFBH80uw/116/the-modern-fort-lee-nj-building-photo.jpg?p=1",
+        "https://images1.apartments.com/i2/dkt1GExI_QDt-s1VMO0w3ysoAI22CFZ3Vn9bU2FEsUk/116/the-modern-fort-lee-nj-aerial-photo.jpg?p=1",
+        "https://images1.apartments.com/i2/Hu8xD0D_rKHGGivE0xquAes0habd582yc5DHpxGY1BU/116/the-modern-fort-lee-nj-building-photo.jpg?p=1",
+        "https://images1.apartments.com/i2/Z__u_jSxZIk_wF0Iqpo1P0aGiqjrN0Qoy_3R98lk0vE/116/the-modern-fort-lee-nj-building-photo.jpg?p=1",
+        "https://images1.apartments.com/i2/lVcegVyRjEANB_sZA2LXYHqlGYF2QuMRDsiGgI6-Xww/116/the-modern-fort-lee-nj-building-photo.jpg?p=1",
+        "https://images1.apartments.com/i2/3l75ll62LpK8cdf6ykB2bNX_KGCAKe60iMfC_qMLI70/116/the-modern-fort-lee-nj-building-photo.jpg?p=1",
+        "https://images1.apartments.com/i2/6fuWze6By7VZMoAcayG2P9gYMLLBfce3mHZsDPXzja0/116/the-modern-fort-lee-nj-building-photo.jpg?p=1"
+      ],
+      "past_unit_prices": [
+        {
+          "unit_category_id": 1,
+          "price": 2250,
+          "sq_ft": 435,
+          "created_at": "2021-01-01 00:00:00.000000"
+        },
+        {
+          "unit_category_id": 1,
+          "price": 2200,
+          "sq_ft": 435,
+          "created_at": "2022-03-15 00:00:00.000000"
+        },
+        {
+          "unit_category_id": 1,
+          "price": 2300,
+          "sq_ft": 435,
+          "created_at": "2022-08-20 00:00:00.000000"
+        },
+        {
+          "unit_category_id": 1,
+          "price": 2450,
+          "sq_ft": 435,
+          "created_at": "2022-01-01 00:00:00.000000"
+        }
+      ],
+      "units": [
+        {
+          "unit_num": "100-1506",
+          "unit_category_id": 1,
+          "baths": 50,
+          "price": {
+            "price": 2547
+          },
+          "sq_ft": 435,
+          "floor_plan_img": "https://images1.apartments.com/i2/8X5Q_2Edl5Ea2JKEaGGBzR4iSAGmS8wGpviN_R6cL6U/102/the-modern-fort-lee-nj-floorplan.jpg?p=1"
+        },
+        {
+          "unit_num": "100-2805",
+          "unit_category_id": 2,
+          "baths": 100,
+          "price": {
+            "price": 3278
+          },
+          "sq_ft": 780,
+          "floor_plan_img": "https://images1.apartments.com/i2/sEQ7oABZJbMyg-OEfuynHsjknjStSpBc2ewx7eS5DPs/102/the-modern-fort-lee-nj-floorplan.jpg?p=1"
+        },
+        {
+          "unit_num": "100-3305",
+          "unit_category_id": 2,
+          "baths": 100,
+          "price": {
+            "price": 3322
+          },
+          "sq_ft": 780,
+          "floor_plan_img": "https://images1.apartments.com/i2/sEQ7oABZJbMyg-OEfuynHsjknjStSpBc2ewx7eS5DPs/102/the-modern-fort-lee-nj-floorplan.jpg?p=1"
+        },
+        {
+          "unit_num": "800-0403",
+          "unit_category_id": 2,
+          "baths": 150,
+          "price": {
+            "price": 3439
+          },
+          "sq_ft": 916,
+          "floor_plan_img": "https://images1.apartments.com/i2/g5X6gNyvbdwtRiglNpNCDU3sg6QdnXVs2d1b0vg5R-0/102/the-modern-fort-lee-nj-floorplan.jpg?p=1"
+        }
+      ]
+    },
+    {
+      "owner_id": 3,
+      "category_id": 1,
+      "built_in_year": 1923,
+      "address_1": "34 Flornece St",
+      "city": "Englewood",
+      "state": "NJ",
+      "zip_code": "07631",
+      "created_at": "2021-10-01 00:00:00.000000",
+      "images": [
+        "https://images1.apartments.com/i2/8SACfdTBaPZS5F8yOU6HEstxpXpQGQqTZDEjxsRsGJs/102/34-florence-st-englewood-nj-primary-photo.jpg?p=1"
+      ],
+      "past_unit_prices": [
+        {
+          "unit_category_id": 6,
+          "price": 6850,
+          "sq_ft": 1675,
+          "created_at": "2021-01-01 00:00:00.000000"
+        }
+      ],
+      "units": [
+        {
+          "unit_category_id": 6,
+          "baths": 400,
+          "price": {
+            "price": 6995
+          },
+          "sq_ft": 1675
+        }
+      ]
+    },
+    {
+      "owner_id": 4,
+      "category_id": 2,
+      "built_in_year": 2017,
+      "name": "Journal Squared",
+      "address_1": "615 Pavonia Ave",
+      "city": "Jersey City",
+      "state": "NJ",
+      "zip_code": "07306",
+      "images": [
+        "https://images1.apartments.com/i2/1m16AmuwnUysmKRWF_KVFrn8KTTWZkeRMtbnYnPDHjg/102/journal-squared-jersey-city-nj-primary-photo.jpg?p=1",
+        "https://images1.apartments.com/i2/812AcocXtvngT4px8h70dncMGEgMvzF7sYp0p5ydKls/102/journal-squared-jersey-city-nj-building-photo.jpg?p=1",
+        "https://images1.apartments.com/i2/wUCb_p2b_ehx1RB-AQE8LqU2L0IYA8onhVmdOPZtRtM/102/journal-squared-jersey-city-nj-building-photo.jpg?p=1"
+      ],
+      "past_unit_prices": [],
+      "units": [
+        {
+          "unit_num": "1404",
+          "unit_category_id": 1,
+          "baths": 100,
+          "price": {
+            "price": 2425
+          },
+          "sq_ft": 530
+        },
+        {
+          "unit_num": "2403",
+          "unit_category_id": 2,
+          "baths": 100,
+          "price": {
+            "price": 2631
+          },
+          "sq_ft": 652
+        },
+        {
+          "unit_num": "3310",
+          "unit_category_id": 3,
+          "baths": 200,
+          "price": {
+            "price": 4005
+          },
+          "sq_ft": 1047
+        },
+        {
+          "unit_num": "PH2-06",
+          "unit_category_id": 3,
+          "baths": 200,
+          "price": {
+            "price": 7300
+          },
+          "sq_ft": 1563
+        }
+      ]
+    },
+    {
+      "owner_id": 5,
+      "category_id": 2,
+      "built_in_year": 2017,
+      "name": "Harrison Urby",
+      "address_1": "777 S 3rd St",
+      "city": "Harrison",
+      "state": "NJ",
+      "zip_code": "07029",
+      "created_at": "2021-07-01 00:00:00.000000",
+      "images": [
+        "https://images1.apartments.com/i2/p4OE1KN51MUVVCVKIn5MrqeZ9B3s_FW2RZQ74nkIETk/102/harrison-urby-harrison-nj-primary-photo.jpg?p=1",
+        "https://images1.apartments.com/i2/3czU9xorKgbp5SPkfVWeC-iMwHSKIOJfSgPQHDS3Z00/102/harrison-urby-harrison-nj-building.jpg?p=1"
+      ],
+      "past_unit_prices": [],
+      "units": [
+        {
+          "unit_num": "1074",
+          "unit_category_id": 1,
+          "baths": 100,
+          "price": {
+            "price": 1944
+          },
+          "sq_ft": 432,
+          "floor_plan_img": "https://images1.apartments.com/i2/ozShWZOHa5L1eAv92Oz3IEpblYIpQTXMPFP9s5h39NU/102/harrison-urby-harrison-nj-floorplan.png?p=1"
+        },
+        {
+          "unit_num": "4535",
+          "unit_category_id": 1,
+          "baths": 100,
+          "price": {
+            "price": 1990
+          },
+          "sq_ft": 432,
+          "floor_plan_img": "https://images1.apartments.com/i2/ozShWZOHa5L1eAv92Oz3IEpblYIpQTXMPFP9s5h39NU/102/harrison-urby-harrison-nj-floorplan.png?p=1"
+        },
+        {
+          "unit_num": "5503",
+          "unit_category_id": 1,
+          "baths": 100,
+          "price": {
+            "price": 1955
+          },
+          "sq_ft": 450,
+          "floor_plan_img": "https://images1.apartments.com/i2/krM8dHumfeAdfJ_Y88MuDi3uNyIuqG1D6kJGCg_5IYM/102/harrison-urby-harrison-nj-floorplan.png?p=1"
+        },
+        {
+          "unit_num": "3532",
+          "unit_category_id": 2,
+          "baths": 100,
+          "price": {
+            "price": 2096
+          },
+          "sq_ft": 580,
+          "floor_plan_img": "https://images1.apartments.com/i2/wzTpHA5a7E5sspKMY8ys7V7ed2zAEk0p_0JFrncHd4M/102/harrison-urby-harrison-nj-m1.png?p=1"
+        }
+      ]
+    },
+    {
+      "owner_id": 4,
+      "category_id": 2,
+      "built_in_year": 2018,
+      "name": "485 Marin",
+      "address_1": "485 Marin Blvd",
+      "city": "Jersey City",
+      "state": "NJ",
+      "zip_code": "07302",
+      "created_at": "2022-01-01 00:00:00.000000",
+      "images": [
+        "https://images1.apartments.com/i2/e04wdQYzrDGwSjmH0F7eddJzjb6yXIf6KstoAjWd2ZU/102/485-marin-jersey-city-nj-primary-photo.jpg?p=1"
+      ],
+      "past_unit_prices": [],
+      "units": [
+        {
+          "unit_num": "1617",
+          "unit_category_id": 1,
+          "baths": 100,
+          "price": {
+            "price": 2676
+          },
+          "sq_ft": 527,
+          "floor_plan_img": "https://images1.apartments.com/i2/Eyvi3z0M8-PGBUeKe3vOPAmqOwMN_RTBEdEG7SDME8s/102/485-marin-jersey-city-nj-floorplan.jpg?p=1"
+        },
+        {
+          "unit_num": "0805",
+          "unit_category_id": 2,
+          "baths": 100,
+          "price": {
+            "price": 2774
+          },
+          "sq_ft": 648,
+          "floor_plan_img": "https://images1.apartments.com/i2/etyS2wARd-vIaDKkJcaNBtz1N6LVBnk2YKs3kAHh0pA/102/485-marin-jersey-city-nj-floorplan.jpg?p=1"
+        },
+        {
+          "unit_num": "1019",
+          "unit_category_id": 3,
+          "baths": 200,
+          "price": {
+            "price": 3974
+          },
+          "sq_ft": 998,
+          "floor_plan_img": "https://images1.apartments.com/i2/H70T_LULt_D4L_LA5GshjEAzZC9uwgcsTupSNvjD6tQ/102/485-marin-jersey-city-nj-floorplan.jpg?p=1"
+        }
+      ]
+    },
+    {
+      "owner_id": 4,
+      "category_id": 2,
+      "built_in_year": 2020,
+      "name": "Bay 151",
+      "address_1": "151 Centre St",
+      "city": "Bayonne",
+      "state": "NJ",
+      "zip_code": "07002",
+      "created_at": "2022-01-01 00:00:00.000000",
+      "images": [
+        "https://images1.apartments.com/i2/kF7GQp3WLaHk5bRVNEnw-vinpas9Midt22QedEmQTJs/102/bay-151-bayonne-nj-primary-photo.jpg?p=1"
+      ],
+      "past_unit_prices": [],
+      "units": [
+        {
+          "unit_num": "1302",
+          "unit_category_id": 1,
+          "baths": 100,
+          "price": {
+            "price": 1757
+          },
+          "sq_ft": 567,
+          "floor_plan_img": "https://images1.apartments.com/i2/o9-AFzqo-ctWycr-oVrbCdhjOuJ7KuOjfWhM2debopw/102/bay-151-bayonne-nj-floorplan.jpg?p=1"
+        },
+        {
+          "unit_num": "1205",
+          "unit_category_id": 1,
+          "baths": 100,
+          "price": {
+            "price": 1950
+          },
+          "sq_ft": 567,
+          "floor_plan_img": "https://images1.apartments.com/i2/o9-AFzqo-ctWycr-oVrbCdhjOuJ7KuOjfWhM2debopw/102/bay-151-bayonne-nj-floorplan.jpg?p=1"
+        },
+        {
+          "unit_num": "1110",
+          "unit_category_id": 2,
+          "baths": 100,
+          "price": {
+            "price": 1899
+          },
+          "sq_ft": 760,
+          "floor_plan_img": "https://images1.apartments.com/i2/cKa61mlHsgRByRtTRvjZ_knprrYVIgVVWaTIb76Y6n4/102/bay-151-bayonne-nj-floorplan.jpg?p=1"
+        },
+        {
+          "unit_num": "1215",
+          "unit_category_id": 2,
+          "baths": 100,
+          "price": {
+            "price": 2150
+          },
+          "sq_ft": 749,
+          "floor_plan_img": "https://images1.apartments.com/i2/cKa61mlHsgRByRtTRvjZ_knprrYVIgVVWaTIb76Y6n4/102/bay-151-bayonne-nj-floorplan.jpg?p=1"
+        },
+        {
+          "unit_num": "1429",
+          "unit_category_id": 2,
+          "baths": 100,
+          "price": {
+            "price": 2385
+          },
+          "sq_ft": 874,
+          "floor_plan_img": "https://images1.apartments.com/i2/cKa61mlHsgRByRtTRvjZ_knprrYVIgVVWaTIb76Y6n4/102/bay-151-bayonne-nj-floorplan.jpg?p=1"
+        }
+      ]
+    }
+  ]
+}

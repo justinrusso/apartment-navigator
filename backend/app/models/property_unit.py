@@ -10,6 +10,7 @@ class PropertyUnit(db.Model):
     property_id = db.Column(
         db.Integer, db.ForeignKey("properties.id", ondelete="CASCADE"), nullable=False
     )
+    unit_num = db.Column(db.String, nullable=True)
     unit_category_id = db.Column(
         db.Integer, db.ForeignKey("unit_categories.id"), nullable=False
     )
@@ -22,6 +23,10 @@ class PropertyUnit(db.Model):
         db.DateTime, server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
+    __table_args__ = (
+        db.UniqueConstraint("property_id", "unit_num", name="uc_property_unit_num"),
+    )
+
     images = db.relationship(
         "PropertyImage", backref=db.backref("property_unit", passive_deletes=True)
     )
@@ -32,6 +37,7 @@ class PropertyUnit(db.Model):
         return {
             "id": self.id,
             "propertyId": self.property_id,
+            "unitNum": self.unit_num,
             "unitCategory": self.unit_category.to_dict(),
             "baths": self.baths,
             "price": self.price.to_dict(),

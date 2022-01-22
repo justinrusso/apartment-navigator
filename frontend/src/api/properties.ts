@@ -19,6 +19,10 @@ export class PropertiesApi {
       body: JSON.stringify(data),
     });
   }
+
+  static async getProperties() {
+    return fetchApi(propertiesRoute());
+  }
 }
 
 export interface CreatePropertyData {
@@ -32,6 +36,10 @@ export interface CreatePropertyData {
   zipCode: string;
 }
 
+export interface PropertiesApiData {
+  properties: PropertyApiData[];
+}
+
 export interface PropertyImage {
   id: number;
   propertyId: number;
@@ -42,6 +50,7 @@ export interface PropertyImage {
 export interface PropertyUnit {
   id: number;
   propertyId: number;
+  unitNum?: number;
   unitCategory: UnitCategory;
   baths: number;
   price: number;
