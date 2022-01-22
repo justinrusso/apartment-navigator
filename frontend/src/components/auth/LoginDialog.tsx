@@ -29,7 +29,11 @@ const SignupDialogRoot = styled.div`
   }
 `;
 
-const LoginDialog: FC = () => {
+interface LoginDialogProps {
+  onSuccess?: () => void;
+}
+
+const LoginDialog: FC<LoginDialogProps> = ({ onSuccess }) => {
   const authModal = useAuthModal();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser());
@@ -56,6 +60,7 @@ const LoginDialog: FC = () => {
         })
       ).unwrap();
       authModal.close();
+      onSuccess?.();
     } catch (errors) {
       setErrors(errors as LoginErrors);
     }
@@ -65,6 +70,7 @@ const LoginDialog: FC = () => {
     try {
       await dispatch(loginDemoUser());
       authModal.close();
+      onSuccess?.();
     } catch {}
   };
 

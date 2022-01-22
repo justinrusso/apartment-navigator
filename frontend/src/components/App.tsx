@@ -5,6 +5,7 @@ import AuthModals from "./auth/AuthModals";
 import AuthModalProvider from "../context/AuthModalProvider";
 import GlobalStyle from "../theme/GlobalStyle";
 import Navbar from "./nav/Navbar";
+import RequireAuth from "./auth/RequireAuth";
 import theme from "../theme";
 import { authenticateUser } from "../store/user";
 import { useAppDispatch } from "../hooks/redux";
@@ -38,7 +39,14 @@ const App: FC = () => {
             <Route path="/">
               <Route index element={<HomePage />} />
               <Route path="properties">
-                <Route path="new" element={<PropertyCreator />} />
+                <Route
+                  path="new"
+                  element={
+                    <RequireAuth>
+                      <PropertyCreator />
+                    </RequireAuth>
+                  }
+                />
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" />} />
