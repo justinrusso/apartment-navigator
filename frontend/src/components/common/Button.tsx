@@ -54,6 +54,8 @@ const Button = styled.button<ButtonProps>`
   --padding-y: 0.375em;
   --padding-x: 1em;
 
+  ${(props) => props.theme.typography.button}
+
   background: none;
   border: none;
   border-radius: ${(props) => props.theme.borderRadius}px;
