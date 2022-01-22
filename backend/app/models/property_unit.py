@@ -15,6 +15,7 @@ class PropertyUnit(db.Model):
     )
     baths = db.Column(db.SmallInteger, nullable=False)
     price_id = db.Column(db.Integer, db.ForeignKey("unit_prices.id"), nullable=False)
+    sq_ft = db.Column(db.Integer, nullable=False)
     floor_plan_img = db.Column(db.String, nullable=True)
     created_at = db.Column(db.DateTime, server_default=func.now(), nullable=False)
     updated_at = db.Column(
@@ -34,6 +35,7 @@ class PropertyUnit(db.Model):
             "unitCategory": self.unit_category.to_dict(),
             "baths": self.baths,
             "price": self.price.to_dict(),
+            "sqFt": self.sq_ft,
             "images": [image.to_dict() for image in self.images],
             "floorPlanImg": self.floor_plan_img,
             "createdAt": self.created_at,
