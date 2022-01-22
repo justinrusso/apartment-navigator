@@ -68,7 +68,9 @@ const HomePage: FC = () => {
       <HeroSection>
         <div className="hero-content-wrapper">
           <Container>
-            <h2>Discover Your New Apartment</h2>
+            <Typography variant="h2" gutterBottom color="inherit">
+              Discover Your New Apartment
+            </Typography>
           </Container>
         </div>
         <div className="hero-background" />

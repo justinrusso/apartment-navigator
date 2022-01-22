@@ -22,11 +22,11 @@ function getComponentTag({ as, variant }: { as?: string; variant?: string }) {
 }
 
 interface TypographyProps {
+  color?: "inherit"; // TODO: support palette colors
   gutterBottom?: boolean;
   variant?: keyof DefaultTheme["typography"];
 }
 
-// TODO: support palette colors
 const Typography = styled.p.attrs(
   (props: TypographyProps & { as?: string }) => {
     return {
@@ -39,7 +39,10 @@ const Typography = styled.p.attrs(
   }
 )<TypographyProps>`
   ${(props) => props.theme.typography[props.variant || "body1"]}
-  color: black; // TODO: use primary text palette color
+  color: ${(props) =>
+    props.color === "inherit"
+      ? "inherit"
+      : "black"}; // TODO: use primary text palette color
   margin: 0;
 
   margin-bottom: ${(props) => props.gutterBottom && "0.35em"};
