@@ -2,6 +2,7 @@ import { FC, FormEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import AlternateAuthLink from "./AlternateAuthLink";
+import Button from "../common/Button";
 import Dialog from "../common/Dialog";
 import InputField from "../common/InputField";
 import { SignupErrors } from "../../api/auth";
@@ -202,7 +203,7 @@ const SignupDialog: FC = () => {
             error={!!errors.company}
             helperText={errors.company}
           />
-          <button type="submit">Sign Up</button>
+          <Button type="submit">Sign Up</Button>
         </form>
       </SignupDialogRoot>
     </Dialog>

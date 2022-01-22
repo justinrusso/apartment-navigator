@@ -1,13 +1,14 @@
 import { FC, FormEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 
+import AlternateAuthLink from "./AlternateAuthLink";
+import Button from "../common/Button";
 import Dialog from "../common/Dialog";
 import InputField from "../common/InputField";
 import { LoginErrors } from "../../api/auth";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { useAuthModal } from "../../context/AuthModalProvider";
 import { loginDemoUser, loginUser, selectUser } from "../../store/user";
-import AlternateAuthLink from "./AlternateAuthLink";
 
 const SignupDialogRoot = styled.div`
   display: flex;
@@ -105,7 +106,7 @@ const SignupDialog: FC = () => {
             helperText={errors.password || errors.invalid}
             required
           />
-          <button type="submit">Sign In</button>
+          <Button type="submit">Sign In</Button>
         </form>
         <p>
           Looking to try out the website?{" "}
