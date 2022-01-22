@@ -39,6 +39,7 @@ declare module "styled-components" {
       button: TypographyEntry;
     };
     zIndex: {
+      navbar: number;
       modal: number;
     };
   }

@@ -102,6 +102,7 @@ const theme: DefaultTheme = {
     },
   },
   zIndex: {
+    navbar: 1100,
     modal: 1300,
   },
 };
