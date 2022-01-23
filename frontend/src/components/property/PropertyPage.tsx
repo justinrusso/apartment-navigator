@@ -102,6 +102,10 @@ const ContactSidebar = styled(Paper)`
 
 const MainContent = styled.main`
   flex: 1;
+
+  section {
+    padding: 2rem 0;
+  }
 `;
 
 const PropertyPage: FC = () => {
@@ -159,6 +163,24 @@ const PropertyPage: FC = () => {
             {property.name}
           </Typography>
           <Typography>{createAddress(property)}</Typography>
+          <section>
+            <Typography variant="h2" gutterBottom>
+              Contact
+            </Typography>
+            <Typography gutterBottom>
+              Have questions or interested in leasing? Speak with{" "}
+              {property.owner.company ||
+                `${property.owner.firstName} ${property.owner.lastName}`}{" "}
+              by clicking the button below!
+            </Typography>
+            <Button
+              as="a"
+              href={`mailto:${property.owner.email}`}
+              target="_blank"
+            >
+              Send an Email
+            </Button>
+          </section>
         </MainContent>
         <ContactSidebar as="aside">
           <Typography variant="h4" as="h2" gutterBottom>
