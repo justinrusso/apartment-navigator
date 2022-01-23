@@ -194,6 +194,9 @@ export const selectProperty =
   (state: RootState): NormalizedProperty | undefined =>
     state.properties.entities[id];
 
+export const selectPropertyImages =
+  (imageIds: number[]) => (state: RootState) =>
+    imageIds.map((imageId) => state.properties.images[imageId]);
 export const selectPropertyImage = (imageId?: number) => (state: RootState) =>
   imageId !== undefined ? state.properties.images[imageId] : undefined;
 
