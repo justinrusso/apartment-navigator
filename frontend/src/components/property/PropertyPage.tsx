@@ -145,6 +145,11 @@ const PropertyPage: FC = () => {
     return null;
   }
 
+  const propertyName = property.name || property.address1;
+  const propertyOwnerName =
+    property.owner.company ||
+    `${property.owner.firstName} ${property.owner.lastName}`;
+
   return (
     <Container>
       {propertyImages.length > 0 && (
@@ -163,6 +168,15 @@ const PropertyPage: FC = () => {
             {property.name}
           </Typography>
           <Typography>{createAddress(property)}</Typography>
+          <section>
+            <Typography variant="h2" gutterBottom>
+              About {propertyName}
+            </Typography>
+            <Typography gutterBottom>Listing by {propertyOwnerName}</Typography>
+            <Typography gutterBottom>
+              Built in {property.builtInYear}
+            </Typography>
+          </section>
           <section>
             <Typography variant="h2" gutterBottom>
               Contact
