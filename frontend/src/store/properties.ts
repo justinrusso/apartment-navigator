@@ -55,6 +55,22 @@ const propertiesSlice = createSlice({
       state.images = action.payload.entities.images;
       state.units = action.payload.entities.units;
     });
+    builder.addCase(fetchProperty.fulfilled, (state, action) => {
+      const propertyId = action.payload.result as number;
+      state.ids.push(propertyId);
+      state.entities = {
+        ...state.entities,
+        ...action.payload.entities.properties,
+      };
+      state.images = {
+        ...state.images,
+        ...action.payload.entities.images,
+      };
+      state.units = {
+        ...state.units,
+        ...action.payload.entities.units,
+      };
+    });
   },
 });
 
@@ -137,6 +153,31 @@ export const fetchProperties = createAsyncThunk(
     const normalizedData: FetchPropertiesResult = normalize(
       resData.properties,
       propertiesSchema
+    );
+    return normalizedData;
+  }
+);
+
+interface FetchPropertyArgs {
+  propertyId: number | string;
+}
+export const fetchProperty = createAsyncThunk(
+  `${propertiesSlice.name}/fetchProperty`,
+  async (
+    { propertyId }: FetchPropertyArgs,
+    thunkAPI
+  ): Promise<FetchPropertiesResult> => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.getProperty(propertyId);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
+    const resData: PropertyApiData = await res.json();
+    const normalizedData: FetchPropertiesResult = normalize(
+      resData,
+      propertySchema
     );
     return normalizedData;
   }

@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 
 from app.forms import validation_errors_to_dict
 from app.forms.property_form import PropertyForm
-from app.models import db, Property, PropertyCategory, PropertyImage
+from app.models import db, Property, PropertyCategory
 
 
 properties_routes = Blueprint("properties", __name__, url_prefix="/properties")
@@ -13,6 +13,15 @@ properties_routes = Blueprint("properties", __name__, url_prefix="/properties")
 def index():
     properties = Property.query.all()
     return {"properties": [property.to_dict() for property in properties]}
+
+
+@properties_routes.route("/<int:property_id>")
+def get_property(property_id):
+    property = Property.query.get(property_id)
+
+    if not property:
+        return {}, 404
+    return property.to_dict()
 
 
 @properties_routes.route("/", methods=["POST"])

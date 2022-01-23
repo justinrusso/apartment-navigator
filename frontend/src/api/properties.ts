@@ -23,6 +23,10 @@ export class PropertiesApi {
   static async getProperties() {
     return fetchApi(propertiesRoute());
   }
+
+  static async getProperty(propertyId: number | string) {
+    return fetchApi(propertiesRoute(`/${propertyId}`));
+  }
 }
 
 export interface CreatePropertyData {
