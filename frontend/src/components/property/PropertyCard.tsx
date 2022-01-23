@@ -2,10 +2,10 @@ import styled from "styled-components";
 import { FC } from "react";
 
 import Paper, { PaperProps } from "../common/Paper";
+import { createAddress } from "./utils";
 import { selectProperty, selectPropertyImage } from "../../store/properties";
 import { useAppSelector } from "../../hooks/redux";
 import Typography from "../common/Typography";
-import { NormalizedProperty } from "../../store/normalizers/properties";
 
 const CardRoot = styled(Paper)`
   overflow: hidden;
@@ -55,11 +55,3 @@ const PropertyCard: FC<PropertyCardProps> = ({ propertyId, ...paperProps }) => {
 };
 
 export default PropertyCard;
-
-function createAddress(property: NormalizedProperty) {
-  let address = property.address1;
-  if (property.address2) {
-    address += `, ${property.address2}`;
-  }
-  return `${address}, ${property.city}, ${property.state} ${property.zipCode}`;
-}
