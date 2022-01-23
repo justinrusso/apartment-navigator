@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import Paper from "../common/Paper";
 import Typography from "../common/Typography";
 import Button from "../common/Button";
+import { createAddress } from "./utils";
 
 const ImageGrid = styled.div`
   display: grid;
@@ -153,7 +154,12 @@ const PropertyPage: FC = () => {
         </ImageGrid>
       )}
       <MainContentWrapper>
-        <MainContent></MainContent>
+        <MainContent>
+          <Typography variant="h1" gutterBottom>
+            {property.name}
+          </Typography>
+          <Typography>{createAddress(property)}</Typography>
+        </MainContent>
         <ContactSidebar as="aside">
           <Typography variant="h4" as="h2" gutterBottom>
             Contact This Property
