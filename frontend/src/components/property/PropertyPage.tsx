@@ -10,6 +10,9 @@ import {
   selectPropertyImages,
 } from "../../store/properties";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import Paper from "../common/Paper";
+import Typography from "../common/Typography";
+import Button from "../common/Button";
 
 const ImageGrid = styled.div`
   display: grid;
@@ -67,6 +70,39 @@ const Image = styled.div`
   }
 `;
 
+const MainContentWrapper = styled.div`
+  display: flex;
+  gap: 3rem;
+  padding: 2rem 0;
+`;
+
+const ContactSidebar = styled(Paper)`
+  align-self: start;
+  border: 1px solid black; // TODO: use divider color from palette
+  display: none;
+  flex-grow: 2;
+  max-width: 40ch;
+  padding: 1.5rem;
+  position: sticky;
+  top: calc(64px + 2rem); // The height of the navbar + extra
+
+  ${(props) => props.theme.breakpoints.up("lg", props.theme)} {
+    display: block;
+  }
+
+  h2 {
+    text-align: center;
+  }
+
+  ${Button} {
+    width: 100%;
+  }
+`;
+
+const MainContent = styled.main`
+  flex: 1;
+`;
+
 const PropertyPage: FC = () => {
   const dispatch = useAppDispatch();
 
@@ -116,6 +152,21 @@ const PropertyPage: FC = () => {
           ))}
         </ImageGrid>
       )}
+      <MainContentWrapper>
+        <MainContent></MainContent>
+        <ContactSidebar as="aside">
+          <Typography variant="h4" as="h2" gutterBottom>
+            Contact This Property
+          </Typography>
+          <Button
+            as="a"
+            href={`mailto:${property.owner.email}`}
+            target="_blank"
+          >
+            Send an Email
+          </Button>
+        </ContactSidebar>
+      </MainContentWrapper>
     </Container>
   );
 };
