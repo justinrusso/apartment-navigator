@@ -165,7 +165,7 @@ const PropertyPage: FC = () => {
       <MainContentWrapper>
         <MainContent>
           <Typography variant="h1" gutterBottom>
-            {property.name}
+            {propertyName}
           </Typography>
           <Typography>{createAddress(property)}</Typography>
           <section>
