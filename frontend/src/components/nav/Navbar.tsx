@@ -5,9 +5,10 @@ import styled from "styled-components";
 import Button from "../common/Button";
 import Container from "../common/Container";
 import Paper from "../common/Paper";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import ProfileButton from "./ProfileButton";
+import { useAppSelector } from "../../hooks/redux";
 import { useAuthModal } from "../../context/AuthModalProvider";
-import { logoutUser, selectUser } from "../../store/user";
+import { selectUser } from "../../store/user";
 
 const NavbarRoot = styled(Paper)`
   position: sticky;
@@ -21,6 +22,11 @@ const NavbarInner = styled.div`
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   min-height: 3.5rem;
+
+  & > * {
+    display: flex;
+    align-items: center;
+  }
 
   & > *:nth-child(3n) {
     justify-self: end;
@@ -46,13 +52,8 @@ const LogoWrapper = styled(Link)`
 
 const Navbar: FC = () => {
   const authModal = useAuthModal();
-  const dispatch = useAppDispatch();
 
   const user = useAppSelector(selectUser());
-
-  const handleLogout = async () => {
-    await dispatch(logoutUser());
-  };
 
   return (
     <NavbarRoot elevation={8} as="header" square>
@@ -74,14 +75,12 @@ const Navbar: FC = () => {
               </>
             )}
             {user && (
-              <Button variant="text" onClick={handleLogout}>
-                Log out
-              </Button>
-            )}
-            {user && (
-              <Button variant="text" as={Link} to="/properties/new">
-                Add a Property
-              </Button>
+              <>
+                <Button variant="text" as={Link} to="/properties/new">
+                  Add a Property
+                </Button>
+                <ProfileButton />
+              </>
             )}
           </div>
         </NavbarInner>
