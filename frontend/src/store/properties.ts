@@ -148,8 +148,10 @@ export const selectProperties = () => (state: RootState) =>
   state.properties.entities;
 export const selectPropertiesArray = () => (state: RootState) =>
   Object.values(state.properties.entities);
-export const selectProperty = (id: number) => (state: RootState) =>
-  state.properties.entities[id];
+export const selectProperty =
+  (id: number) =>
+  (state: RootState): NormalizedProperty | undefined =>
+    state.properties.entities[id];
 
 export const selectPropertyImage = (imageId?: number) => (state: RootState) =>
   imageId !== undefined ? state.properties.images[imageId] : undefined;

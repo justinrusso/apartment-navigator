@@ -31,7 +31,13 @@ interface PropertyCardProps extends PaperProps {
 
 const PropertyCard: FC<PropertyCardProps> = ({ propertyId, ...paperProps }) => {
   const property = useAppSelector(selectProperty(propertyId));
-  const propertyImage = useAppSelector(selectPropertyImage(property.images[0]));
+  const propertyImage = useAppSelector(
+    selectPropertyImage(property?.images[0])
+  );
+
+  if (!property) {
+    return null;
+  }
 
   return (
     <CardRoot {...paperProps}>
