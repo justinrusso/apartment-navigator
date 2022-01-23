@@ -183,9 +183,7 @@ const PropertyPage: FC = () => {
             </Typography>
             <Typography gutterBottom>
               Have questions or interested in leasing? Speak with{" "}
-              {property.owner.company ||
-                `${property.owner.firstName} ${property.owner.lastName}`}{" "}
-              by clicking the button below!
+              {propertyOwnerName} by clicking the button below!
             </Typography>
             <Button
               as="a"
