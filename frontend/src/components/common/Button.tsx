@@ -50,16 +50,24 @@ interface ButtonProps {
   variant?: "contained" | "outlined" | "text";
 }
 
+/**
+ * NOTE: To include an icon inside the button, use the `ButtonIconWrapper`
+ * to wrap the icon
+ */
 const Button = styled.button<ButtonProps>`
-  --padding-y: 0.375em;
-  --padding-x: 1em;
+  --padding-y: 0.43em;
+  --padding-x: 1.14em;
 
   ${(props) => props.theme.typography.button}
 
+  align-items: center;
   background: none;
   border: none;
   border-radius: ${(props) => props.theme.borderRadius}px;
   cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  line-height: 1.75;
   padding: var(--padding-y) var(--padding-x);
   text-decoration: none;
   transition: ${(props) => `background-color 250ms
@@ -77,10 +85,6 @@ const Button = styled.button<ButtonProps>`
 
   &:disabled {
     cursor: auto;
-  }
-
-  svg {
-    display: inline-block;
   }
 
   ${(props) => props.variant === "contained" && containedButtonStyles}

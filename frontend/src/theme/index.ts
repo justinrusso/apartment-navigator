@@ -96,12 +96,13 @@ const theme: DefaultTheme = {
     },
     button: {
       fontFamily: "var(--sans)",
-      fontSize: "1rem",
+      fontSize: "0.875rem",
       fontWeight: 500,
       letterSpacing: "-0.0125em",
     },
   },
   zIndex: {
+    navbar: 1100,
     modal: 1300,
   },
 };
