@@ -5,6 +5,7 @@ import { IconType } from "react-icons";
 import { MdOutlineHouse } from "react-icons/md";
 
 import Button from "../common/Button";
+import ButtonIconWrapper from "../common/ButtonIconWrapper";
 import Grid from "../common/Grid";
 import { useAppSelector } from "../../hooks/redux";
 import { selectPropertyCategoriesArray } from "../../store/properties";
@@ -32,14 +33,11 @@ const RadioButtonGroup = styled.fieldset`
 
   ${Button} {
     --padding-y: 1em;
-    align-items: center;
     display: flex;
-    gap: 0.5em;
-    justify-content: center;
     user-select: none;
 
     svg {
-      font-size: 2.5rem;
+      font-size: 2.5em;
     }
   }
 `;
@@ -73,7 +71,9 @@ const PropertyCategoryInput: FC<PropertyCategoryInputProps> = ({
                 variant="outlined"
                 onClick={() => onChange(String(category.id))}
               >
-                <Icon />
+                <ButtonIconWrapper position="start">
+                  <Icon />
+                </ButtonIconWrapper>
                 {category.name}
               </Button>
             </RadioButtonGroup>
