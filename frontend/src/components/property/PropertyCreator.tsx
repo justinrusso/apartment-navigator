@@ -10,6 +10,7 @@ import PropertyCategoryInput from "./PropertyCategoryInput";
 import { useAppDispatch } from "../../hooks/redux";
 import { addProperty } from "../../store/properties";
 import { useNavigate } from "react-router-dom";
+import Typography from "../common/Typography";
 
 const ContentWrapper = styled.div`
   padding: 2rem 0;
@@ -96,8 +97,12 @@ const PropertyCreator: FC = () => {
         <Paper elevation={4} className="main-content">
           <div className="centered">
             <form className="form-content-wrapper" onSubmit={handleSubmit}>
-              <h2 className="form-title">Add Your Property</h2>
-              <h3>Property Location</h3>
+              <Typography variant="h2" className="form-title">
+                Add Your Property
+              </Typography>
+              <Typography variant="h3" gutterBottom>
+                Property Location
+              </Typography>
               <Grid columnSpacing="1rem" rowSpacing="1.25rem">
                 <Grid item>
                   <InputField
@@ -174,7 +179,9 @@ const PropertyCreator: FC = () => {
                   />
                 </Grid>
               </Grid>
-              <h3>Property Details</h3>
+              <Typography variant="h3" gutterBottom>
+                Property Details
+              </Typography>
               <Grid columnSpacing="1rem" rowSpacing="1.25rem">
                 <Grid item>
                   <PropertyCategoryInput
