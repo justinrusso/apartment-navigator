@@ -1,9 +1,10 @@
 from flask import Blueprint, request
 from flask_login import current_user, login_required
+from sqlalchemy.orm import joinedload
 
 from app.forms import validation_errors_to_dict
 from app.forms.property_form import PropertyForm
-from app.models import db, Property, PropertyCategory
+from app.models import db, Property, PropertyCategory, PropertyUnit, UnitPrice
 
 
 properties_routes = Blueprint("properties", __name__, url_prefix="/properties")
@@ -17,7 +18,14 @@ def index():
 
 @properties_routes.route("/<int:property_id>")
 def get_property(property_id):
-    property = Property.query.get(property_id)
+    property = Property.query.options(
+        joinedload(Property.owner),
+        joinedload(Property.category),
+        joinedload(Property.units).joinedload(PropertyUnit.unit_category),
+        joinedload(Property.units).joinedload(PropertyUnit.images),
+        joinedload(Property.units).joinedload(PropertyUnit.price),
+        joinedload(Property.images),
+    ).get(property_id)
 
     if not property:
         return {}, 404
