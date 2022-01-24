@@ -75,6 +75,7 @@ const PropertyUnitCategoryCard: FC<PropertyUnitCardProps> = ({
         <thead>
           <tr>
             <th>Unit #</th>
+            <th>Baths</th>
             <th>Price</th>
             <th>Sq Ft</th>
             <th>Actions</th>
@@ -84,6 +85,7 @@ const PropertyUnitCategoryCard: FC<PropertyUnitCardProps> = ({
           {units.map((unit) => (
             <tr>
               <th>{unit.unitNum}</th>
+              <td>{unit.baths / 100}</td>
               <td>{currencyFormatter.format(unit.price.price)}</td>
               <td>{sqFtFormatter.format(unit.sqFt)}</td>
             </tr>
