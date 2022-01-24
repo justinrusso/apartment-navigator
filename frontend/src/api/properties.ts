@@ -38,6 +38,7 @@ export interface CreatePropertyData {
   city: string;
   state: string;
   zipCode: string;
+  images?: string[];
 }
 
 export interface PropertiesApiData {

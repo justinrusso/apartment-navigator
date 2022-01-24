@@ -4,7 +4,7 @@ from sqlalchemy.orm import joinedload
 
 from app.forms import validation_errors_to_dict
 from app.forms.property_form import PropertyForm
-from app.models import db, Property, PropertyCategory, PropertyUnit, UnitPrice
+from app.models import db, Property, PropertyCategory, PropertyImage, PropertyUnit
 
 
 properties_routes = Blueprint("properties", __name__, url_prefix="/properties")
@@ -54,6 +54,10 @@ def create_property():
             state=form.data["state"],
             zip_code=form.data["zipCode"],
         )
+
+        if form.data["images"]:
+            for imageUrl in form.data["images"]:
+                property.images.append(PropertyImage(url=imageUrl))
 
         db.session.add(property)
         db.session.commit()
