@@ -105,10 +105,9 @@ const ContactSidebar = styled(Paper)`
 
 const MainContent = styled.main`
   flex: 1;
-
-  section {
-    padding: 2rem 0;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 
   .units-wrapper {
     display: flex;
@@ -189,10 +188,12 @@ const PropertyPage: FC = () => {
       )}
       <MainContentWrapper>
         <MainContent>
-          <Typography variant="h1" gutterBottom>
-            {propertyName}
-          </Typography>
-          <Typography>{createAddress(property)}</Typography>
+          <section>
+            <Typography variant="h1" gutterBottom>
+              {propertyName}
+            </Typography>
+            <Typography>{createAddress(property)}</Typography>
+          </section>
           <section>
             <Typography variant="h2" gutterBottom>
               About {propertyName}
