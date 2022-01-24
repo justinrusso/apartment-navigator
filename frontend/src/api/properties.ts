@@ -57,7 +57,14 @@ export interface PropertyUnit {
   unitNum?: number;
   unitCategory: UnitCategory;
   baths: number;
-  price: number;
+  price: {
+    id: number;
+    propertyId: number;
+    unitCategoryId: number;
+    price: number;
+    sqFt: number;
+    createdAt: string;
+  };
   sqFt: number;
   images: PropertyImage[];
   floorPlanImg: string;
