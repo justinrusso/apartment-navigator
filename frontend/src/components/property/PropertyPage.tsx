@@ -79,7 +79,7 @@ const MainContentWrapper = styled.div`
 
 const ContactSidebar = styled(Paper)`
   align-self: start;
-  border: 1px solid black; // TODO: use divider color from palette
+  /* border: 1px solid black; // TODO: use divider color from palette */
   display: none;
   flex-grow: 2;
   max-width: 40ch;
@@ -194,7 +194,7 @@ const PropertyPage: FC = () => {
             </Button>
           </section>
         </MainContent>
-        <ContactSidebar as="aside">
+        <ContactSidebar as="aside" elevation={2}>
           <Typography variant="h4" as="h2" gutterBottom>
             Contact This Property
           </Typography>
