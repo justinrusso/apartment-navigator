@@ -45,6 +45,10 @@ const CardRoot = styled(Paper)`
       border-bottom: 1px solid rgba(224, 224, 224, 1);
     }
 
+    tbody > *:last-child {
+      border: none;
+    }
+
     th,
     td {
       padding: 1rem;
