@@ -1,15 +1,16 @@
 import { FC, useEffect, useState } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 
 import AuthModals from "./auth/AuthModals";
 import AuthModalProvider from "../context/AuthModalProvider";
 import GlobalStyle from "../theme/GlobalStyle";
 import Navbar from "./nav/Navbar";
+import PropertyPage from "./property/PropertyPage";
 import RequireAuth from "./auth/RequireAuth";
 import theme from "../theme";
 import { authenticateUser } from "../store/user";
 import { useAppDispatch } from "../hooks/redux";
-import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./home/HomePage";
 import PropertyCreator from "./property/PropertyCreator";
 import { fetchPropertyCategories } from "../store/properties";
@@ -47,6 +48,7 @@ const App: FC = () => {
                     </RequireAuth>
                   }
                 />
+                <Route path=":propertyId" element={<PropertyPage />} />
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" />} />

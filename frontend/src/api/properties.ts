@@ -23,6 +23,10 @@ export class PropertiesApi {
   static async getProperties() {
     return fetchApi(propertiesRoute());
   }
+
+  static async getProperty(propertyId: number | string) {
+    return fetchApi(propertiesRoute(`/${propertyId}`));
+  }
 }
 
 export interface CreatePropertyData {
@@ -53,10 +57,17 @@ export interface PropertyUnit {
   unitNum?: number;
   unitCategory: UnitCategory;
   baths: number;
-  price: number;
+  price: {
+    id: number;
+    propertyId: number;
+    unitCategoryId: number;
+    price: number;
+    sqFt: number;
+    createdAt: string;
+  };
   sqFt: number;
   images: PropertyImage[];
-  floorPlanImg: string;
+  floorPlanImg?: string;
   createdAt: string;
   updatedAt: string;
 }

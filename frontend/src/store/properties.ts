@@ -55,6 +55,22 @@ const propertiesSlice = createSlice({
       state.images = action.payload.entities.images;
       state.units = action.payload.entities.units;
     });
+    builder.addCase(fetchProperty.fulfilled, (state, action) => {
+      const propertyId = action.payload.result as number;
+      state.ids.push(propertyId);
+      state.entities = {
+        ...state.entities,
+        ...action.payload.entities.properties,
+      };
+      state.images = {
+        ...state.images,
+        ...action.payload.entities.images,
+      };
+      state.units = {
+        ...state.units,
+        ...action.payload.entities.units,
+      };
+    });
   },
 });
 
@@ -142,16 +158,67 @@ export const fetchProperties = createAsyncThunk(
   }
 );
 
+interface FetchPropertyArgs {
+  propertyId: number | string;
+}
+export const fetchProperty = createAsyncThunk(
+  `${propertiesSlice.name}/fetchProperty`,
+  async (
+    { propertyId }: FetchPropertyArgs,
+    thunkAPI
+  ): Promise<FetchPropertiesResult> => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.getProperty(propertyId);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
+    const resData: PropertyApiData = await res.json();
+    const normalizedData: FetchPropertiesResult = normalize(
+      resData,
+      propertySchema
+    );
+    return normalizedData;
+  }
+);
+
 export const selectPropertyIds = () => (state: RootState) =>
   state.properties.ids;
 export const selectProperties = () => (state: RootState) =>
   state.properties.entities;
 export const selectPropertiesArray = () => (state: RootState) =>
   Object.values(state.properties.entities);
-export const selectProperty = (id: number) => (state: RootState) =>
-  state.properties.entities[id];
+export const selectProperty =
+  (id: number) =>
+  (state: RootState): NormalizedProperty | undefined =>
+    state.properties.entities[id];
 
+export const selectPropertyImages =
+  (imageIds: number[]) => (state: RootState) =>
+    imageIds.map((imageId) => state.properties.images[imageId]);
 export const selectPropertyImage = (imageId?: number) => (state: RootState) =>
   imageId !== undefined ? state.properties.images[imageId] : undefined;
+
+export const selectPropertyUnit = (unitId: number) => (state: RootState) =>
+  state.properties.units[unitId];
+export const selectPropertyUnitsByCategories =
+  (propertyId: number) => (state: RootState) => {
+    if (!state.properties.entities[propertyId]) {
+      return;
+    }
+    const unitIds = state.properties.entities[propertyId].units;
+    const unitCategoryMap: Record<number, NormalizedPropertyUnit[]> = {};
+
+    unitIds.forEach((unitId) => {
+      const unit = state.properties.units[unitId];
+      if (!unitCategoryMap[unit.unitCategory.id]) {
+        unitCategoryMap[unit.unitCategory.id] = [];
+      }
+      unitCategoryMap[unit.unitCategory.id].push(unit);
+    });
+
+    return unitCategoryMap;
+  };
 
 export default propertiesSlice.reducer;
