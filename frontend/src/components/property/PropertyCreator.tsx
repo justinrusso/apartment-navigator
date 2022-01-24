@@ -100,127 +100,131 @@ const PropertyCreator: FC = () => {
               <Typography variant="h2" className="form-title">
                 Add Your Property
               </Typography>
-              <Typography variant="h3" gutterBottom>
-                Property Location
-              </Typography>
-              <Grid columnSpacing="1rem" rowSpacing="1.25rem">
-                <Grid item>
-                  <InputField
-                    label="Address"
-                    fullWidth
-                    id="property-address1"
-                    value={address1}
-                    onChange={(e) => setAddress1(e.target.value)}
-                    inputProps={{
-                      type: "text",
-                    }}
-                    error={!!errors.address1}
-                    helperText={errors.address1}
-                    required
-                  />
+              <section>
+                <Typography variant="h3" gutterBottom>
+                  Property Location
+                </Typography>
+                <Grid columnSpacing="1rem" rowSpacing="1.25rem">
+                  <Grid item>
+                    <InputField
+                      label="Address"
+                      fullWidth
+                      id="property-address1"
+                      value={address1}
+                      onChange={(e) => setAddress1(e.target.value)}
+                      inputProps={{
+                        type: "text",
+                      }}
+                      error={!!errors.address1}
+                      helperText={errors.address1}
+                      required
+                    />
+                  </Grid>
+                  <Grid item>
+                    <InputField
+                      label="Address Secondary"
+                      fullWidth
+                      id="property-address2"
+                      value={address2}
+                      onChange={(e) => setAddress2(e.target.value)}
+                      inputProps={{
+                        type: "text",
+                      }}
+                      error={!!errors.address2}
+                      helperText={errors.address2}
+                    />
+                  </Grid>
+                  <Grid item sm={6}>
+                    <InputField
+                      label="City"
+                      fullWidth
+                      id="property-city"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      inputProps={{
+                        type: "text",
+                      }}
+                      error={!!errors.city}
+                      helperText={errors.city}
+                      required
+                    />
+                  </Grid>
+                  <Grid item sm={6}>
+                    <InputField
+                      label="State"
+                      fullWidth
+                      id="property-state"
+                      value={state}
+                      onChange={(e) => setState(e.target.value)}
+                      inputProps={{
+                        type: "text",
+                      }}
+                      error={!!errors.state}
+                      helperText={errors.state}
+                      required
+                    />
+                  </Grid>
+                  <Grid item sm={6}>
+                    <InputField
+                      label="Zip Code"
+                      fullWidth
+                      id="property-zipcode"
+                      value={zipCode}
+                      onChange={(e) => setZipCode(e.target.value)}
+                      inputProps={{
+                        type: "text",
+                      }}
+                      error={!!errors.zipCode}
+                      helperText={errors.zipCode}
+                      required
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item>
-                  <InputField
-                    label="Address Secondary"
-                    fullWidth
-                    id="property-address2"
-                    value={address2}
-                    onChange={(e) => setAddress2(e.target.value)}
-                    inputProps={{
-                      type: "text",
-                    }}
-                    error={!!errors.address2}
-                    helperText={errors.address2}
-                  />
+              </section>
+              <section>
+                <Typography variant="h3" gutterBottom>
+                  Property Details
+                </Typography>
+                <Grid columnSpacing="1rem" rowSpacing="1.25rem">
+                  <Grid item>
+                    <PropertyCategoryInput
+                      value={categoryId}
+                      onChange={setCategoryId}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <InputField
+                      label="Property Name"
+                      fullWidth
+                      id="property-name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      inputProps={{
+                        type: "text",
+                      }}
+                      error={!!errors.name}
+                      helperText={errors.name}
+                    />
+                  </Grid>
+                  <Grid item sm={6}>
+                    <InputField
+                      label="Year Built"
+                      fullWidth
+                      id="property-builtInYear"
+                      value={builtInYear}
+                      onChange={(e) => setBuiltInYear(e.target.value)}
+                      inputProps={{
+                        type: "number",
+                      }}
+                      error={!!errors.builtInYear}
+                      helperText={
+                        errors.builtInYear || "The year the property was built"
+                      }
+                      required
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item sm={6}>
-                  <InputField
-                    label="City"
-                    fullWidth
-                    id="property-city"
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    inputProps={{
-                      type: "text",
-                    }}
-                    error={!!errors.city}
-                    helperText={errors.city}
-                    required
-                  />
-                </Grid>
-                <Grid item sm={6}>
-                  <InputField
-                    label="State"
-                    fullWidth
-                    id="property-state"
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                    inputProps={{
-                      type: "text",
-                    }}
-                    error={!!errors.state}
-                    helperText={errors.state}
-                    required
-                  />
-                </Grid>
-                <Grid item sm={6}>
-                  <InputField
-                    label="Zip Code"
-                    fullWidth
-                    id="property-zipcode"
-                    value={zipCode}
-                    onChange={(e) => setZipCode(e.target.value)}
-                    inputProps={{
-                      type: "text",
-                    }}
-                    error={!!errors.zipCode}
-                    helperText={errors.zipCode}
-                    required
-                  />
-                </Grid>
-              </Grid>
-              <Typography variant="h3" gutterBottom>
-                Property Details
-              </Typography>
-              <Grid columnSpacing="1rem" rowSpacing="1.25rem">
-                <Grid item>
-                  <PropertyCategoryInput
-                    value={categoryId}
-                    onChange={setCategoryId}
-                  />
-                </Grid>
-                <Grid item>
-                  <InputField
-                    label="Property Name"
-                    fullWidth
-                    id="property-name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    inputProps={{
-                      type: "text",
-                    }}
-                    error={!!errors.name}
-                    helperText={errors.name}
-                  />
-                </Grid>
-                <Grid item sm={6}>
-                  <InputField
-                    label="Year Built"
-                    fullWidth
-                    id="property-builtInYear"
-                    value={builtInYear}
-                    onChange={(e) => setBuiltInYear(e.target.value)}
-                    inputProps={{
-                      type: "number",
-                    }}
-                    error={!!errors.builtInYear}
-                    helperText={
-                      errors.builtInYear || "The year the property was built"
-                    }
-                    required
-                  />
-                </Grid>
-              </Grid>
+              </section>
               <Button type="submit">Add My Property</Button>
             </form>
           </div>
