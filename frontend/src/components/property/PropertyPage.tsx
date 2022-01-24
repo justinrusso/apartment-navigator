@@ -1,19 +1,22 @@
 import styled from "styled-components";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 
+import Button from "../common/Button";
 import Container from "../common/Container";
 import LoadingCircle from "../common/LoadingCircle";
+import Paper from "../common/Paper";
+import PropertyUnitCategoryCard from "./PropertyUnitCategoryCard";
+import Typography from "../common/Typography";
+import { NormalizedPropertyUnit } from "../../store/normalizers/properties";
+import { createAddress } from "./utils";
 import {
   fetchProperty,
   selectProperty,
   selectPropertyImages,
+  selectPropertyUnitsByCategories,
 } from "../../store/properties";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import Paper from "../common/Paper";
-import Typography from "../common/Typography";
-import Button from "../common/Button";
-import { createAddress } from "./utils";
 
 const ImageGrid = styled.div`
   display: grid;
@@ -106,6 +109,12 @@ const MainContent = styled.main`
   section {
     padding: 2rem 0;
   }
+
+  .units-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 const PropertyPage: FC = () => {
@@ -117,6 +126,9 @@ const PropertyPage: FC = () => {
   );
   const propertyImages = useAppSelector(
     selectPropertyImages(property?.images || [])
+  );
+  const unitCategoryMap = useAppSelector(
+    selectPropertyUnitsByCategories(parseInt(propertyId || "", 10))
   );
 
   const [isLoading, setIsLoading] = useState(false);
@@ -136,6 +148,19 @@ const PropertyPage: FC = () => {
       }
     })();
   }, [dispatch, propertyId]);
+
+  const sortedUnitCategoryMap = useMemo(() => {
+    if (!unitCategoryMap) {
+      return;
+    }
+    const result: Record<number, NormalizedPropertyUnit[]> = {};
+    Object.entries(unitCategoryMap).forEach(([categoryId, units]) => {
+      result[categoryId as unknown as number] = units.sort(
+        (a, b) => a.price.price - b.price.price
+      );
+    });
+    return result;
+  }, [unitCategoryMap]);
 
   if (!property && isLoading) {
     return <LoadingCircle />;
@@ -176,6 +201,20 @@ const PropertyPage: FC = () => {
             <Typography gutterBottom>
               Built in {property.builtInYear}
             </Typography>
+          </section>
+          <section>
+            <Typography variant="h2" gutterBottom>
+              {property.category.id !== 1 && "Units & "}Pricing
+            </Typography>
+            <div className="units-wrapper">
+              {sortedUnitCategoryMap ? (
+                Object.values(sortedUnitCategoryMap).map((units) => (
+                  <PropertyUnitCategoryCard units={units} />
+                ))
+              ) : (
+                <Typography>No unit information.</Typography>
+              )}
+            </div>
           </section>
           <section>
             <Typography variant="h2" gutterBottom>

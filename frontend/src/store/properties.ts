@@ -200,4 +200,25 @@ export const selectPropertyImages =
 export const selectPropertyImage = (imageId?: number) => (state: RootState) =>
   imageId !== undefined ? state.properties.images[imageId] : undefined;
 
+export const selectPropertyUnit = (unitId: number) => (state: RootState) =>
+  state.properties.units[unitId];
+export const selectPropertyUnitsByCategories =
+  (propertyId: number) => (state: RootState) => {
+    if (!state.properties.entities[propertyId]) {
+      return;
+    }
+    const unitIds = state.properties.entities[propertyId].units;
+    const unitCategoryMap: Record<number, NormalizedPropertyUnit[]> = {};
+
+    unitIds.forEach((unitId) => {
+      const unit = state.properties.units[unitId];
+      if (!unitCategoryMap[unit.unitCategory.id]) {
+        unitCategoryMap[unit.unitCategory.id] = [];
+      }
+      unitCategoryMap[unit.unitCategory.id].push(unit);
+    });
+
+    return unitCategoryMap;
+  };
+
 export default propertiesSlice.reducer;
