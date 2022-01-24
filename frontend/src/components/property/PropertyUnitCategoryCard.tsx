@@ -4,6 +4,7 @@ import { FC } from "react";
 import Paper from "../common/Paper";
 import Typography from "../common/Typography";
 import { NormalizedPropertyUnit } from "../../store/normalizers/properties";
+import Button from "../common/Button";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -92,6 +93,18 @@ const PropertyUnitCategoryCard: FC<PropertyUnitCardProps> = ({
               <td>{unit.baths / 100}</td>
               <td>{currencyFormatter.format(unit.price.price)}</td>
               <td>{sqFtFormatter.format(unit.sqFt)}</td>
+              <td>
+                {unit.floorPlanImg && (
+                  <Button
+                    variant="text"
+                    as="a"
+                    href={unit.floorPlanImg}
+                    target="_blank"
+                  >
+                    View Floor Plan
+                  </Button>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

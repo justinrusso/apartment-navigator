@@ -67,7 +67,7 @@ export interface PropertyUnit {
   };
   sqFt: number;
   images: PropertyImage[];
-  floorPlanImg: string;
+  floorPlanImg?: string;
   createdAt: string;
   updatedAt: string;
 }
