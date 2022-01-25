@@ -3,6 +3,14 @@ import "styled-components";
 import { generateMediaQuery } from ".";
 
 declare module "styled-components" {
+  type PaletteColor = {
+    base: string;
+    main: string;
+    light: string;
+    dark: string;
+    contrastText: string;
+  };
+
   type TypographyEntry = {
     fontFamily: string;
     fontSize: string;
@@ -22,6 +30,21 @@ declare module "styled-components" {
         lg: number;
         xl: number;
       };
+    };
+    palette: {
+      primary: PaletteColor;
+      error: PaletteColor;
+      action: {
+        hoverOpacity: number;
+        disabledOpacity: number;
+      };
+      text: {
+        base: string;
+        primary: string;
+        secondary: string;
+        disabled: string;
+      };
+      divider: string;
     };
     shadows: string[];
     transitions: {

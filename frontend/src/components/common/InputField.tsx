@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import {
   ChangeEventHandler,
   ComponentType,
@@ -30,7 +30,7 @@ const InputFieldRoot = styled.div<InputFieldRootProps>`
 `;
 
 const InputLabel = styled.label`
-  color: var(--color, gray); // TODO: Use text secondary palette color
+  color: var(--color, ${(props) => props.theme.palette.text.secondary});
   font-size: 1rem;
   left: 0;
   letter-spacing: 0.00938em;
@@ -59,7 +59,7 @@ interface InputRootProps {
 const InputRoot = styled.div<InputRootProps>`
   align-items: center;
   border-radius: ${(props) => props.theme.borderRadius}px;
-  color: black; // TODO: Use text primary palette color
+  color: ${(props) => props.theme.palette.text.primary};
   cursor: text;
   display: inline-flex;
   font-size: 1rem;
@@ -89,7 +89,7 @@ const Input = styled.input`
 const InputFieldset = styled.fieldset`
   border-color: var(
     --border-color,
-    rgba(0, 0, 0, 0.23)
+    hsla(var(--palette-text-base), 0.23)
   ); // TODO: use palette text color base
   border-radius: inherit;
   border-style: solid;
@@ -168,6 +168,8 @@ const InputField: FC<PropsWithChildren<InputFieldProps>> = ({
   required,
   value,
 }) => {
+  const theme = useTheme();
+
   const [focused, setFocused] = useState(false);
   const [hovered, setHovered] = useState(false);
 
@@ -186,7 +188,9 @@ const InputField: FC<PropsWithChildren<InputFieldProps>> = ({
         htmlFor={name || id}
         style={{
           // TODO: implement theme colors (error, focused)
-          ["--color" as any]: error ? "red" : focused && "green",
+          ["--color" as any]: error
+            ? theme.palette.error.main
+            : focused && theme.palette.primary.main,
           ["--transform" as any]:
             (focused || hasValue) && "translate(14px, -9px) scale(0.75)",
         }}
@@ -218,12 +222,11 @@ const InputField: FC<PropsWithChildren<InputFieldProps>> = ({
         </Input>
         <InputFieldset
           style={{
-            // TODO: Use palette colors (error, primary color, primary text color)
             ["--border-color" as any]: error
-              ? "red"
+              ? theme.palette.error.main
               : focused
-              ? "green"
-              : hovered && "black",
+              ? theme.palette.primary.main
+              : hovered && theme.palette.text.primary,
             ["--border-width" as any]: focused && "2px",
           }}
         >

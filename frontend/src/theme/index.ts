@@ -15,6 +15,12 @@ export const generateMediaQuery =
     }
   };
 
+const primaryColorHSL = {
+  h: 249,
+  s: 29,
+  l: 54,
+};
+
 const theme: DefaultTheme = {
   borderRadius: 4,
   breakpoints: {
@@ -27,6 +33,37 @@ const theme: DefaultTheme = {
       lg: 1200,
       xl: 1536,
     },
+  },
+  palette: {
+    primary: {
+      base: `${primaryColorHSL.h}, ${primaryColorHSL.s}%, ${primaryColorHSL.l}%`,
+      main: "hsla(var(--palette-primary-base), 100%)",
+      light: `hsla(${primaryColorHSL.h}, ${primaryColorHSL.s}%, ${
+        primaryColorHSL.l + 10
+      }%, 100%)`,
+      dark: `hsla(${primaryColorHSL.h}, ${primaryColorHSL.s}%, ${
+        primaryColorHSL.l - 10
+      }%, 100%)`,
+      contrastText: "#fff",
+    },
+    error: {
+      base: "0, 65%, 51%",
+      main: "#d32f2f",
+      light: "#ef5350",
+      dark: "#c62828",
+      contrastText: "#fff",
+    },
+    action: {
+      disabledOpacity: 0.26,
+      hoverOpacity: 0.04,
+    },
+    text: {
+      base: "0, 0%, 7%",
+      primary: "hsla(var(--palette-text-base), 87%)",
+      secondary: "hsla(var(--palette-text-base), 60%)",
+      disabled: "hsla(var(--palette-text-base), 38%)",
+    },
+    divider: "rgba(0, 0, 0, 0.12)",
   },
 
   // MUI elevation shadows

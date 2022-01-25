@@ -1,3 +1,5 @@
+import fullLogo from "./full-logo.png";
+
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -46,8 +48,8 @@ const NavbarInner = styled.div`
 `;
 
 const LogoWrapper = styled(Link)`
+  height: 2.5rem;
   text-decoration: none;
-  color: green; // TODO: Use palette primary color
 `;
 
 const Navbar: FC = () => {
@@ -60,7 +62,9 @@ const Navbar: FC = () => {
       <Container>
         <NavbarInner>
           <div>
-            <LogoWrapper to="/">Apartment Navigator</LogoWrapper>
+            <LogoWrapper to="/">
+              <img src={fullLogo} alt="apartment navigator" height="100%" />
+            </LogoWrapper>
           </div>
           <div></div>
           <div>

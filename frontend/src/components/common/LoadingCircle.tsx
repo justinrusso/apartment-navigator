@@ -20,10 +20,11 @@ const LoadingCircleRoot = styled.div`
 const LoadingCircleInner = styled.div`
   width: 64px;
   height: 64px;
-  border: 8px solid black; // TODO: use text primary color from palette
+  border: 8px solid ${(props) => props.theme.palette.text.primary};
   border-radius: 50%;
   animation: ${loadingRingKeyframes} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: black transparent transparent transparent; // TODO: use text primary color from palette instead of black
+  border-color: ${(props) => props.theme.palette.text.primary} transparent
+    transparent transparent;
 
   & div:nth-child(1) {
     animation-delay: -0.45s;
