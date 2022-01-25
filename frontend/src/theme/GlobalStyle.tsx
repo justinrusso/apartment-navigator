@@ -1,4 +1,4 @@
-import { createGlobalStyle, css } from "styled-components";
+import { createGlobalStyle, css, PaletteColor } from "styled-components";
 
 /*
   Josh's Custom CSS Reset
@@ -24,8 +24,6 @@ const resetCss = css`
   body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
-
-    ${(props) => props.theme.typography.body1}
   }
 
   // https://www.joshwcomeau.com/css/custom-css-reset/#digit-tweaking-line-height
@@ -70,6 +68,25 @@ const GlobalStyle = createGlobalStyle`
 
     :root {
       --sans: 'Roboto','Helvetica','Arial',sans-serif;
+
+      ${(props) => {
+        const varMap: Record<string, string> = {};
+        Object.entries(props.theme.palette).forEach(
+          ([paletteColor, palette]) => {
+            if (typeof palette === "object" && (palette as PaletteColor).base) {
+              varMap[`--palette-${paletteColor}-base`] = (
+                palette as PaletteColor
+              ).base!;
+            }
+          }
+        );
+        return varMap;
+      }}
+    }
+
+    body {
+      ${(props) => props.theme.typography.body1}
+      color: ${(props) => props.theme.palette.text.primary};
     }
 `;
 
