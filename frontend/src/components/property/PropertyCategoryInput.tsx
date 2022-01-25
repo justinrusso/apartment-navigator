@@ -26,8 +26,8 @@ const RadioButtonGroup = styled.fieldset`
     position: absolute;
 
     &:checked + label {
-      background-color: lightgreen; // TODO: use prop.color's color, use a hover opcaity
-      border-color: green;
+      background-color: hsla(var(--palette-primary-base), 10%);
+      border-color: ${(props) => props.theme.palette.primary.main};
     }
   }
 

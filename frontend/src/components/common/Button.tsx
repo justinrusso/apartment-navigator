@@ -1,47 +1,69 @@
 import styled, { css } from "styled-components";
 
-const containedButtonStyles = css`
-  color: white; // TODO: use prop.color's contrast text color
-  background-color: green; // TODO: use prop.color's color
+const containedButtonStyles = css<ButtonProps>`
+  color: ${(props) => props.theme.palette[props.color!].contrastText};
+  background-color: ${(props) => props.theme.palette[props.color!].main};
 
   &:disabled {
-    background-color: gray; // TODO: use palette to get color (should match all disabled variants)
+    background-color: rgba(
+      0,
+      0,
+      0,
+      ${(props) => props.theme.palette.action.disabledOpacity}
+    );
   }
 
   &:not(:disabled):hover {
-    background-color: darkgreen; // TODO: use prop.color's dark color
+    background-color: ${(props) => props.theme.palette[props.color!].dark};
   }
 `;
 
-const outlinedButtonStyles = css`
+const outlinedButtonStyles = css<ButtonProps>`
   --border-width: 1px;
 
-  color: green; // TODO: use prop.color's color
-  border: var(--border-width) solid lightgreen; // TODO: use prop.color's color, use 50% opacity
+  color: ${(props) => props.theme.palette[props.color!].main};
+  border: var(--border-width) solid
+    hsla(var(--palette-${(props) => props.color!}-base), 50%);
 
   // default padding - border width
   padding: calc(var(--padding-y) - var(--border-width))
     calc(var(--padding-x) - var(--border-width));
 
   &:disabled {
-    border-color: gray; // TODO: use palette to get color (should match all disabled variants)
+    border-color: rgba(
+      0,
+      0,
+      0,
+      ${(props) => props.theme.palette.action.disabledOpacity}
+    );
   }
 
   &:not(:disabled):hover {
-    background-color: lightgreen; // TODO: use prop.color's color, use a hover opcaity
-    border-color: green;
+    background-color: hsla(
+      var(--palette-${(props) => props.color!}-base),
+      ${(props) => props.theme.palette.action.hoverOpacity}
+    );
+    border-color: ${(props) => props.theme.palette[props.color!].main};
   }
 `;
 
-const textButtonStyles = css`
-  color: green; // TODO: use prop.color's color
+const textButtonStyles = css<ButtonProps>`
+  color: ${(props) => props.theme.palette[props.color!].main};
 
   &:disabled {
-    color: gray; // TODO: use palette to get color (should match all disabled variants)
+    color: rgba(
+      0,
+      0,
+      0,
+      ${(props) => props.theme.palette.action.disabledOpacity}
+    );
   }
 
   &:not(:disabled):hover {
-    background-color: lightgreen; // TODO: use prop.color's color, use a hover opcaity
+    background-color: hsla(
+      var(--palette-${(props) => props.color!}-base),
+      ${(props) => props.theme.palette.action.hoverOpacity}
+    );
   }
 `;
 
