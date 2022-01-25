@@ -2,11 +2,13 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import type { Middleware } from "redux";
 
 import propertiesReducer from "./properties";
+import unitsReducer from "./units";
 import userReducer from "./user";
 
 const isDev = process.env.NODE_ENV !== "production";
 
 const rootReducer = combineReducers({
+  units: unitsReducer,
   user: userReducer,
   properties: propertiesReducer,
 });

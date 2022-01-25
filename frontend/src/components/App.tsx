@@ -14,6 +14,7 @@ import { useAppDispatch } from "../hooks/redux";
 import HomePage from "./home/HomePage";
 import PropertyCreator from "./property/PropertyCreator";
 import { fetchPropertyCategories } from "../store/properties";
+import { fetchUnitCategories } from "../store/units";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -22,7 +23,10 @@ const App: FC = () => {
 
   useEffect(() => {
     void dispatch(authenticateUser()).then(() => setLoaded(true));
-    void Promise.all([dispatch(fetchPropertyCategories())]);
+    void Promise.all([
+      dispatch(fetchPropertyCategories()),
+      dispatch(fetchUnitCategories()),
+    ]);
   }, [dispatch]);
 
   if (!loaded) {
