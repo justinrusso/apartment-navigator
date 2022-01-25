@@ -16,3 +16,4 @@ class PropertyForm(FlaskForm):
     state = StringField(validators=[DataRequired()])
     zipCode = StringField(validators=[DataRequired()])
     images = ListField()
+    units = ListField()

@@ -4,7 +4,14 @@ from sqlalchemy.orm import joinedload
 
 from app.forms import validation_errors_to_dict
 from app.forms.property_form import PropertyForm
-from app.models import db, Property, PropertyCategory, PropertyImage, PropertyUnit
+from app.models import (
+    db,
+    Property,
+    PropertyCategory,
+    PropertyImage,
+    PropertyUnit,
+    UnitPrice,
+)
 
 
 properties_routes = Blueprint("properties", __name__, url_prefix="/properties")
@@ -55,11 +62,30 @@ def create_property():
             zip_code=form.data["zipCode"],
         )
 
+        #  Write pending changes to db so we can get the property id for unit_prices
+        db.session.add(property)
+        db.session.flush()
+
         if form.data["images"]:
             for imageUrl in form.data["images"]:
                 property.images.append(PropertyImage(url=imageUrl))
+        if form.data["units"]:
+            for unit_data in form.data["units"]:
+                unit = PropertyUnit(
+                    unit_num=unit_data["unitNum"],
+                    unit_category_id=int(unit_data["unitCategoryId"]),
+                    baths=int(unit_data["baths"]),
+                    price=UnitPrice(
+                        property_id=property.id,
+                        unit_category_id=int(unit_data["unitCategoryId"]),
+                        price=int(unit_data["price"]),
+                        sq_ft=int(unit_data["sqFt"]),
+                    ),
+                    sq_ft=unit_data["sqFt"],
+                    floor_plan_img=unit_data["floorPlanImg"],
+                )
+                property.units.append(unit)
 
-        db.session.add(property)
         db.session.commit()
         return property.to_dict()
     return {"errors": validation_errors_to_dict(form.errors)}, 400

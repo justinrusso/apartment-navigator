@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { FC, FormEvent, useState } from "react";
 import { MdDelete } from "react-icons/md";
+import { useImmer } from "use-immer";
 
 import Button from "../common/Button";
 import Container from "../common/Container";
@@ -9,10 +10,12 @@ import IconButton from "../common/IconButton";
 import InputField from "../common/InputField";
 import Paper from "../common/Paper";
 import PropertyCategoryInput from "./PropertyCategoryInput";
+import PropertyUnitInputGroup from "./PropertyUnitInputGroup";
 import Typography from "../common/Typography";
 import { addProperty } from "../../store/properties";
 import { useAppDispatch } from "../../hooks/redux";
 import { useNavigate } from "react-router-dom";
+import { CreatePropertyData } from "../../api/properties";
 
 const ContentWrapper = styled.div`
   padding: 2rem 0;
@@ -94,6 +97,18 @@ const PropertyCreator: FC = () => {
   const [zipCode, setZipCode] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [newImageUrl, setNewImageUrl] = useState("");
+  const [units, setUnits] = useImmer<
+    Exclude<CreatePropertyData["units"], undefined>
+  >([
+    {
+      unitNum: "",
+      unitCategoryId: "",
+      baths: "",
+      price: "",
+      sqFt: "",
+      floorPlanImg: "",
+    },
+  ]);
 
   const [builtInYear, setBuiltInYear] = useState("");
   const [categoryId, setCategoryId] = useState("1");
@@ -112,6 +127,7 @@ const PropertyCreator: FC = () => {
         builtInYear,
         categoryId,
         images,
+        units,
       })
     )
       .unwrap()
@@ -126,6 +142,19 @@ const PropertyCreator: FC = () => {
   const handleAddImage = () => {
     setImages([...images, newImageUrl]);
     setNewImageUrl("");
+  };
+
+  const handleAddUnit = () => {
+    setUnits((draft) => {
+      draft.push({
+        unitNum: "",
+        unitCategoryId: "",
+        baths: "",
+        price: "",
+        sqFt: "",
+        floorPlanImg: "",
+      });
+    });
   };
 
   return (
@@ -295,6 +324,41 @@ const PropertyCreator: FC = () => {
                     Add Image
                   </Button>
                 </div>
+              </section>
+              <section>
+                <Typography variant="h3" gutterBottom>
+                  Property Unit Details
+                </Typography>
+                <div>
+                  {units.map((unit, i) => (
+                    <PropertyUnitInputGroup
+                      key={i}
+                      id={i}
+                      unit={unit}
+                      singleUnit={categoryId === "1"}
+                      unitCount={units.length}
+                      onChange={(key, newValue) =>
+                        setUnits((draft) => {
+                          draft[i][key] = newValue;
+                        })
+                      }
+                      onDelete={() =>
+                        setUnits((draft) => {
+                          draft.splice(i, 1);
+                        })
+                      }
+                    />
+                  ))}
+                </div>
+                {categoryId !== "1" && (
+                  <Button
+                    className="add-unit-button"
+                    type="button"
+                    onClick={handleAddUnit}
+                  >
+                    Add Another Unit
+                  </Button>
+                )}
               </section>
               <Button type="submit">Add My Property</Button>
             </form>

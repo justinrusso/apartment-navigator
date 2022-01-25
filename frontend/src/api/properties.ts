@@ -39,6 +39,14 @@ export interface CreatePropertyData {
   state: string;
   zipCode: string;
   images?: string[];
+  units?: {
+    unitNum: string;
+    unitCategoryId: string;
+    baths: string;
+    price: string;
+    sqFt: string;
+    floorPlanImg: string;
+  }[];
 }
 
 export interface PropertiesApiData {
@@ -55,7 +63,7 @@ export interface PropertyImage {
 export interface PropertyUnit {
   id: number;
   propertyId: number;
-  unitNum?: number;
+  unitNum?: string;
   unitCategory: UnitCategory;
   baths: number;
   price: {
