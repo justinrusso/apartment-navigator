@@ -147,16 +147,18 @@ const PropertyPage: FC = () => {
     })();
   }, [dispatch, propertyId]);
 
-  const sortedUnitCategoryMap = useMemo(() => {
+  const sortedUnitCategories = useMemo(() => {
     if (!unitCategoryMap) {
-      return;
+      return [];
     }
-    const result: Record<number, NormalizedPropertyUnit[]> = {};
+    const result: [number, NormalizedPropertyUnit[]][] = [];
     Object.entries(unitCategoryMap).forEach(([categoryId, units]) => {
-      result[categoryId as unknown as number] = units.sort(
-        (a, b) => a.price.price - b.price.price
-      );
+      result.push([
+        categoryId as unknown as number,
+        units.sort((a, b) => a.price.price - b.price.price),
+      ]);
     });
+    result.sort((a, b) => a[0] - b[0]);
     return result;
   }, [unitCategoryMap]);
 
@@ -207,8 +209,8 @@ const PropertyPage: FC = () => {
               {property.category.id !== 1 && "Units & "}Pricing
             </Typography>
             <div className="units-wrapper">
-              {sortedUnitCategoryMap ? (
-                Object.values(sortedUnitCategoryMap).map((units) => (
+              {sortedUnitCategories.length > 0 ? (
+                sortedUnitCategories.map(([_, units]) => (
                   <PropertyUnitCategoryCard units={units} />
                 ))
               ) : (
