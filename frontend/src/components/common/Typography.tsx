@@ -14,6 +14,10 @@ function getComponentTag({ as, variant }: { as?: string; variant?: string }) {
       return "h3";
     case "h4":
       return "h4";
+    case "h5":
+      return "h5";
+    case "h6":
+      return "h6";
     case "button":
       return "span";
     default:

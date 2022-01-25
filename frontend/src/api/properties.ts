@@ -27,6 +27,12 @@ export class PropertiesApi {
   static async getProperty(propertyId: number | string) {
     return fetchApi(propertiesRoute(`/${propertyId}`));
   }
+
+  static async deleteProperty(propertyId: number | string) {
+    return fetchApi(propertiesRoute(`/${propertyId}`), {
+      method: "DELETE",
+    });
+  }
 }
 
 export interface CreatePropertyData {
@@ -38,6 +44,15 @@ export interface CreatePropertyData {
   city: string;
   state: string;
   zipCode: string;
+  images?: string[];
+  units?: {
+    unitNum: string;
+    unitCategoryId: string;
+    baths: string;
+    price: string;
+    sqFt: string;
+    floorPlanImg: string;
+  }[];
 }
 
 export interface PropertiesApiData {
@@ -54,7 +69,7 @@ export interface PropertyImage {
 export interface PropertyUnit {
   id: number;
   propertyId: number;
-  unitNum?: number;
+  unitNum?: string;
   unitCategory: UnitCategory;
   baths: number;
   price: {

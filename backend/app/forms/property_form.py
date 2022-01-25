@@ -2,6 +2,8 @@ from flask_wtf import FlaskForm
 from wtforms import IntegerField, SelectField, StringField
 from wtforms.validators import DataRequired
 
+from app.forms import ListField
+
 
 class PropertyForm(FlaskForm):
     ownerId = IntegerField(validators=[DataRequired()])
@@ -13,3 +15,5 @@ class PropertyForm(FlaskForm):
     city = StringField(validators=[DataRequired()])
     state = StringField(validators=[DataRequired()])
     zipCode = StringField(validators=[DataRequired()])
+    images = ListField()
+    units = ListField()

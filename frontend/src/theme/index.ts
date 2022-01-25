@@ -126,6 +126,18 @@ const theme: DefaultTheme = {
       fontWeight: 400,
       letterSpacing: "-0.025em",
     },
+    h5: {
+      fontFamily: "var(--sans)",
+      fontSize: "1.2rem",
+      fontWeight: 400,
+      letterSpacing: "0em",
+    },
+    h6: {
+      fontFamily: "var(--sans)",
+      fontSize: "1.15rem",
+      fontWeight: 500,
+      letterSpacing: "0.0075em",
+    },
     body1: {
       fontFamily: "var(--sans)",
       fontSize: "1rem",

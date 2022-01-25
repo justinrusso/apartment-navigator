@@ -12,6 +12,7 @@ import { logoutUser, selectUser } from "../../store/user";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import styled from "styled-components";
 import MenuListIconWrapper from "../common/MenuListIconWrapper";
+import { Link } from "react-router-dom";
 
 const Arrow = styled.div`
   position: absolute;
@@ -116,6 +117,9 @@ const ProfileButton: FC = () => {
             }}
           >
             <MenuList>
+              <MenuItem as={Link} to="/properties/manage">
+                Manage Properties
+              </MenuItem>
               <MenuItem onClick={handleLogout}>
                 <MenuListIconWrapper>
                   <MdLogout />

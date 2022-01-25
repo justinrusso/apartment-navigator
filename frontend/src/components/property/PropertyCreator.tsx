@@ -1,16 +1,21 @@
 import styled from "styled-components";
 import { FC, FormEvent, useState } from "react";
+import { MdDelete } from "react-icons/md";
+import { useImmer } from "use-immer";
 
 import Button from "../common/Button";
 import Container from "../common/Container";
 import Grid from "../common/Grid";
+import IconButton from "../common/IconButton";
 import InputField from "../common/InputField";
 import Paper from "../common/Paper";
 import PropertyCategoryInput from "./PropertyCategoryInput";
-import { useAppDispatch } from "../../hooks/redux";
-import { addProperty } from "../../store/properties";
-import { useNavigate } from "react-router-dom";
+import PropertyUnitInputGroup from "./PropertyUnitInputGroup";
 import Typography from "../common/Typography";
+import { addProperty } from "../../store/properties";
+import { useAppDispatch } from "../../hooks/redux";
+import { useNavigate } from "react-router-dom";
+import { CreatePropertyData } from "../../api/properties";
 
 const ContentWrapper = styled.div`
   padding: 2rem 0;
@@ -47,11 +52,33 @@ const ContentWrapper = styled.div`
       margin-top: 1.5rem;
       width: 100%;
     }
+
+    .add-image-wrapper {
+      display: flex;
+      align-items: center;
+      padding-top: 1rem;
+      gap: 1rem;
+    }
   }
 
   .centered {
     display: flex;
     justify-content: center;
+  }
+`;
+
+const Image = styled.div`
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 62.5%;
+  position: relative;
+  width: 100%;
+
+  .delete-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
   }
 `;
 
@@ -67,6 +94,20 @@ const PropertyCreator: FC = () => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
+  const [images, setImages] = useState<string[]>([]);
+  const [newImageUrl, setNewImageUrl] = useState("");
+  const [units, setUnits] = useImmer<
+    Exclude<CreatePropertyData["units"], undefined>
+  >([
+    {
+      unitNum: "",
+      unitCategoryId: "",
+      baths: "",
+      price: "",
+      sqFt: "",
+      floorPlanImg: "",
+    },
+  ]);
 
   const [builtInYear, setBuiltInYear] = useState("");
   const [categoryId, setCategoryId] = useState("1");
@@ -84,11 +125,35 @@ const PropertyCreator: FC = () => {
         zipCode,
         builtInYear,
         categoryId,
+        images,
+        units,
       })
     )
       .unwrap()
       .then(() => navigate("/"))
       .catch((errors) => setErrors(errors));
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImages(images.filter((_, i) => i !== index));
+  };
+
+  const handleAddImage = () => {
+    setImages([...images, newImageUrl]);
+    setNewImageUrl("");
+  };
+
+  const handleAddUnit = () => {
+    setUnits((draft) => {
+      draft.push({
+        unitNum: "",
+        unitCategoryId: "",
+        baths: "",
+        price: "",
+        sqFt: "",
+        floorPlanImg: "",
+      });
+    });
   };
 
   return (
@@ -224,6 +289,77 @@ const PropertyCreator: FC = () => {
                     />
                   </Grid>
                 </Grid>
+              </section>
+              <section>
+                <Typography variant="h3" gutterBottom>
+                  Property Images
+                </Typography>
+                <Grid columnSpacing="0.75rem" rowSpacing="0.75rem">
+                  {images.map((imageUrl, i) => (
+                    <Grid item xs={6} key={i}>
+                      <Image style={{ backgroundImage: `url(${imageUrl})` }}>
+                        <IconButton
+                          className="delete-button"
+                          color="error"
+                          type="button"
+                          variant="contained"
+                          onClick={() => handleRemoveImage(i)}
+                        >
+                          <MdDelete />
+                        </IconButton>
+                      </Image>
+                    </Grid>
+                  ))}
+                </Grid>
+                <div className="add-image-wrapper">
+                  <InputField
+                    label="Image Url"
+                    id="property-add-image-url"
+                    value={newImageUrl}
+                    onChange={(e) => setNewImageUrl(e.target.value)}
+                    inputProps={{
+                      type: "text",
+                    }}
+                  />
+                  <Button type="button" onClick={handleAddImage}>
+                    Add Image
+                  </Button>
+                </div>
+              </section>
+              <section>
+                <Typography variant="h3" gutterBottom>
+                  Property Unit Details
+                </Typography>
+                <div>
+                  {units.map((unit, i) => (
+                    <PropertyUnitInputGroup
+                      key={i}
+                      id={i}
+                      unit={unit}
+                      singleUnit={categoryId === "1"}
+                      unitCount={units.length}
+                      onChange={(key, newValue) =>
+                        setUnits((draft) => {
+                          draft[i][key] = newValue;
+                        })
+                      }
+                      onDelete={() =>
+                        setUnits((draft) => {
+                          draft.splice(i, 1);
+                        })
+                      }
+                    />
+                  ))}
+                </div>
+                {categoryId !== "1" && (
+                  <Button
+                    className="add-unit-button"
+                    type="button"
+                    onClick={handleAddUnit}
+                  >
+                    Add Another Unit
+                  </Button>
+                )}
               </section>
               <Button type="submit">Add My Property</Button>
             </form>

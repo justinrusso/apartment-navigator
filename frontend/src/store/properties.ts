@@ -19,6 +19,7 @@ import {
   propertySchema,
 } from "./normalizers/properties";
 import { NormalizedResult } from "./normalizers";
+import { UsersApi } from "../api/users";
 
 const initialState = {
   categories: {
@@ -55,6 +56,14 @@ const propertiesSlice = createSlice({
       state.images = action.payload.entities.images;
       state.units = action.payload.entities.units;
     });
+    builder.addCase(fetchUserOwnedProperties.fulfilled, (state, action) => {
+      state.entities = action.payload.entities.properties;
+      state.ids = Array.isArray(action.payload.result)
+        ? action.payload.result
+        : [action.payload.result];
+      state.images = action.payload.entities.images;
+      state.units = action.payload.entities.units;
+    });
     builder.addCase(fetchProperty.fulfilled, (state, action) => {
       const propertyId = action.payload.result as number;
       state.ids.push(propertyId);
@@ -70,6 +79,20 @@ const propertiesSlice = createSlice({
         ...state.units,
         ...action.payload.entities.units,
       };
+    });
+
+    builder.addCase(deleteProperty.fulfilled, (state, action) => {
+      const propertyId = action.payload;
+      const property = state.entities[propertyId];
+
+      property.images.forEach((imageId) => {
+        delete state.images[imageId];
+      });
+      property.units.forEach((unitId) => {
+        delete state.units[unitId];
+      });
+      state.ids = state.ids.filter((id) => id !== propertyId);
+      delete state.entities[propertyId];
     });
   },
 });
@@ -158,6 +181,25 @@ export const fetchProperties = createAsyncThunk(
   }
 );
 
+export const fetchUserOwnedProperties = createAsyncThunk(
+  `${propertiesSlice.name}/fetchUserOwnedProperties`,
+  async (_args, thunkAPI): Promise<FetchPropertiesResult> => {
+    let res: Response;
+    try {
+      res = await UsersApi.getUserOwnedProperties();
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
+    const resData: PropertiesApiData = await res.json();
+    const normalizedData: FetchPropertiesResult = normalize(
+      resData.properties,
+      propertiesSchema
+    );
+    return normalizedData;
+  }
+);
+
 interface FetchPropertyArgs {
   propertyId: number | string;
 }
@@ -220,5 +262,20 @@ export const selectPropertyUnitsByCategories =
 
     return unitCategoryMap;
   };
+
+export const deleteProperty = createAsyncThunk(
+  `${propertiesSlice.name}/deleteProperty`,
+  async ({ propertyId }: FetchPropertyArgs, thunkAPI): Promise<number> => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.deleteProperty(propertyId);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: { id: number } = await res.json();
+    return resData.id;
+  }
+);
 
 export default propertiesSlice.reducer;
