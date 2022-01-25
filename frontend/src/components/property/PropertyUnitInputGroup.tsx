@@ -17,7 +17,7 @@ const PropertyUnitInputGroupRoot = styled.div`
   padding: 0.75rem 0;
 
   &:not(:last-child) {
-    border-bottom: 1px solid black; // TODO: Use palette divider color
+    border-bottom: 1px solid ${(props) => props.theme.palette.divider};
   }
 
   & > *:not(${IconButton}) {
