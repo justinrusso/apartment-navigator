@@ -25,7 +25,7 @@ const MenuItem = styled.li<MenuItemProps>`
       cursor: "pointer",
 
       "&:hover": {
-        backgroundColor: "rgba(0, 0, 0, 0.04)", // TODO: Use action hover color from palette
+        backgroundColor: `rgba(0, 0, 0, ${props.theme.palette.action.hoverOpacity})`,
         textDecoration: "none",
       },
     }}
