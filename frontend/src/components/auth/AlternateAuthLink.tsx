@@ -3,7 +3,7 @@ import styled from "styled-components";
 const AlternateAuthLink = styled.button`
   background: none;
   border: none;
-  color: green; // TODO: use primary color
+  color: ${(props) => props.theme.palette.primary.main};
   cursor: pointer;
   outline: none;
   padding: 0;

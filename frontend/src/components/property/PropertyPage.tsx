@@ -82,7 +82,6 @@ const MainContentWrapper = styled.div`
 
 const ContactSidebar = styled(Paper)`
   align-self: start;
-  /* border: 1px solid black; // TODO: use divider color from palette */
   display: none;
   flex-grow: 2;
   max-width: 40ch;
