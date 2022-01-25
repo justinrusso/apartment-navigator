@@ -59,6 +59,8 @@ declare module "styled-components" {
       h2: TypographyEntry;
       h3: TypographyEntry;
       h4: TypographyEntry;
+      h5: TypographyEntry;
+      h6: TypographyEntry;
       body1: TypographyEntry;
       button: TypographyEntry;
     };
