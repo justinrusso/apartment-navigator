@@ -87,6 +87,7 @@ const GlobalStyle = createGlobalStyle`
     body {
       ${(props) => props.theme.typography.body1}
       color: ${(props) => props.theme.palette.text.primary};
+      background-color: ${(props) => props.theme.palette.background};
     }
 `;
 
