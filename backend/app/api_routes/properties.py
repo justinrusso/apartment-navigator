@@ -3,6 +3,7 @@ from flask_login import current_user, login_required
 from sqlalchemy.orm import joinedload
 
 from app.forms import validation_errors_to_dict
+from app.forms.csrf_form import CSRFForm
 from app.forms.property_form import PropertyForm
 from app.models import (
     db,
@@ -88,6 +89,26 @@ def create_property():
 
         db.session.commit()
         return property.to_dict()
+    return {"errors": validation_errors_to_dict(form.errors)}, 400
+
+
+@properties_routes.route("/<int:property_id>", methods=["DELETE"])
+@login_required
+def delete_property(property_id):
+    form = CSRFForm()
+    form.csrf_token.data = request.cookies["csrf_token"]
+
+    if form.validate_on_submit():
+        property = Property.query.get(property_id)
+
+        if not property:
+            return {"error": "Not Found"}, 404
+        if property.owner.id != current_user.id:
+            return {"error": "Forbidden"}, 403
+
+        db.session.delete(property)
+        db.session.commit()
+        return {"id": property_id}
     return {"errors": validation_errors_to_dict(form.errors)}, 400
 
 
