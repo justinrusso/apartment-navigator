@@ -80,6 +80,20 @@ const propertiesSlice = createSlice({
         ...action.payload.entities.units,
       };
     });
+
+    builder.addCase(deleteProperty.fulfilled, (state, action) => {
+      const propertyId = action.payload;
+      const property = state.entities[propertyId];
+
+      property.images.forEach((imageId) => {
+        delete state.images[imageId];
+      });
+      property.units.forEach((unitId) => {
+        delete state.units[unitId];
+      });
+      state.ids = state.ids.filter((id) => id !== propertyId);
+      delete state.entities[propertyId];
+    });
   },
 });
 
@@ -248,5 +262,20 @@ export const selectPropertyUnitsByCategories =
 
     return unitCategoryMap;
   };
+
+export const deleteProperty = createAsyncThunk(
+  `${propertiesSlice.name}/deleteProperty`,
+  async ({ propertyId }: FetchPropertyArgs, thunkAPI): Promise<number> => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.deleteProperty(propertyId);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: { id: number } = await res.json();
+    return resData.id;
+  }
+);
 
 export default propertiesSlice.reducer;

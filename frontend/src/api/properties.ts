@@ -27,6 +27,12 @@ export class PropertiesApi {
   static async getProperty(propertyId: number | string) {
     return fetchApi(propertiesRoute(`/${propertyId}`));
   }
+
+  static async deleteProperty(propertyId: number | string) {
+    return fetchApi(propertiesRoute(`/${propertyId}`), {
+      method: "DELETE",
+    });
+  }
 }
 
 export interface CreatePropertyData {
