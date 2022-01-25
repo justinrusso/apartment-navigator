@@ -27,13 +27,19 @@ const ModalBackground = styled.div<ModalBackgroundProps>`
 export interface ModalProps {
   hideBackground?: boolean;
   onClose?: () => void;
+  open?: boolean;
 }
 
 const Modal: FC<PropsWithChildren<ModalProps>> = ({
   children,
   hideBackground,
   onClose,
+  open,
 }) => {
+  if (!open) {
+    return null;
+  }
+
   return createPortal(
     <ModalRoot>
       <ModalBackground onClick={onClose} transparent={hideBackground} />

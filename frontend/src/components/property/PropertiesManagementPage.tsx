@@ -40,7 +40,11 @@ const PropertiesManagementPage: FC = () => {
           <Grid spacing="1.5rem">
             {propertyIds.map((propertyId) => (
               <Grid item md={6} lg={4} key={propertyId}>
-                <PropertyCard propertyId={propertyId} elevation={4} />
+                <PropertyCard
+                  propertyId={propertyId}
+                  elevation={4}
+                  showActions
+                />
               </Grid>
             ))}
           </Grid>

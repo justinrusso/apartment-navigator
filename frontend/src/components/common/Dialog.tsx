@@ -41,9 +41,10 @@ const Dialog: FC<PropsWithChildren<DialogProps>> = ({
   hideBackground,
   fullWidth,
   onClose,
+  open,
 }) => {
   return createPortal(
-    <Modal hideBackground={hideBackground} onClose={onClose}>
+    <Modal hideBackground={hideBackground} onClose={onClose} open={open}>
       <DialogContentContainer>
         <DialogContentBackground fullWidth={fullWidth} elevation={24}>
           {children}
