@@ -6,6 +6,7 @@ import AuthModals from "./auth/AuthModals";
 import AuthModalProvider from "../context/AuthModalProvider";
 import GlobalStyle from "../theme/GlobalStyle";
 import Navbar from "./nav/Navbar";
+import PropertiesManagementPage from "./property/PropertiesManagementPage";
 import PropertyPage from "./property/PropertyPage";
 import RequireAuth from "./auth/RequireAuth";
 import theme from "../theme";
@@ -49,6 +50,14 @@ const App: FC = () => {
                   element={
                     <RequireAuth>
                       <PropertyCreator />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="manage"
+                  element={
+                    <RequireAuth>
+                      <PropertiesManagementPage />
                     </RequireAuth>
                   }
                 />
