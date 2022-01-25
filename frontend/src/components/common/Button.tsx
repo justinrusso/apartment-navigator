@@ -68,7 +68,7 @@ const textButtonStyles = css<ButtonProps>`
 `;
 
 interface ButtonProps {
-  color?: "primary";
+  color?: "primary" | "error";
   variant?: "contained" | "outlined" | "text";
 }
 

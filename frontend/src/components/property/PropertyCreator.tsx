@@ -76,7 +76,6 @@ const Image = styled.div`
   width: 100%;
 
   .delete-button {
-    color: red;
     position: absolute;
     top: 8px;
     right: 8px;
@@ -301,7 +300,9 @@ const PropertyCreator: FC = () => {
                       <Image style={{ backgroundImage: `url(${imageUrl})` }}>
                         <IconButton
                           className="delete-button"
+                          color="error"
                           type="button"
+                          variant="contained"
                           onClick={() => handleRemoveImage(i)}
                         >
                           <MdDelete />
