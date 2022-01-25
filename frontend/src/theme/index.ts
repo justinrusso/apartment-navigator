@@ -35,6 +35,7 @@ const theme: DefaultTheme = {
     },
   },
   palette: {
+    background: "#fff",
     primary: {
       base: `${primaryColorHSL.h}, ${primaryColorHSL.s}%, ${primaryColorHSL.l}%`,
       main: "hsla(var(--palette-primary-base), 100%)",

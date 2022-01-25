@@ -87,10 +87,7 @@ const Input = styled.input`
 `;
 
 const InputFieldset = styled.fieldset`
-  border-color: var(
-    --border-color,
-    hsla(var(--palette-text-base), 0.23)
-  ); // TODO: use palette text color base
+  border-color: var(--border-color, hsla(var(--palette-text-base), 0.23));
   border-radius: inherit;
   border-style: solid;
   border-width: var(--border-width, 1px);
@@ -187,7 +184,6 @@ const InputField: FC<PropsWithChildren<InputFieldProps>> = ({
         id={`${id}-label`}
         htmlFor={name || id}
         style={{
-          // TODO: implement theme colors (error, focused)
           ["--color" as any]: error
             ? theme.palette.error.main
             : focused && theme.palette.primary.main,

@@ -15,7 +15,7 @@ import MenuListIconWrapper from "../common/MenuListIconWrapper";
 
 const Arrow = styled.div`
   position: absolute;
-  background: white; // TODO: use palette color
+  background: ${(props) => props.theme.palette.background};
   width: 8px;
   height: 8px;
   transform: rotate(45deg);

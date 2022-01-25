@@ -32,7 +32,7 @@ const CardLinkWrapper = styled(Link)`
 
   &:hover {
     ${CardHoverOverlay} {
-      opacity: 0.04; // TODO: Use consistent opacity from theme
+      opacity: ${(props) => props.theme.palette.action.hoverOpacity};
     }
   }
 `;

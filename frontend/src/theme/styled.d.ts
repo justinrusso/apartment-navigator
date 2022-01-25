@@ -32,6 +32,7 @@ declare module "styled-components" {
       };
     };
     palette: {
+      background: string;
       primary: PaletteColor;
       error: PaletteColor;
       action: {
