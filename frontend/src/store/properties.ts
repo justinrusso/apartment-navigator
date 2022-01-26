@@ -24,7 +24,11 @@ import {
 import { NormalizedResult } from "./normalizers";
 import { UsersApi } from "../api/users";
 import { ImagesApi } from "../api/images";
-import { PropertyUnitsApi, UpdatePropertyUnitData } from "../api/units";
+import {
+  CreatePropertyUnitData,
+  PropertyUnitsApi,
+  UpdatePropertyUnitData,
+} from "../api/units";
 
 const initialState = {
   categories: {
@@ -130,6 +134,14 @@ const propertiesSlice = createSlice({
           (imageId) => imageId !== deletedImageId
         );
       }
+    });
+
+    builder.addCase(addPropertyUnit.fulfilled, (state, action) => {
+      const unitId = action.payload.result as number;
+      const unit = action.payload.entities.units[unitId];
+
+      state.units[unitId] = unit;
+      state.entities[unit.propertyId]?.units.push(unitId);
     });
 
     builder.addCase(updatePropertyUnit.fulfilled, (state, action) => {
@@ -403,14 +415,38 @@ export const deletePropertyImage = createAsyncThunk(
   }
 );
 
-interface UpdatePropertyUnitArgs {
+interface AddPropertyUnitArgs {
+  propertyId: number;
+  data: CreatePropertyUnitData;
+}
+export const addPropertyUnit = createAsyncThunk(
+  `${propertiesSlice.name}/addPropertyUnit`,
+  async (
+    { propertyId, data }: AddPropertyUnitArgs,
+    thunkAPI
+  ): Promise<
+    NormalizedResult<{ units: Record<string, NormalizedPropertyUnit> }, number>
+  > => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.createPropertyUnit(propertyId, data);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: PropertyUnit = await res.json();
+    return normalize(resData, propertyUnitSchema);
+  }
+);
+
+interface CreatePropertyUnitArgs {
   unitId: number;
   data: UpdatePropertyUnitData;
 }
 export const updatePropertyUnit = createAsyncThunk(
   `${propertiesSlice.name}/updatePropertyUnit`,
   async (
-    { unitId, data }: UpdatePropertyUnitArgs,
+    { unitId, data }: CreatePropertyUnitArgs,
     thunkAPI
   ): Promise<
     NormalizedResult<{ units: Record<string, NormalizedPropertyUnit> }, number>

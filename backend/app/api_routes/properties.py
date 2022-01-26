@@ -7,12 +7,14 @@ from app.forms import pick_patched_data, validation_errors_to_dict
 from app.forms.csrf_form import CSRFForm
 from app.forms.property_form import PropertyForm
 from app.forms.property_image_form import PropertyImageForm
+from app.forms.unit_form import MultiUnitForm, SingleUnitForm
 from app.models import (
     db,
     Property,
     PropertyCategory,
     PropertyImage,
     PropertyUnit,
+    UnitCategory,
     UnitPrice,
 )
 
@@ -192,6 +194,42 @@ def add_property_image(property_id):
         db.session.add(property)
         db.session.commit()
         return image.to_dict()
+    return {"errors": validation_errors_to_dict(form.errors)}, 400
+
+
+@properties_routes.route("/<int:property_id>/units", methods=["POST"])
+@login_required
+def add_property_unit(property_id):
+    property = Property.query.get(property_id)
+    if not property:
+        return {"error": "Not Found"}, 404
+    if property.owner.id != current_user.id:
+        return {"error": "Forbidden"}, 403
+
+    UnitForm = SingleUnitForm if property.category_id == 1 else MultiUnitForm
+    form = UnitForm()
+    form.csrf_token.data = request.cookies["csrf_token"]
+    form["unitCategoryId"].choices = [(c.id, c.name) for c in UnitCategory.query.all()]
+
+    if form.validate_on_submit():
+        unit = PropertyUnit(
+            price=UnitPrice(
+                property_id=property.id,
+                unit_category_id=form.data["unitCategoryId"],
+                price=form.data["price"],
+                sq_ft=form.data["sqFt"],
+            ),
+            unit_num=form.data.get("unitNum"),
+            unit_category_id=form.data["unitCategoryId"],
+            baths=form.data["baths"],
+            sq_ft=form.data["sqFt"],
+            floor_plan_img=form.data["floorPlanImg"],
+        )
+        property.units.append(unit)
+
+        db.session.add(property)
+        db.session.commit()
+        return unit.to_dict()
     return {"errors": validation_errors_to_dict(form.errors)}, 400
 
 

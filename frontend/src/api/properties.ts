@@ -53,6 +53,16 @@ export class PropertiesApi {
       body: JSON.stringify(data),
     });
   }
+
+  static async createPropertyUnit(
+    propertyId: number | string,
+    data: CreatePropertyUnitData
+  ) {
+    return fetchApi(propertiesRoute(`/${propertyId}/units`), {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
 }
 
 export interface CreatePropertyData {
