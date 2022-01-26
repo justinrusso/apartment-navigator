@@ -96,7 +96,6 @@ def create_property():
 @login_required
 def delete_property(property_id):
     form = CSRFForm()
-    form.csrf_token.data = request.cookies["csrf_token"]
 
     if form.validate_on_submit():
         property = Property.query.get(property_id)
