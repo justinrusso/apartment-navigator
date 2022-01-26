@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { FC, useEffect, useState } from "react";
 import { MdKeyboardArrowRight } from "react-icons/md";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useImmer } from "use-immer";
 
 import Container from "../common/Container";
@@ -23,6 +23,12 @@ const ContentWrapper = styled.div`
 
   h1 {
     text-align: center;
+  }
+
+  .sections-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
   ${Paper} {
@@ -76,6 +82,7 @@ const ContentWrapper = styled.div`
 
 const PropertyEditPage: FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const { propertyId } = useParams();
 
@@ -124,97 +131,120 @@ const PropertyEditPage: FC = () => {
           <Typography variant="h1" gutterBottom>
             Manage {property.name || property.address1}
           </Typography>
-          <Paper>
-            <Typography variant="h2">Property Info</Typography>
-            <MenuList>
-              <MenuItem
-                onClick={() =>
-                  setModals((draft) => {
-                    draft.name = true;
-                  })
-                }
-              >
-                <div className="left">
-                  <Typography className="menu-item-label">
-                    Property Name
-                  </Typography>
-                  <div>
-                    <Typography>{property.name}</Typography>
+          <div className="sections-container">
+            <Paper as="section">
+              <Typography variant="h2">Property Info</Typography>
+              <MenuList>
+                <MenuItem
+                  onClick={() =>
+                    setModals((draft) => {
+                      draft.name = true;
+                    })
+                  }
+                >
+                  <div className="left">
+                    <Typography className="menu-item-label">
+                      Property Name
+                    </Typography>
+                    <div>
+                      <Typography>{property.name}</Typography>
+                    </div>
                   </div>
-                </div>
-                <div className="right">
-                  <MdKeyboardArrowRight />
-                </div>
-              </MenuItem>
-              {modals.name && (
-                <PropertyNameDialog
-                  onClose={() =>
-                    setModals((draft) => {
-                      draft.name = false;
-                    })
-                  }
-                  open={modals.name}
-                  property={property}
-                />
-              )}
-              <MenuItem
-                onClick={() =>
-                  setModals((draft) => {
-                    draft.year = true;
-                  })
-                }
-              >
-                <div className="left">
-                  <Typography className="menu-item-label">
-                    Year Built
-                  </Typography>
-                  <div>{property.builtInYear}</div>
-                </div>
-                <div className="right">
-                  <MdKeyboardArrowRight />
-                </div>
-              </MenuItem>
-              {modals.year && (
-                <PropertyYearDialog
-                  onClose={() =>
-                    setModals((draft) => {
-                      draft.year = false;
-                    })
-                  }
-                  open={modals.year}
-                  property={property}
-                />
-              )}
-              <MenuItem
-                onClick={() =>
-                  setModals((draft) => {
-                    draft.location = true;
-                  })
-                }
-              >
-                <div className="left">
-                  <Typography className="menu-item-label">Location</Typography>
-                  <div>
-                    <Typography>{createAddress(property)}</Typography>
+                  <div className="right">
+                    <MdKeyboardArrowRight />
                   </div>
-                </div>
-                <div className="right">
-                  <MdKeyboardArrowRight />
-                </div>
-              </MenuItem>
-              {modals.location && (
-                <PropertyLocationDialog
-                  onClose={() =>
+                </MenuItem>
+                {modals.name && (
+                  <PropertyNameDialog
+                    onClose={() =>
+                      setModals((draft) => {
+                        draft.name = false;
+                      })
+                    }
+                    open={modals.name}
+                    property={property}
+                  />
+                )}
+                <MenuItem
+                  onClick={() =>
                     setModals((draft) => {
-                      draft.location = false;
+                      draft.year = true;
                     })
                   }
-                  open={modals.location}
-                  property={property}
-                />
-              )}
-            </MenuList>
-          </Paper>
+                >
+                  <div className="left">
+                    <Typography className="menu-item-label">
+                      Year Built
+                    </Typography>
+                    <div>{property.builtInYear}</div>
+                  </div>
+                  <div className="right">
+                    <MdKeyboardArrowRight />
+                  </div>
+                </MenuItem>
+                {modals.year && (
+                  <PropertyYearDialog
+                    onClose={() =>
+                      setModals((draft) => {
+                        draft.year = false;
+                      })
+                    }
+                    open={modals.year}
+                    property={property}
+                  />
+                )}
+                <MenuItem
+                  onClick={() =>
+                    setModals((draft) => {
+                      draft.location = true;
+                    })
+                  }
+                >
+                  <div className="left">
+                    <Typography className="menu-item-label">
+                      Location
+                    </Typography>
+                    <div>
+                      <Typography>{createAddress(property)}</Typography>
+                    </div>
+                  </div>
+                  <div className="right">
+                    <MdKeyboardArrowRight />
+                  </div>
+                </MenuItem>
+                {modals.location && (
+                  <PropertyLocationDialog
+                    onClose={() =>
+                      setModals((draft) => {
+                        draft.location = false;
+                      })
+                    }
+                    open={modals.location}
+                    property={property}
+                  />
+                )}
+              </MenuList>
+            </Paper>
+            <Paper as="section">
+              <Typography variant="h2">Property Images</Typography>
+              <MenuList>
+                <MenuItem onClick={() => navigate("images")}>
+                  <div className="left">
+                    <Typography className="menu-item-label">Images</Typography>
+                    <div>
+                      <Typography>
+                        {property.images.length} image
+                        {property.images.length !== 1 ? "s" : ""}
+                      </Typography>
+                    </div>
+                  </div>
+                  <div className="right">
+                    <MdKeyboardArrowRight />
+                  </div>
+                </MenuItem>
+              </MenuList>
+            </Paper>
+          </div>
         </ContentWrapper>
       </Container>
     </RequireUser>

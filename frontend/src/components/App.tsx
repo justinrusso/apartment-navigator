@@ -6,6 +6,7 @@ import AuthModals from "./auth/AuthModals";
 import AuthModalProvider from "../context/AuthModalProvider";
 import GlobalStyle from "../theme/GlobalStyle";
 import Navbar from "./nav/Navbar";
+import PropertyEditImagesPage from "./property/PropertyEditImagesPage";
 import PropertyEditPage from "./property/PropertyEditPage";
 import PropertiesManagementPage from "./property/PropertiesManagementPage";
 import PropertyPage from "./property/PropertyPage";
@@ -70,6 +71,14 @@ const App: FC = () => {
                       element={
                         <RequireAuth>
                           <PropertyEditPage />
+                        </RequireAuth>
+                      }
+                    />
+                    <Route
+                      path="images"
+                      element={
+                        <RequireAuth>
+                          <PropertyEditImagesPage />
                         </RequireAuth>
                       }
                     />
