@@ -6,6 +6,7 @@ from sqlalchemy.orm import joinedload
 from app.forms import pick_patched_data, validation_errors_to_dict
 from app.forms.csrf_form import CSRFForm
 from app.forms.property_form import PropertyForm
+from app.forms.property_image_form import PropertyImageForm
 from app.models import (
     db,
     Property,
@@ -168,6 +169,29 @@ def delete_property(property_id):
         db.session.delete(property)
         db.session.commit()
         return {"id": property_id}
+    return {"errors": validation_errors_to_dict(form.errors)}, 400
+
+
+@properties_routes.route("/<int:property_id>/images", methods=["POST"])
+@login_required
+def add_property_image(property_id):
+    form = PropertyImageForm()
+    form.csrf_token.data = request.cookies["csrf_token"]
+
+    if form.validate_on_submit():
+        property = Property.query.get(property_id)
+
+        if not property:
+            return {"error": "Not Found"}, 404
+        if property.owner.id != current_user.id:
+            return {"error": "Forbidden"}, 403
+
+        image = PropertyImage(url=form.data["imageUrl"])
+        property.images.append(image)
+
+        db.session.add(property)
+        db.session.commit()
+        return image.to_dict()
     return {"errors": validation_errors_to_dict(form.errors)}, 400
 
 

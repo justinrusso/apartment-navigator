@@ -42,6 +42,16 @@ export class PropertiesApi {
       method: "DELETE",
     });
   }
+
+  static async createPropertyImage(
+    propertyId: number | string,
+    data: CreatePropertyImageData
+  ) {
+    return fetchApi(propertiesRoute(`/${propertyId}/images`), {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
 }
 
 export interface CreatePropertyData {
@@ -119,4 +129,8 @@ export interface PropertyApiData {
 export interface UnitCategory {
   id: number;
   name: string;
+}
+
+export interface CreatePropertyImageData {
+  imageUrl: string;
 }

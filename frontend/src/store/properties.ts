@@ -103,6 +103,14 @@ const propertiesSlice = createSlice({
       delete state.entities[propertyId];
     });
 
+    builder.addCase(addPropertyImage.fulfilled, (state, action) => {
+      state.images[action.payload.id] = action.payload;
+      state.entities[action.payload.propertyId].images.push(action.payload.id);
+      if (action.payload.unitId) {
+        state.units[action.payload.unitId].images.push(action.payload.id);
+      }
+    });
+
     builder.addCase(deletePropertyImage.fulfilled, (state, action) => {
       const deletedImageId = action.payload;
       const image = state.images[deletedImageId];
@@ -321,6 +329,27 @@ export const deleteProperty = createAsyncThunk(
     }
     const resData: { id: number } = await res.json();
     return resData.id;
+  }
+);
+
+interface AddPropertyImageArgs {
+  propertyId: number | string;
+  imageUrl: string;
+}
+export const addPropertyImage = createAsyncThunk(
+  `${propertiesSlice.name}/addPropertyImage`,
+  async (data: AddPropertyImageArgs, thunkAPI): Promise<PropertyImage> => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.createPropertyImage(data.propertyId, {
+        imageUrl: data.imageUrl,
+      });
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: PropertyImage = await res.json();
+    return resData;
   }
 );
 
