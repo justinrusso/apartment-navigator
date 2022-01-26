@@ -127,6 +127,13 @@ const PropertyCard: FC<PropertyCardProps> = ({
           <CardActions>
             <Button
               variant="text"
+              as={Link}
+              to={`/properties/${propertyId}/edit`}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="text"
               color="error"
               onClick={() => setShowDeleteModal(true)}
             >
