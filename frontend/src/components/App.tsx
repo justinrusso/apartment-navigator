@@ -62,15 +62,19 @@ const App: FC = () => {
                     </RequireAuth>
                   }
                 />
-                <Route path=":propertyId" element={<PropertyPage />} />
-                <Route
-                  path=":propertyId/edit"
-                  element={
-                    <RequireAuth>
-                      <PropertyEditPage />
-                    </RequireAuth>
-                  }
-                />
+                <Route path=":propertyId">
+                  <Route index element={<PropertyPage />} />
+                  <Route path="edit">
+                    <Route
+                      index
+                      element={
+                        <RequireAuth>
+                          <PropertyEditPage />
+                        </RequireAuth>
+                      }
+                    />
+                  </Route>
+                </Route>
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" />} />
