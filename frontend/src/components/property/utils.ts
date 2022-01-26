@@ -7,3 +7,10 @@ export function createAddress(property: NormalizedProperty): string {
   }
   return `${address}, ${property.city}, ${property.state} ${property.zipCode}`;
 }
+
+export const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+
+export const sqFtFormatter = new Intl.NumberFormat("en-US", {});

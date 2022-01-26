@@ -210,8 +210,8 @@ const PropertyPage: FC = () => {
             </Typography>
             <div className="units-wrapper">
               {sortedUnitCategories.length > 0 ? (
-                sortedUnitCategories.map(([_, units]) => (
-                  <PropertyUnitCategoryCard units={units} />
+                sortedUnitCategories.map(([categoryId, units]) => (
+                  <PropertyUnitCategoryCard key={categoryId} units={units} />
                 ))
               ) : (
                 <Typography>No unit information.</Typography>

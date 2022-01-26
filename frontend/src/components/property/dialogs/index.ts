@@ -1,7 +1,17 @@
-import { NormalizedProperty } from "../../../store/normalizers/properties";
+import {
+  NormalizedProperty,
+  NormalizedPropertyUnit,
+} from "../../../store/normalizers/properties";
 
-export interface PropertyEditorDialogProps {
+interface DialogBaseProps {
   onClose: () => void;
   open: boolean;
+}
+
+export interface PropertyEditorDialogProps extends DialogBaseProps {
   property: NormalizedProperty;
+}
+
+export interface PropertyUnitEditorDialogProps extends DialogBaseProps {
+  unit: NormalizedPropertyUnit;
 }

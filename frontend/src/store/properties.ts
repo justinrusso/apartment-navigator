@@ -319,6 +319,10 @@ export const selectPropertyImage = (imageId?: number) => (state: RootState) =>
 
 export const selectPropertyUnit = (unitId: number) => (state: RootState) =>
   state.properties.units[unitId];
+export const selectPropertyUnits = (propertyId: number) => (state: RootState) =>
+  state.properties.entities[propertyId]?.units.map(
+    (unitId) => state.properties.units[unitId]
+  ) || [];
 export const selectPropertyUnitsByCategories =
   (propertyId: number) => (state: RootState) => {
     if (!state.properties.entities[propertyId]) {
