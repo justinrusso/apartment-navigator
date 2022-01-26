@@ -1,8 +1,9 @@
 from flask import Blueprint, request
 from flask_login import current_user, login_required
+from munch import DefaultMunch
 from sqlalchemy.orm import joinedload
 
-from app.forms import validation_errors_to_dict
+from app.forms import pick_patched_data, validation_errors_to_dict
 from app.forms.csrf_form import CSRFForm
 from app.forms.property_form import PropertyForm
 from app.models import (
@@ -87,6 +88,65 @@ def create_property():
                 )
                 property.units.append(unit)
 
+        db.session.commit()
+        return property.to_dict()
+    return {"errors": validation_errors_to_dict(form.errors)}, 400
+
+
+@properties_routes.route("/<int:property_id>", methods=["PATCH"])
+@login_required
+def edit_property(property_id):
+    property = Property.query.get(property_id)
+
+    if not property:
+        return {"error": "Not Found"}, 404
+    if property.owner.id != current_user.id:
+        return {"error": "Forbidden"}, 403
+
+    body_data = request.get_json()
+
+    form = PropertyForm(
+        formdata=None,
+        obj=DefaultMunch.fromDict(
+            {
+                "ownerId": pick_patched_data(
+                    body_data.get("ownerId"), property.owner_id
+                ),
+                "categoryId": pick_patched_data(
+                    body_data.get("categoryId"), property.category_id
+                ),
+                "builtInYear": pick_patched_data(
+                    body_data.get("builtInYear"), property.built_in_year
+                ),
+                "name": pick_patched_data(body_data.get("name"), property.name),
+                "address1": pick_patched_data(
+                    body_data.get("address1"), property.address_1
+                ),
+                "address2": pick_patched_data(
+                    body_data.get("address2"), property.address_2
+                ),
+                "city": pick_patched_data(body_data.get("city"), property.city),
+                "state": pick_patched_data(body_data.get("state"), property.state),
+                "zipCode": pick_patched_data(
+                    body_data.get("zipCode"), property.zip_code
+                ),
+            }
+        ),
+    )
+    form.csrf_token.data = request.cookies["csrf_token"]
+    form["categoryId"].choices = [
+        (c.id, c.name) for c in PropertyCategory.query.order_by("name")
+    ]
+
+    if form.validate_on_submit():
+        property.built_in_year = form.data["builtInYear"]
+        property.name = form.data["name"]
+        property.address_1 = form.data["address1"]
+        property.address_2 = form.data["address2"]
+        property.city = form.data["city"]
+        property.state = form.data["state"]
+        property.zip_code = form.data["zipCode"]
+        db.session.add(property)
         db.session.commit()
         return property.to_dict()
     return {"errors": validation_errors_to_dict(form.errors)}, 400
