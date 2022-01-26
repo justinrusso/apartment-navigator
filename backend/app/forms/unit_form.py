@@ -9,7 +9,7 @@ class MultiUnitForm(FlaskForm):
     baths = StringField(validators=[DataRequired()])
     price = StringField(validators=[DataRequired()])
     sqFt = StringField(validators=[DataRequired()])
-    floorPlanImg = StringField(validators=[DataRequired()])
+    floorPlanImg = StringField(validators=[])
 
 
 class SingleUnitForm(FlaskForm):
