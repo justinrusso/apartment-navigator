@@ -6,6 +6,8 @@ import AuthModals from "./auth/AuthModals";
 import AuthModalProvider from "../context/AuthModalProvider";
 import GlobalStyle from "../theme/GlobalStyle";
 import Navbar from "./nav/Navbar";
+import PropertyEditImagesPage from "./property/PropertyEditImagesPage";
+import PropertyEditPage from "./property/PropertyEditPage";
 import PropertiesManagementPage from "./property/PropertiesManagementPage";
 import PropertyPage from "./property/PropertyPage";
 import RequireAuth from "./auth/RequireAuth";
@@ -61,7 +63,27 @@ const App: FC = () => {
                     </RequireAuth>
                   }
                 />
-                <Route path=":propertyId" element={<PropertyPage />} />
+                <Route path=":propertyId">
+                  <Route index element={<PropertyPage />} />
+                  <Route path="edit">
+                    <Route
+                      index
+                      element={
+                        <RequireAuth>
+                          <PropertyEditPage />
+                        </RequireAuth>
+                      }
+                    />
+                    <Route
+                      path="images"
+                      element={
+                        <RequireAuth>
+                          <PropertyEditImagesPage />
+                        </RequireAuth>
+                      }
+                    />
+                  </Route>
+                </Route>
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" />} />

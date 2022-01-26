@@ -1,3 +1,4 @@
+from flask import request
 from flask_wtf import FlaskForm
 
 
@@ -7,4 +8,6 @@ class CSRFForm(FlaskForm):
     """
 
     def __init__(self, **kwargs):
-        FlaskForm.__init__(self, formdata=dict())
+        FlaskForm.__init__(
+            self, formdata=None, data={"csrf_token": request.cookies["csrf_token"]}
+        )

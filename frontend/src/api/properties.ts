@@ -1,4 +1,5 @@
 import { UserData } from "./auth";
+import { CreatePropertyUnitData } from "./units";
 import { fetchApi, routeBuilder } from "./util";
 
 const propertiesRoute = routeBuilder("/api/properties");
@@ -27,10 +28,39 @@ export class PropertiesApi {
   static async getProperty(propertyId: number | string) {
     return fetchApi(propertiesRoute(`/${propertyId}`));
   }
+  static async updateProperty(
+    propertyId: number | string,
+    data: UpdatePropertyData
+  ) {
+    return fetchApi(propertiesRoute(`/${propertyId}`), {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+  }
 
   static async deleteProperty(propertyId: number | string) {
     return fetchApi(propertiesRoute(`/${propertyId}`), {
       method: "DELETE",
+    });
+  }
+
+  static async createPropertyImage(
+    propertyId: number | string,
+    data: CreatePropertyImageData
+  ) {
+    return fetchApi(propertiesRoute(`/${propertyId}/images`), {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+
+  static async createPropertyUnit(
+    propertyId: number | string,
+    data: CreatePropertyUnitData
+  ) {
+    return fetchApi(propertiesRoute(`/${propertyId}/units`), {
+      method: "POST",
+      body: JSON.stringify(data),
     });
   }
 }
@@ -45,15 +75,11 @@ export interface CreatePropertyData {
   state: string;
   zipCode: string;
   images?: string[];
-  units?: {
-    unitNum: string;
-    unitCategoryId: string;
-    baths: string;
-    price: string;
-    sqFt: string;
-    floorPlanImg: string;
-  }[];
+  units?: CreatePropertyUnitData[];
 }
+
+export interface UpdatePropertyData
+  extends Partial<Omit<CreatePropertyData, "images" | "units">> {}
 
 export interface PropertiesApiData {
   properties: PropertyApiData[];
@@ -107,4 +133,8 @@ export interface PropertyApiData {
 export interface UnitCategory {
   id: number;
   name: string;
+}
+
+export interface CreatePropertyImageData {
+  imageUrl: string;
 }

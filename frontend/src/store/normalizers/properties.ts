@@ -13,7 +13,7 @@ export type NormalizedPropertyUnit = Omit<PropertyUnit, "images"> & {
   images: number[];
 };
 
-const propertyUnitSchema = new schema.Entity("units", {
+export const propertyUnitSchema = new schema.Entity("units", {
   images: [propertyImageSchema],
 });
 

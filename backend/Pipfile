@@ -18,6 +18,7 @@ wtforms = "*"
 email-validator = "*"
 faker = "*"
 gunicorn = "*"
+munch = "*"
 
 [dev-packages]
 black = "*"

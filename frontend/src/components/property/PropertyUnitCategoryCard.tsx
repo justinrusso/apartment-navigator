@@ -1,17 +1,11 @@
 import styled from "styled-components";
 import { FC } from "react";
 
+import Button from "../common/Button";
 import Paper from "../common/Paper";
 import Typography from "../common/Typography";
 import { NormalizedPropertyUnit } from "../../store/normalizers/properties";
-import Button from "../common/Button";
-
-const currencyFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-});
-
-const sqFtFormatter = new Intl.NumberFormat("en-US", {});
+import { currencyFormatter, sqFtFormatter } from "./utils";
 
 const CardRoot = styled(Paper)`
   padding: 1rem;
@@ -88,7 +82,7 @@ const PropertyUnitCategoryCard: FC<PropertyUnitCardProps> = ({
         </thead>
         <tbody>
           {units.map((unit) => (
-            <tr>
+            <tr key={unit.id}>
               <th>{unit.unitNum}</th>
               <td>{unit.baths / 100}</td>
               <td>{currencyFormatter.format(unit.price.price)}</td>

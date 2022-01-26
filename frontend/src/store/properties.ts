@@ -9,6 +9,8 @@ import {
   PropertyApiData,
   PropertyCategoryData,
   PropertyImage,
+  PropertyUnit,
+  UpdatePropertyData,
 } from "../api/properties";
 import type { RootState } from ".";
 import {
@@ -17,9 +19,16 @@ import {
   propertiesSchema,
   propertyCategoryArraySchema,
   propertySchema,
+  propertyUnitSchema,
 } from "./normalizers/properties";
 import { NormalizedResult } from "./normalizers";
 import { UsersApi } from "../api/users";
+import { ImagesApi } from "../api/images";
+import {
+  CreatePropertyUnitData,
+  PropertyUnitsApi,
+  UpdatePropertyUnitData,
+} from "../api/units";
 
 const initialState = {
   categories: {
@@ -81,6 +90,12 @@ const propertiesSlice = createSlice({
       };
     });
 
+    builder.addCase(editProperty.fulfilled, (state, action) => {
+      const propertyId = action.payload.result as number;
+      state.entities[propertyId] =
+        action.payload.entities.properties[propertyId];
+    });
+
     builder.addCase(deleteProperty.fulfilled, (state, action) => {
       const propertyId = action.payload;
       const property = state.entities[propertyId];
@@ -93,6 +108,67 @@ const propertiesSlice = createSlice({
       });
       state.ids = state.ids.filter((id) => id !== propertyId);
       delete state.entities[propertyId];
+    });
+
+    builder.addCase(addPropertyImage.fulfilled, (state, action) => {
+      state.images[action.payload.id] = action.payload;
+      state.entities[action.payload.propertyId].images.push(action.payload.id);
+      if (action.payload.unitId) {
+        state.units[action.payload.unitId].images.push(action.payload.id);
+      }
+    });
+
+    builder.addCase(deletePropertyImage.fulfilled, (state, action) => {
+      const deletedImageId = action.payload;
+      const image = state.images[deletedImageId];
+      const property = state.entities[image.propertyId];
+
+      delete state.images[deletedImageId];
+
+      property.images = property.images.filter(
+        (imageId) => imageId !== deletedImageId
+      );
+
+      if (image.unitId) {
+        state.units[image.unitId].images.filter(
+          (imageId) => imageId !== deletedImageId
+        );
+      }
+    });
+
+    builder.addCase(addPropertyUnit.fulfilled, (state, action) => {
+      const unitId = action.payload.result as number;
+      const unit = action.payload.entities.units[unitId];
+
+      state.units[unitId] = unit;
+      state.entities[unit.propertyId]?.units.push(unitId);
+    });
+
+    builder.addCase(updatePropertyUnit.fulfilled, (state, action) => {
+      const unitId = action.payload.result as number;
+      const unit = action.payload.entities.units[unitId];
+
+      state.units[unitId] = unit;
+    });
+
+    builder.addCase(deletePropertyUnit.fulfilled, (state, action) => {
+      const deletedUnitId = action.payload;
+      const unit = state.units[deletedUnitId];
+      const property = state.entities[unit.propertyId];
+
+      unit.images.forEach((imageId) => {
+        delete state.images[imageId];
+      });
+      const imagesToDelete = new Set(unit.images);
+      property.images = property.images.filter(
+        (imageId) => !imagesToDelete.has(imageId)
+      );
+
+      property.units = property.units.filter(
+        (unitId) => unitId !== deletedUnitId
+      );
+
+      delete state.units[deletedUnitId];
     });
   },
 });
@@ -141,6 +217,26 @@ export const addProperty = createAsyncThunk(
     let res: Response;
     try {
       res = await PropertiesApi.createProperty(data);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
+    const resData: PropertyApiData = await res.json();
+    const normalizedData: AddPropertyResult = normalize(
+      resData,
+      propertySchema
+    );
+    return normalizedData;
+  }
+);
+
+type EditPropertyData = { id: number } & UpdatePropertyData;
+export const editProperty = createAsyncThunk(
+  `${propertiesSlice.name}/editProperty`,
+  async (data: EditPropertyData, thunkAPI): Promise<AddPropertyResult> => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.updateProperty(data.id, data);
     } catch (errorRes) {
       const resData = await (errorRes as Response).json();
       throw thunkAPI.rejectWithValue(resData.errors);
@@ -244,6 +340,10 @@ export const selectPropertyImage = (imageId?: number) => (state: RootState) =>
 
 export const selectPropertyUnit = (unitId: number) => (state: RootState) =>
   state.properties.units[unitId];
+export const selectPropertyUnits = (propertyId: number) => (state: RootState) =>
+  state.properties.entities[propertyId]?.units.map(
+    (unitId) => state.properties.units[unitId]
+  ) || [];
 export const selectPropertyUnitsByCategories =
   (propertyId: number) => (state: RootState) => {
     if (!state.properties.entities[propertyId]) {
@@ -275,6 +375,107 @@ export const deleteProperty = createAsyncThunk(
     }
     const resData: { id: number } = await res.json();
     return resData.id;
+  }
+);
+
+interface AddPropertyImageArgs {
+  propertyId: number | string;
+  imageUrl: string;
+}
+export const addPropertyImage = createAsyncThunk(
+  `${propertiesSlice.name}/addPropertyImage`,
+  async (data: AddPropertyImageArgs, thunkAPI): Promise<PropertyImage> => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.createPropertyImage(data.propertyId, {
+        imageUrl: data.imageUrl,
+      });
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: PropertyImage = await res.json();
+    return resData;
+  }
+);
+
+interface DeletePropertyImageArgs {
+  imageId: number;
+}
+export const deletePropertyImage = createAsyncThunk(
+  `${propertiesSlice.name}/deletePropertyImage`,
+  async ({ imageId }: DeletePropertyImageArgs, thunkAPI): Promise<number> => {
+    try {
+      await ImagesApi.deleteImage(imageId);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    return imageId;
+  }
+);
+
+interface AddPropertyUnitArgs {
+  propertyId: number;
+  data: CreatePropertyUnitData;
+}
+export const addPropertyUnit = createAsyncThunk(
+  `${propertiesSlice.name}/addPropertyUnit`,
+  async (
+    { propertyId, data }: AddPropertyUnitArgs,
+    thunkAPI
+  ): Promise<
+    NormalizedResult<{ units: Record<string, NormalizedPropertyUnit> }, number>
+  > => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.createPropertyUnit(propertyId, data);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: PropertyUnit = await res.json();
+    return normalize(resData, propertyUnitSchema);
+  }
+);
+
+interface CreatePropertyUnitArgs {
+  unitId: number;
+  data: UpdatePropertyUnitData;
+}
+export const updatePropertyUnit = createAsyncThunk(
+  `${propertiesSlice.name}/updatePropertyUnit`,
+  async (
+    { unitId, data }: CreatePropertyUnitArgs,
+    thunkAPI
+  ): Promise<
+    NormalizedResult<{ units: Record<string, NormalizedPropertyUnit> }, number>
+  > => {
+    let res: Response;
+    try {
+      res = await PropertyUnitsApi.updateUnit(unitId, data);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: PropertyUnit = await res.json();
+    return normalize(resData, propertyUnitSchema);
+  }
+);
+
+interface DeletePropertyUnitArgs {
+  unitId: number;
+}
+export const deletePropertyUnit = createAsyncThunk(
+  `${propertiesSlice.name}/deletePropertyUnit`,
+  async ({ unitId }: DeletePropertyUnitArgs, thunkAPI): Promise<number> => {
+    try {
+      await PropertyUnitsApi.deleteUnit(unitId);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    return unitId;
   }
 );
 
