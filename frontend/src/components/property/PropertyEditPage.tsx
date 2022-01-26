@@ -36,6 +36,10 @@ const ContentWrapper = styled.div`
     display: flex;
     align-items: center;
 
+    &:not(:last-child) {
+      border-bottom: 1px solid ${(props) => props.theme.palette.divider};
+    }
+
     .left {
       flex-grow: 1;
       flex-shrink: 1;
