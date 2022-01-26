@@ -97,7 +97,7 @@ const SignupDialog: FC<SignupDialogProps> = ({ onSuccess }) => {
   };
 
   return (
-    <Dialog onClose={authModal.close}>
+    <Dialog onClose={authModal.close} open>
       <SignupDialogRoot>
         <h2>Create an account</h2>
         <p>

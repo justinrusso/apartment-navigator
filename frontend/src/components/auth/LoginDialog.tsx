@@ -75,7 +75,7 @@ const LoginDialog: FC<LoginDialogProps> = ({ onSuccess }) => {
   };
 
   return (
-    <Dialog onClose={authModal.close}>
+    <Dialog onClose={authModal.close} open>
       <SignupDialogRoot>
         <h2>Log in to your account</h2>
         <p>
