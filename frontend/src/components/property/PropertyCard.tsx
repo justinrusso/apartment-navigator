@@ -76,11 +76,13 @@ const CardActions = styled.div`
 interface PropertyCardProps extends PaperProps {
   propertyId: number;
   showActions?: boolean;
+  to?: string;
 }
 
 const PropertyCard: FC<PropertyCardProps> = ({
   propertyId,
   showActions,
+  to,
   ...paperProps
 }) => {
   const dispatch = useAppDispatch();
@@ -109,7 +111,7 @@ const PropertyCard: FC<PropertyCardProps> = ({
   return (
     <>
       <CardRoot {...paperProps}>
-        <CardLinkWrapper to={`/properties/${propertyId}`}>
+        <CardLinkWrapper to={to || `/properties/${propertyId}`}>
           {propertyImage && (
             <CardMedia
               style={{ backgroundImage: `url(${propertyImage.url})` }}
@@ -125,6 +127,9 @@ const PropertyCard: FC<PropertyCardProps> = ({
         </CardLinkWrapper>
         {showActions && (
           <CardActions>
+            <Button variant="text" as={Link} to={`/properties/${propertyId}`}>
+              View
+            </Button>
             <Button
               variant="text"
               as={Link}

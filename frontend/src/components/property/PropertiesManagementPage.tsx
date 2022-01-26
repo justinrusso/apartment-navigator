@@ -44,6 +44,7 @@ const PropertiesManagementPage: FC = () => {
                   propertyId={propertyId}
                   elevation={4}
                   showActions
+                  to={`/properties/${propertyId}/edit`}
                 />
               </Grid>
             ))}
