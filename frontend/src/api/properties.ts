@@ -27,6 +27,15 @@ export class PropertiesApi {
   static async getProperty(propertyId: number | string) {
     return fetchApi(propertiesRoute(`/${propertyId}`));
   }
+  static async updateProperty(
+    propertyId: number | string,
+    data: UpdatePropertyData
+  ) {
+    return fetchApi(propertiesRoute(`/${propertyId}`), {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+  }
 
   static async deleteProperty(propertyId: number | string) {
     return fetchApi(propertiesRoute(`/${propertyId}`), {
@@ -54,6 +63,9 @@ export interface CreatePropertyData {
     floorPlanImg: string;
   }[];
 }
+
+export interface UpdatePropertyData
+  extends Partial<Omit<CreatePropertyData, "images" | "units">> {}
 
 export interface PropertiesApiData {
   properties: PropertyApiData[];

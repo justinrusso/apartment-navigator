@@ -9,6 +9,7 @@ import {
   PropertyApiData,
   PropertyCategoryData,
   PropertyImage,
+  UpdatePropertyData,
 } from "../api/properties";
 import type { RootState } from ".";
 import {
@@ -81,6 +82,12 @@ const propertiesSlice = createSlice({
       };
     });
 
+    builder.addCase(editProperty.fulfilled, (state, action) => {
+      const propertyId = action.payload.result as number;
+      state.entities[propertyId] =
+        action.payload.entities.properties[propertyId];
+    });
+
     builder.addCase(deleteProperty.fulfilled, (state, action) => {
       const propertyId = action.payload;
       const property = state.entities[propertyId];
@@ -141,6 +148,26 @@ export const addProperty = createAsyncThunk(
     let res: Response;
     try {
       res = await PropertiesApi.createProperty(data);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.errors);
+    }
+    const resData: PropertyApiData = await res.json();
+    const normalizedData: AddPropertyResult = normalize(
+      resData,
+      propertySchema
+    );
+    return normalizedData;
+  }
+);
+
+type EditPropertyData = { id: number } & UpdatePropertyData;
+export const editProperty = createAsyncThunk(
+  `${propertiesSlice.name}/editProperty`,
+  async (data: EditPropertyData, thunkAPI): Promise<AddPropertyResult> => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.updateProperty(data.id, data);
     } catch (errorRes) {
       const resData = await (errorRes as Response).json();
       throw thunkAPI.rejectWithValue(resData.errors);
