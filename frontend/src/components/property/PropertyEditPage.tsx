@@ -11,6 +11,7 @@ import MenuList from "../common/MenuList";
 import Paper from "../common/Paper";
 import PropertyLocationDialog from "./dialogs/PropertyLocationDialog";
 import PropertyNameDialog from "./dialogs/PropertyNameDialog";
+import PropertyYearDialog from "./dialogs/PropertyYearDialog";
 import RequireUser from "../auth/RequireUser";
 import Typography from "../common/Typography";
 import { createAddress } from "./utils";
@@ -82,6 +83,7 @@ const PropertyEditPage: FC = () => {
   const [modals, setModals] = useImmer({
     name: false,
     location: false,
+    year: false,
   });
 
   const property = useAppSelector(
@@ -152,6 +154,34 @@ const PropertyEditPage: FC = () => {
                     })
                   }
                   open={modals.name}
+                  property={property}
+                />
+              )}
+              <MenuItem
+                onClick={() =>
+                  setModals((draft) => {
+                    draft.year = true;
+                  })
+                }
+              >
+                <div className="left">
+                  <Typography className="menu-item-label">
+                    Year Built
+                  </Typography>
+                  <div>{property.builtInYear}</div>
+                </div>
+                <div className="right">
+                  <MdKeyboardArrowRight />
+                </div>
+              </MenuItem>
+              {modals.year && (
+                <PropertyYearDialog
+                  onClose={() =>
+                    setModals((draft) => {
+                      draft.year = false;
+                    })
+                  }
+                  open={modals.year}
                   property={property}
                 />
               )}
