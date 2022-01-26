@@ -1,4 +1,5 @@
 import { UserData } from "./auth";
+import { CreatePropertyUnitData } from "./units";
 import { fetchApi, routeBuilder } from "./util";
 
 const propertiesRoute = routeBuilder("/api/properties");
@@ -64,14 +65,7 @@ export interface CreatePropertyData {
   state: string;
   zipCode: string;
   images?: string[];
-  units?: {
-    unitNum: string;
-    unitCategoryId: string;
-    baths: string;
-    price: string;
-    sqFt: string;
-    floorPlanImg: string;
-  }[];
+  units?: CreatePropertyUnitData[];
 }
 
 export interface UpdatePropertyData

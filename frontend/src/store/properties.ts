@@ -9,6 +9,7 @@ import {
   PropertyApiData,
   PropertyCategoryData,
   PropertyImage,
+  PropertyUnit,
   UpdatePropertyData,
 } from "../api/properties";
 import type { RootState } from ".";
@@ -18,11 +19,12 @@ import {
   propertiesSchema,
   propertyCategoryArraySchema,
   propertySchema,
+  propertyUnitSchema,
 } from "./normalizers/properties";
 import { NormalizedResult } from "./normalizers";
 import { UsersApi } from "../api/users";
 import { ImagesApi } from "../api/images";
-import { PropertyUnitsApi } from "../api/units";
+import { PropertyUnitsApi, UpdatePropertyUnitData } from "../api/units";
 
 const initialState = {
   categories: {
@@ -128,6 +130,13 @@ const propertiesSlice = createSlice({
           (imageId) => imageId !== deletedImageId
         );
       }
+    });
+
+    builder.addCase(updatePropertyUnit.fulfilled, (state, action) => {
+      const unitId = action.payload.result as number;
+      const unit = action.payload.entities.units[unitId];
+
+      state.units[unitId] = unit;
     });
 
     builder.addCase(deletePropertyUnit.fulfilled, (state, action) => {
@@ -391,6 +400,30 @@ export const deletePropertyImage = createAsyncThunk(
       throw thunkAPI.rejectWithValue(resData.error || resData.errors);
     }
     return imageId;
+  }
+);
+
+interface UpdatePropertyUnitArgs {
+  unitId: number;
+  data: UpdatePropertyUnitData;
+}
+export const updatePropertyUnit = createAsyncThunk(
+  `${propertiesSlice.name}/updatePropertyUnit`,
+  async (
+    { unitId, data }: UpdatePropertyUnitArgs,
+    thunkAPI
+  ): Promise<
+    NormalizedResult<{ units: Record<string, NormalizedPropertyUnit> }, number>
+  > => {
+    let res: Response;
+    try {
+      res = await PropertyUnitsApi.updateUnit(unitId, data);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: PropertyUnit = await res.json();
+    return normalize(resData, propertyUnitSchema);
   }
 );
 
