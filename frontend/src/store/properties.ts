@@ -21,6 +21,7 @@ import {
 } from "./normalizers/properties";
 import { NormalizedResult } from "./normalizers";
 import { UsersApi } from "../api/users";
+import { ImagesApi } from "../api/images";
 
 const initialState = {
   categories: {
@@ -100,6 +101,24 @@ const propertiesSlice = createSlice({
       });
       state.ids = state.ids.filter((id) => id !== propertyId);
       delete state.entities[propertyId];
+    });
+
+    builder.addCase(deletePropertyImage.fulfilled, (state, action) => {
+      const deletedImageId = action.payload;
+      const image = state.images[deletedImageId];
+      const property = state.entities[image.propertyId];
+
+      delete state.images[deletedImageId];
+
+      property.images = property.images.filter(
+        (imageId) => imageId !== deletedImageId
+      );
+
+      if (image.unitId) {
+        state.units[image.unitId].images.filter(
+          (imageId) => imageId !== deletedImageId
+        );
+      }
     });
   },
 });
@@ -302,6 +321,22 @@ export const deleteProperty = createAsyncThunk(
     }
     const resData: { id: number } = await res.json();
     return resData.id;
+  }
+);
+
+interface DeletePropertyImageArgs {
+  imageId: number;
+}
+export const deletePropertyImage = createAsyncThunk(
+  `${propertiesSlice.name}/deletePropertyImage`,
+  async ({ imageId }: DeletePropertyImageArgs, thunkAPI): Promise<number> => {
+    try {
+      await ImagesApi.deleteImage(imageId);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    return imageId;
   }
 );
 
