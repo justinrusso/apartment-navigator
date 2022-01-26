@@ -10,6 +10,7 @@ import MenuItem from "../common/MenuItem";
 import MenuList from "../common/MenuList";
 import Paper from "../common/Paper";
 import PropertyLocationDialog from "./dialogs/PropertyLocationDialog";
+import PropertyNameDialog from "./dialogs/PropertyNameDialog";
 import RequireUser from "../auth/RequireUser";
 import Typography from "../common/Typography";
 import { createAddress } from "./utils";
@@ -18,6 +19,10 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
 const ContentWrapper = styled.div`
   padding: 2rem 0;
+
+  h1 {
+    text-align: center;
+  }
 
   ${Paper} {
     border: 1px solid ${(props) => props.theme.palette.divider};
@@ -71,6 +76,7 @@ const PropertyEditPage: FC = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [modals, setModals] = useImmer({
+    name: false,
     location: false,
   });
 
@@ -109,9 +115,42 @@ const PropertyEditPage: FC = () => {
     >
       <Container>
         <ContentWrapper>
+          <Typography variant="h1" gutterBottom>
+            Manage {property.name || property.address1}
+          </Typography>
           <Paper>
             <Typography variant="h2">Property Info</Typography>
             <MenuList>
+              <MenuItem
+                onClick={() =>
+                  setModals((draft) => {
+                    draft.name = true;
+                  })
+                }
+              >
+                <div className="left">
+                  <Typography className="menu-item-label">
+                    Property Name
+                  </Typography>
+                  <div>
+                    <Typography>{property.name}</Typography>
+                  </div>
+                </div>
+                <div className="right">
+                  <MdKeyboardArrowRight />
+                </div>
+              </MenuItem>
+              {modals.name && (
+                <PropertyNameDialog
+                  onClose={() =>
+                    setModals((draft) => {
+                      draft.name = false;
+                    })
+                  }
+                  open={modals.name}
+                  property={property}
+                />
+              )}
               <MenuItem
                 onClick={() =>
                   setModals((draft) => {

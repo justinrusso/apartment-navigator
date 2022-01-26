@@ -8,17 +8,11 @@ import DialogTitle from "../../common/DialogTitle";
 import Grid from "../../common/Grid";
 import InputField from "../../common/InputField";
 import useFormFields from "../../../hooks/form-fields";
-import { NormalizedProperty } from "../../../store/normalizers/properties";
+import { PropertyEditorDialogProps } from ".";
 import { useAppDispatch } from "../../../hooks/redux";
 import { editProperty } from "../../../store/properties";
 
-interface PropertyLocationDialogProps {
-  onClose: () => void;
-  open: boolean;
-  property: NormalizedProperty;
-}
-
-const PropertyLocationDialog: FC<PropertyLocationDialogProps> = ({
+const PropertyLocationDialog: FC<PropertyEditorDialogProps> = ({
   onClose,
   open,
   property,
