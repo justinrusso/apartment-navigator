@@ -22,6 +22,7 @@ import {
 import { NormalizedResult } from "./normalizers";
 import { UsersApi } from "../api/users";
 import { ImagesApi } from "../api/images";
+import { PropertyUnitsApi } from "../api/units";
 
 const initialState = {
   categories: {
@@ -127,6 +128,26 @@ const propertiesSlice = createSlice({
           (imageId) => imageId !== deletedImageId
         );
       }
+    });
+
+    builder.addCase(deletePropertyUnit.fulfilled, (state, action) => {
+      const deletedUnitId = action.payload;
+      const unit = state.units[deletedUnitId];
+      const property = state.entities[unit.propertyId];
+
+      unit.images.forEach((imageId) => {
+        delete state.images[imageId];
+      });
+      const imagesToDelete = new Set(unit.images);
+      property.images = property.images.filter(
+        (imageId) => !imagesToDelete.has(imageId)
+      );
+
+      property.units = property.units.filter(
+        (unitId) => unitId !== deletedUnitId
+      );
+
+      delete state.units[deletedUnitId];
     });
   },
 });
@@ -366,6 +387,22 @@ export const deletePropertyImage = createAsyncThunk(
       throw thunkAPI.rejectWithValue(resData.error || resData.errors);
     }
     return imageId;
+  }
+);
+
+interface DeletePropertyUnitArgs {
+  unitId: number;
+}
+export const deletePropertyUnit = createAsyncThunk(
+  `${propertiesSlice.name}/deletePropertyUnit`,
+  async ({ unitId }: DeletePropertyUnitArgs, thunkAPI): Promise<number> => {
+    try {
+      await PropertyUnitsApi.deleteUnit(unitId);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    return unitId;
   }
 );
 

@@ -1,10 +1,16 @@
 import { fetchApi, routeBuilder } from "./util";
 
-const propertiesRoute = routeBuilder("/api/units");
+const unitsRoute = routeBuilder("/api/units");
 
 export class PropertyUnitsApi {
   static async getUnitCategories() {
-    return fetchApi(propertiesRoute("/categories"));
+    return fetchApi(unitsRoute("/categories"));
+  }
+
+  static async deleteUnit(unitId: number) {
+    return fetchApi(unitsRoute(`/${unitId}`), {
+      method: "DELETE",
+    });
   }
 }
 
