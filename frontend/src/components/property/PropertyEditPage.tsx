@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { FC, useEffect, useMemo, useState } from "react";
-import { MdKeyboardArrowRight } from "react-icons/md";
+import { MdAdd, MdKeyboardArrowRight } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { useImmer } from "use-immer";
 
@@ -23,6 +23,8 @@ import {
 } from "../../store/properties";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import UnitDeleteDialog from "./dialogs/UnitDeleteDialog";
+import ButtonIconWrapper from "../common/ButtonIconWrapper";
+import UnitDialog from "./dialogs/UnitDialog";
 
 const ContentWrapper = styled.div`
   padding: 2rem 0;
@@ -86,6 +88,12 @@ const ContentWrapper = styled.div`
   }
 `;
 
+const UnitsSectionHeadingWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 const UnitsTable = styled.table`
   min-width: 650px;
   width: 100%;
@@ -142,6 +150,7 @@ const PropertyEditPage: FC = () => {
     deleteUnit: false,
     name: false,
     location: false,
+    unit: false,
     year: false,
   });
   const [selectedUnitId, setSelectedUnitId] = useState(0);
@@ -307,7 +316,26 @@ const PropertyEditPage: FC = () => {
               </MenuList>
             </Paper>
             <Paper as="section">
-              <Typography variant="h2">Unit Details</Typography>
+              <UnitsSectionHeadingWrapper>
+                <Typography variant="h2">Unit Details</Typography>
+                {property.category.id !== 1 && (
+                  <div>
+                    <Button
+                      onClick={() => {
+                        setModals((draft) => {
+                          draft.unit = true;
+                        });
+                        setSelectedUnitId(0);
+                      }}
+                    >
+                      <ButtonIconWrapper position="start">
+                        <MdAdd />
+                      </ButtonIconWrapper>
+                      Add Unit
+                    </Button>
+                  </div>
+                )}
+              </UnitsSectionHeadingWrapper>
               <UnitsTable>
                 <thead>
                   <tr>
@@ -328,6 +356,17 @@ const PropertyEditPage: FC = () => {
                       <td>{currencyFormatter.format(unit.price.price)}</td>
                       <td>{sqFtFormatter.format(unit.sqFt)}</td>
                       <td>
+                        <Button
+                          variant="text"
+                          onClick={() => {
+                            setModals((draft) => {
+                              draft.unit = true;
+                            });
+                            setSelectedUnitId(unit.id);
+                          }}
+                        >
+                          Edit
+                        </Button>
                         {property.category.id !== 1 && (
                           <Button
                             variant="text"
@@ -347,6 +386,19 @@ const PropertyEditPage: FC = () => {
                   ))}
                 </tbody>
               </UnitsTable>
+              {modals.unit && (
+                <UnitDialog
+                  onClose={() => {
+                    setModals((draft) => {
+                      draft.unit = false;
+                    });
+                    setSelectedUnitId(0);
+                  }}
+                  open={modals.unit}
+                  property={property}
+                  unitId={selectedUnitId}
+                />
+              )}
               {modals.deleteUnit && (
                 <UnitDeleteDialog
                   onClose={() => {
