@@ -1,10 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import IntegerField, SelectField, StringField
+from wtforms import SelectField, StringField
 from wtforms.validators import DataRequired
 
 
 class MultiUnitForm(FlaskForm):
-    unitNum = IntegerField(validators=[DataRequired()])
+    unitNum = StringField(validators=[DataRequired()])
     unitCategoryId = SelectField(coerce=int, validators=[DataRequired()])
     baths = StringField(validators=[DataRequired()])
     price = StringField(validators=[DataRequired()])
