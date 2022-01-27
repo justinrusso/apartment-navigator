@@ -30,7 +30,10 @@ class Property(db.Model):
         "PropertyImage", backref=db.backref("property"), passive_deletes=True
     )
     review_summary = db.relationship(
-        "ReviewSummary", backref=db.backref("property"), passive_deletes=True
+        "ReviewSummary",
+        backref=db.backref("property"),
+        passive_deletes=True,
+        uselist=False,
     )
     reviews = db.relationship(
         "Review", backref=db.backref("property"), passive_deletes=True
