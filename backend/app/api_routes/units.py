@@ -47,11 +47,14 @@ def edit_unit(unit_id):
     form["unitCategoryId"].choices = [(c.id, c.name) for c in UnitCategory.query.all()]
 
     if form.validate_on_submit():
-        if body_data.get("price") and int(body_data.get("price")) != unit.price.price:
+        if (
+            body_data.get("price")
+            and int(float(body_data.get("price")) * 100) != unit.price.price
+        ):
             unit.price = UnitPrice(
                 property_id=unit.property.id,
                 unit_category_id=form.data["unitCategoryId"],
-                price=form.data["price"],
+                price=int(float(form.data["price"]) * 100),
                 sq_ft=form.data["sqFt"],
             )
         unit.unit_num = form.data.get("unitNum")

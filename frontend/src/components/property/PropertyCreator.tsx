@@ -16,6 +16,7 @@ import { addProperty } from "../../store/properties";
 import { useAppDispatch } from "../../hooks/redux";
 import { useNavigate } from "react-router-dom";
 import { CreatePropertyData } from "../../api/properties";
+import HelperText from "../common/HelperText";
 
 const ContentWrapper = styled.div`
   padding: 2rem 0;
@@ -82,11 +83,34 @@ const Image = styled.div`
   }
 `;
 
+interface PropertyCreatorFormErrors {
+  name?: string[];
+  address1?: string[];
+  address2?: string[];
+  city?: string[];
+  state?: string[];
+  zipCode?: string[];
+  images?: Record<number, string[]>;
+  units?: Record<
+    number,
+    {
+      unitNum: string[];
+      unitCategoryId: string[];
+      baths: string[];
+      price: string[];
+      sqFt: string[];
+      floorPlanImg: string[];
+    }
+  >;
+  builtInYear?: string[];
+  categoryId?: string[];
+}
+
 const PropertyCreator: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<PropertyCreatorFormErrors>({});
 
   const [name, setName] = useState("");
   const [address1, setAddress1] = useState("");
@@ -181,7 +205,7 @@ const PropertyCreator: FC = () => {
                         type: "text",
                       }}
                       error={!!errors.address1}
-                      helperText={errors.address1}
+                      helperText={errors.address1?.join(" ")}
                       required
                     />
                   </Grid>
@@ -196,7 +220,7 @@ const PropertyCreator: FC = () => {
                         type: "text",
                       }}
                       error={!!errors.address2}
-                      helperText={errors.address2}
+                      helperText={errors.address2?.join(" ")}
                     />
                   </Grid>
                   <Grid item sm={6}>
@@ -210,7 +234,7 @@ const PropertyCreator: FC = () => {
                         type: "text",
                       }}
                       error={!!errors.city}
-                      helperText={errors.city}
+                      helperText={errors.city?.join(" ")}
                       required
                     />
                   </Grid>
@@ -225,7 +249,7 @@ const PropertyCreator: FC = () => {
                         type: "text",
                       }}
                       error={!!errors.state}
-                      helperText={errors.state}
+                      helperText={errors.state?.join(" ")}
                       required
                     />
                   </Grid>
@@ -240,7 +264,7 @@ const PropertyCreator: FC = () => {
                         type: "text",
                       }}
                       error={!!errors.zipCode}
-                      helperText={errors.zipCode}
+                      helperText={errors.zipCode?.join(" ")}
                       required
                     />
                   </Grid>
@@ -268,7 +292,7 @@ const PropertyCreator: FC = () => {
                         type: "text",
                       }}
                       error={!!errors.name}
-                      helperText={errors.name}
+                      helperText={errors.name?.join(" ")}
                     />
                   </Grid>
                   <Grid item sm={6}>
@@ -283,7 +307,8 @@ const PropertyCreator: FC = () => {
                       }}
                       error={!!errors.builtInYear}
                       helperText={
-                        errors.builtInYear || "The year the property was built"
+                        errors.builtInYear?.join(" ") ||
+                        "The year the property was built"
                       }
                       required
                     />
@@ -308,6 +333,11 @@ const PropertyCreator: FC = () => {
                           <MdDelete />
                         </IconButton>
                       </Image>
+                      {errors.images?.[i] && (
+                        <HelperText showIcon error>
+                          {errors.images?.[i].join(" ")}
+                        </HelperText>
+                      )}
                     </Grid>
                   ))}
                 </Grid>
@@ -348,6 +378,7 @@ const PropertyCreator: FC = () => {
                           draft.splice(i, 1);
                         })
                       }
+                      errors={errors.units?.[i]}
                     />
                   ))}
                 </div>

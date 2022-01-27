@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 from flask_login import current_user, login_required
+from marshmallow import ValidationError
 from munch import DefaultMunch
 from sqlalchemy.orm import joinedload
 
@@ -17,6 +18,7 @@ from app.models import (
     UnitCategory,
     UnitPrice,
 )
+from app.schemas.property_schema import MultiPropertySchema, SinglePropertySchema
 
 
 properties_routes = Blueprint("properties", __name__, url_prefix="/properties")
@@ -47,47 +49,56 @@ def get_property(property_id):
 @properties_routes.route("/", methods=["POST"])
 @login_required
 def create_property():
-    form = PropertyForm()
-    form.csrf_token.data = request.cookies["csrf_token"]
-    form["ownerId"].data = current_user.id
-    form["categoryId"].choices = [
-        (c.id, c.name) for c in PropertyCategory.query.order_by("name")
-    ]
+    form = CSRFForm()
+
+    body_data: dict = request.get_json()
+    body_data["ownerId"] = current_user.id
+
+    PropertySchema = (
+        SinglePropertySchema
+        if int(body_data["categoryId"]) == 1
+        else MultiPropertySchema
+    )
 
     if form.validate_on_submit():
+        try:
+            result = PropertySchema().load(body_data)
+        except ValidationError as error:
+            return {"errors": error.messages}, 400
+
         property = Property(
-            owner_id=form.data["ownerId"],
-            category_id=form.data["categoryId"],
-            built_in_year=form.data["builtInYear"],
-            name=form.data["name"],
-            address_1=form.data["address1"],
-            address_2=form.data["address2"],
-            city=form.data["city"],
-            state=form.data["state"],
-            zip_code=form.data["zipCode"],
+            owner_id=result["owner_id"],
+            category_id=result["category_id"],
+            built_in_year=result["built_in_year"],
+            name=result["name"],
+            address_1=result["address_1"],
+            address_2=result["address_2"],
+            city=result["city"],
+            state=result["state"],
+            zip_code=result["zip_code"],
         )
 
         #  Write pending changes to db so we can get the property id for unit_prices
         db.session.add(property)
         db.session.flush()
 
-        if form.data["images"]:
-            for imageUrl in form.data["images"]:
-                property.images.append(PropertyImage(url=imageUrl))
-        if form.data["units"]:
-            for unit_data in form.data["units"]:
+        if result["images"]:
+            for image_url in result["images"]:
+                property.images.append(PropertyImage(url=image_url))
+        if result["units"]:
+            for unit_data in result["units"]:
                 unit = PropertyUnit(
-                    unit_num=unit_data["unitNum"],
-                    unit_category_id=int(unit_data["unitCategoryId"]),
-                    baths=int(unit_data["baths"]),
+                    unit_num=unit_data["unit_num"],
+                    unit_category_id=unit_data["unit_category_id"],
+                    baths=unit_data["baths"],
                     price=UnitPrice(
                         property_id=property.id,
-                        unit_category_id=int(unit_data["unitCategoryId"]),
-                        price=int(unit_data["price"]),
-                        sq_ft=int(unit_data["sqFt"]),
+                        unit_category_id=unit_data["unit_category_id"],
+                        price=unit_data["price"],
+                        sq_ft=unit_data["sq_ft"],
                     ),
-                    sq_ft=unit_data["sqFt"],
-                    floor_plan_img=unit_data["floorPlanImg"],
+                    sq_ft=unit_data["sq_ft"],
+                    floor_plan_img=unit_data["floor_plan_img"],
                 )
                 property.units.append(unit)
 
@@ -216,7 +227,7 @@ def add_property_unit(property_id):
             price=UnitPrice(
                 property_id=property.id,
                 unit_category_id=form.data["unitCategoryId"],
-                price=form.data["price"],
+                price=int(form.data["price"] * 100),
                 sq_ft=form.data["sqFt"],
             ),
             unit_num=form.data.get("unitNum"),

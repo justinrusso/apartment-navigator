@@ -9,6 +9,7 @@ import { selectUnitCategories } from "../../store/units";
 import IconButton from "../common/IconButton";
 import Grid from "../common/Grid";
 import { BATH_OPTIONS } from ".";
+import { UnitFormErrors } from "../../api/units";
 
 const PropertyUnitInputGroupRoot = styled.div`
   display: flex;
@@ -31,6 +32,7 @@ const PropertyUnitInputGroupRoot = styled.div`
 `;
 
 interface PropertyUnitInputGroupProps {
+  errors?: UnitFormErrors;
   id: number;
   onChange: (
     key: keyof PropertyUnitInputGroupProps["unit"],
@@ -43,6 +45,7 @@ interface PropertyUnitInputGroupProps {
 }
 
 const PropertyUnitInputGroup: FC<PropertyUnitInputGroupProps> = ({
+  errors,
   id,
   onChange,
   onDelete,
@@ -67,6 +70,8 @@ const PropertyUnitInputGroup: FC<PropertyUnitInputGroupProps> = ({
                 type: "text",
               }}
               required={!singleUnit}
+              error={!!errors?.unitNum}
+              helperText={errors?.unitNum?.join(" ")}
             />
           </Grid>
         )}
@@ -81,6 +86,8 @@ const PropertyUnitInputGroup: FC<PropertyUnitInputGroupProps> = ({
               as: "select",
             }}
             required
+            error={!!errors?.unitCategoryId}
+            helperText={errors?.unitCategoryId?.join(" ")}
           >
             <option value="" />
             {unitCategories.map((category) => (
@@ -101,6 +108,8 @@ const PropertyUnitInputGroup: FC<PropertyUnitInputGroupProps> = ({
               as: "select",
             }}
             required
+            error={!!errors?.baths}
+            helperText={errors?.baths?.join(" ")}
           >
             <option value="" />
             {BATH_OPTIONS.map((bathOption) => (
@@ -121,6 +130,8 @@ const PropertyUnitInputGroup: FC<PropertyUnitInputGroupProps> = ({
               type: "number",
             }}
             required
+            error={!!errors?.price}
+            helperText={errors?.price?.join(" ")}
           />
         </Grid>
         <Grid item sm={6} md={4}>
@@ -134,6 +145,8 @@ const PropertyUnitInputGroup: FC<PropertyUnitInputGroupProps> = ({
               type: "number",
             }}
             required
+            error={!!errors?.sqFt}
+            helperText={errors?.sqFt?.join(" ")}
           />
         </Grid>
         <Grid item sm={6}>
@@ -146,6 +159,8 @@ const PropertyUnitInputGroup: FC<PropertyUnitInputGroupProps> = ({
             inputProps={{
               type: "text",
             }}
+            error={!!errors?.floorPlanImg}
+            helperText={errors?.floorPlanImg?.join(" ")}
           />
         </Grid>
       </Grid>

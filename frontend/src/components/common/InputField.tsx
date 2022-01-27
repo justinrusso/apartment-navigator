@@ -209,7 +209,7 @@ const InputField: FC<PropsWithChildren<InputFieldProps>> = ({
           name={name || id}
           value={value}
           onChange={onChange}
-          required={required}
+          required={false}
           style={{
             ["--rows" as any]: inputProps?.rows,
           }}

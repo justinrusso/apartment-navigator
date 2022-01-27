@@ -1,5 +1,5 @@
 import { UserData } from "./auth";
-import { CreatePropertyUnitData } from "./units";
+import { CreatePropertyUnitData, UnitFormErrors } from "./units";
 import { fetchApi, routeBuilder } from "./util";
 
 const propertiesRoute = routeBuilder("/api/properties");
@@ -137,4 +137,17 @@ export interface UnitCategory {
 
 export interface CreatePropertyImageData {
   imageUrl: string;
+}
+
+export interface PropertyFormErrors {
+  name?: string[];
+  address1?: string[];
+  address2?: string[];
+  city?: string[];
+  state?: string[];
+  zipCode?: string[];
+  images?: Record<number, string[]>;
+  units?: Record<number, UnitFormErrors>;
+  builtInYear?: string[];
+  categoryId?: string[];
 }

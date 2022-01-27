@@ -22,7 +22,7 @@ class UnitPrice(db.Model):
             "id": self.id,
             "propertyId": self.property_id,
             "unitCategoryId": self.unit_category_id,
-            "price": self.price,
+            "price": self.price / 100,
             "sqFt": self.sq_ft,
             "createdAt": self.created_at,
         }
