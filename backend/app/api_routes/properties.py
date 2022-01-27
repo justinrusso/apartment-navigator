@@ -83,7 +83,7 @@ def create_property():
                     price=UnitPrice(
                         property_id=property.id,
                         unit_category_id=int(unit_data["unitCategoryId"]),
-                        price=int(unit_data["price"]),
+                        price=int(float(unit_data["price"]) * 100),
                         sq_ft=int(unit_data["sqFt"]),
                     ),
                     sq_ft=unit_data["sqFt"],
@@ -216,7 +216,7 @@ def add_property_unit(property_id):
             price=UnitPrice(
                 property_id=property.id,
                 unit_category_id=form.data["unitCategoryId"],
-                price=form.data["price"],
+                price=int(form.data["price"] * 100),
                 sq_ft=form.data["sqFt"],
             ),
             unit_num=form.data.get("unitNum"),

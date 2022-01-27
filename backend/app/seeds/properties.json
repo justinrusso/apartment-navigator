@@ -23,25 +23,25 @@
       "past_unit_prices": [
         {
           "unit_category_id": 1,
-          "price": 2250,
+          "price": 225000,
           "sq_ft": 435,
           "created_at": "2021-01-01 00:00:00.000000"
         },
         {
           "unit_category_id": 1,
-          "price": 2200,
+          "price": 220000,
           "sq_ft": 435,
           "created_at": "2022-03-15 00:00:00.000000"
         },
         {
           "unit_category_id": 1,
-          "price": 2300,
+          "price": 230000,
           "sq_ft": 435,
           "created_at": "2022-08-20 00:00:00.000000"
         },
         {
           "unit_category_id": 1,
-          "price": 2450,
+          "price": 245000,
           "sq_ft": 435,
           "created_at": "2022-01-01 00:00:00.000000"
         }
@@ -52,7 +52,7 @@
           "unit_category_id": 1,
           "baths": 50,
           "price": {
-            "price": 2547
+            "price": 254700
           },
           "sq_ft": 435,
           "floor_plan_img": "https://images1.apartments.com/i2/8X5Q_2Edl5Ea2JKEaGGBzR4iSAGmS8wGpviN_R6cL6U/102/the-modern-fort-lee-nj-floorplan.jpg?p=1"
@@ -62,7 +62,7 @@
           "unit_category_id": 2,
           "baths": 100,
           "price": {
-            "price": 3278
+            "price": 327800
           },
           "sq_ft": 780,
           "floor_plan_img": "https://images1.apartments.com/i2/sEQ7oABZJbMyg-OEfuynHsjknjStSpBc2ewx7eS5DPs/102/the-modern-fort-lee-nj-floorplan.jpg?p=1"
@@ -72,7 +72,7 @@
           "unit_category_id": 2,
           "baths": 100,
           "price": {
-            "price": 3322
+            "price": 332200
           },
           "sq_ft": 780,
           "floor_plan_img": "https://images1.apartments.com/i2/sEQ7oABZJbMyg-OEfuynHsjknjStSpBc2ewx7eS5DPs/102/the-modern-fort-lee-nj-floorplan.jpg?p=1"
@@ -82,7 +82,7 @@
           "unit_category_id": 2,
           "baths": 150,
           "price": {
-            "price": 3439
+            "price": 343900
           },
           "sq_ft": 916,
           "floor_plan_img": "https://images1.apartments.com/i2/g5X6gNyvbdwtRiglNpNCDU3sg6QdnXVs2d1b0vg5R-0/102/the-modern-fort-lee-nj-floorplan.jpg?p=1"
@@ -104,7 +104,7 @@
       "past_unit_prices": [
         {
           "unit_category_id": 6,
-          "price": 6850,
+          "price": 685000,
           "sq_ft": 1675,
           "created_at": "2021-01-01 00:00:00.000000"
         }
@@ -114,7 +114,7 @@
           "unit_category_id": 6,
           "baths": 400,
           "price": {
-            "price": 6995
+            "price": 699500
           },
           "sq_ft": 1675
         }
@@ -141,7 +141,7 @@
           "unit_category_id": 1,
           "baths": 100,
           "price": {
-            "price": 2425
+            "price": 242500
           },
           "sq_ft": 530
         },
@@ -150,7 +150,7 @@
           "unit_category_id": 2,
           "baths": 100,
           "price": {
-            "price": 2631
+            "price": 263100
           },
           "sq_ft": 652
         },
@@ -159,7 +159,7 @@
           "unit_category_id": 3,
           "baths": 200,
           "price": {
-            "price": 4005
+            "price": 400500
           },
           "sq_ft": 1047
         },
@@ -168,7 +168,7 @@
           "unit_category_id": 3,
           "baths": 200,
           "price": {
-            "price": 7300
+            "price": 730000
           },
           "sq_ft": 1563
         }
@@ -195,7 +195,7 @@
           "unit_category_id": 1,
           "baths": 100,
           "price": {
-            "price": 1944
+            "price": 194400
           },
           "sq_ft": 432,
           "floor_plan_img": "https://images1.apartments.com/i2/ozShWZOHa5L1eAv92Oz3IEpblYIpQTXMPFP9s5h39NU/102/harrison-urby-harrison-nj-floorplan.png?p=1"
@@ -205,7 +205,7 @@
           "unit_category_id": 1,
           "baths": 100,
           "price": {
-            "price": 1990
+            "price": 199000
           },
           "sq_ft": 432,
           "floor_plan_img": "https://images1.apartments.com/i2/ozShWZOHa5L1eAv92Oz3IEpblYIpQTXMPFP9s5h39NU/102/harrison-urby-harrison-nj-floorplan.png?p=1"
@@ -215,7 +215,7 @@
           "unit_category_id": 1,
           "baths": 100,
           "price": {
-            "price": 1955
+            "price": 195500
           },
           "sq_ft": 450,
           "floor_plan_img": "https://images1.apartments.com/i2/krM8dHumfeAdfJ_Y88MuDi3uNyIuqG1D6kJGCg_5IYM/102/harrison-urby-harrison-nj-floorplan.png?p=1"
@@ -225,7 +225,7 @@
           "unit_category_id": 2,
           "baths": 100,
           "price": {
-            "price": 2096
+            "price": 209600
           },
           "sq_ft": 580,
           "floor_plan_img": "https://images1.apartments.com/i2/wzTpHA5a7E5sspKMY8ys7V7ed2zAEk0p_0JFrncHd4M/102/harrison-urby-harrison-nj-m1.png?p=1"
@@ -252,7 +252,7 @@
           "unit_category_id": 1,
           "baths": 100,
           "price": {
-            "price": 2676
+            "price": 267600
           },
           "sq_ft": 527,
           "floor_plan_img": "https://images1.apartments.com/i2/Eyvi3z0M8-PGBUeKe3vOPAmqOwMN_RTBEdEG7SDME8s/102/485-marin-jersey-city-nj-floorplan.jpg?p=1"
@@ -262,7 +262,7 @@
           "unit_category_id": 2,
           "baths": 100,
           "price": {
-            "price": 2774
+            "price": 277400
           },
           "sq_ft": 648,
           "floor_plan_img": "https://images1.apartments.com/i2/etyS2wARd-vIaDKkJcaNBtz1N6LVBnk2YKs3kAHh0pA/102/485-marin-jersey-city-nj-floorplan.jpg?p=1"
@@ -272,7 +272,7 @@
           "unit_category_id": 3,
           "baths": 200,
           "price": {
-            "price": 3974
+            "price": 397400
           },
           "sq_ft": 998,
           "floor_plan_img": "https://images1.apartments.com/i2/H70T_LULt_D4L_LA5GshjEAzZC9uwgcsTupSNvjD6tQ/102/485-marin-jersey-city-nj-floorplan.jpg?p=1"
@@ -299,7 +299,7 @@
           "unit_category_id": 1,
           "baths": 100,
           "price": {
-            "price": 1757
+            "price": 175700
           },
           "sq_ft": 567,
           "floor_plan_img": "https://images1.apartments.com/i2/o9-AFzqo-ctWycr-oVrbCdhjOuJ7KuOjfWhM2debopw/102/bay-151-bayonne-nj-floorplan.jpg?p=1"
@@ -309,7 +309,7 @@
           "unit_category_id": 1,
           "baths": 100,
           "price": {
-            "price": 1950
+            "price": 195000
           },
           "sq_ft": 567,
           "floor_plan_img": "https://images1.apartments.com/i2/o9-AFzqo-ctWycr-oVrbCdhjOuJ7KuOjfWhM2debopw/102/bay-151-bayonne-nj-floorplan.jpg?p=1"
@@ -319,7 +319,7 @@
           "unit_category_id": 2,
           "baths": 100,
           "price": {
-            "price": 1899
+            "price": 189900
           },
           "sq_ft": 760,
           "floor_plan_img": "https://images1.apartments.com/i2/cKa61mlHsgRByRtTRvjZ_knprrYVIgVVWaTIb76Y6n4/102/bay-151-bayonne-nj-floorplan.jpg?p=1"
@@ -329,7 +329,7 @@
           "unit_category_id": 2,
           "baths": 100,
           "price": {
-            "price": 2150
+            "price": 215000
           },
           "sq_ft": 749,
           "floor_plan_img": "https://images1.apartments.com/i2/cKa61mlHsgRByRtTRvjZ_knprrYVIgVVWaTIb76Y6n4/102/bay-151-bayonne-nj-floorplan.jpg?p=1"
@@ -339,7 +339,7 @@
           "unit_category_id": 2,
           "baths": 100,
           "price": {
-            "price": 2385
+            "price": 238500
           },
           "sq_ft": 874,
           "floor_plan_img": "https://images1.apartments.com/i2/cKa61mlHsgRByRtTRvjZ_knprrYVIgVVWaTIb76Y6n4/102/bay-151-bayonne-nj-floorplan.jpg?p=1"
