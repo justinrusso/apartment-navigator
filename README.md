@@ -1,6 +1,25 @@
 # Apartment Navigator
 
+Apartment Navigator is the place to find your next amazing place to live! Inspired by aspects of Apartments.com and Zillow, Apartment Navigator helps potential renters discover locations to lease.
+
 Website: [https://apartment-navigator.herokuapp.com/](https://apartment-navigator.herokuapp.com/)
+
+## Technologies Used
+
+### Frontend
+- TypeScript / JavaScript
+- React
+- Redux
+- Styled-Components
+
+### Backend
+- Python
+- Flask
+- WTForms
+- SQLAlchemy
+- PostgreSQL
+- Docker
+- Heroku
 
 ## Development
 
@@ -29,3 +48,9 @@ For production dependencies, run `pipenv lock -r > requirements.txt`.
 For development dependencies, run `pipenv lock -r --dev-only > dev-requirements.txt`.
 
 **Note**: `psycopg2-binary` MUST remain a dev dependency because you can't install it on apline-linux. There is a layer in the Dockerfile that will install psycopg2 (not binary) for us.
+
+## Documentation
+
+- [Database Schema](https://github.com/justinrusso/apartment-navigator/wiki/Database-Schema)
+- [Features](https://github.com/justinrusso/apartment-navigator/wiki/Feature-List)
+- [User Stories](https://github.com/justinrusso/apartment-navigator/wiki/User-Stories) (Converted to issues)
