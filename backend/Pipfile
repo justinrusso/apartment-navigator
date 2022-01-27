@@ -19,6 +19,7 @@ email-validator = "*"
 faker = "*"
 gunicorn = "*"
 munch = "*"
+marshmallow = "*"
 
 [dev-packages]
 black = "*"

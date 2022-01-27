@@ -40,3 +40,12 @@ export interface CreatePropertyUnitData {
 
 export interface UpdatePropertyUnitData
   extends Partial<CreatePropertyUnitData> {}
+
+export interface UnitFormErrors {
+  unitNum: string[];
+  unitCategoryId: string[];
+  baths: string[];
+  price: string[];
+  sqFt: string[];
+  floorPlanImg: string[];
+}
