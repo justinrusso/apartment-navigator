@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import FloatField, SelectField, StringField
+from wtforms import FloatField, IntegerField, SelectField, StringField
 from wtforms.validators import DataRequired, Regexp
 
 
@@ -14,7 +14,7 @@ class MultiUnitForm(FlaskForm):
         ],
     )
     price = FloatField(validators=[DataRequired(), Regexp("^\d*(\.\d{0,2})?$")])
-    sqFt = FloatField(validators=[DataRequired()])
+    sqFt = IntegerField(validators=[DataRequired()])
     floorPlanImg = StringField(validators=[])
 
 
@@ -28,5 +28,5 @@ class SingleUnitForm(FlaskForm):
         ],
     )
     price = FloatField(validators=[DataRequired(), Regexp("^\d*(\.\d{0,2})?$")])
-    sqFt = FloatField(validators=[DataRequired()])
+    sqFt = IntegerField(validators=[DataRequired()])
     floorPlanImg = StringField(validators=[])
