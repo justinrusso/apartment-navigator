@@ -1,6 +1,6 @@
 import fullLogo from "./full-logo.png";
 
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -11,9 +11,20 @@ import ProfileButton from "./ProfileButton";
 import { useAppSelector } from "../../hooks/redux";
 import { useAuthModal } from "../../context/AuthModalProvider";
 import { selectUser } from "../../store/user";
+import { useOnScreen } from "../../hooks/on-screen";
+
+// Used to determine when the navbar is not at the top of the screen
+const NavbarSentinal = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+`;
 
 const NavbarRoot = styled(Paper)`
   position: sticky;
+  transition: box-shadow 300ms
+    ${(props) => props.theme.transitions.easing.easeInOut};
   top: 0;
   width: 100%;
   z-index: ${(props) => props.theme.zIndex.navbar};
@@ -57,39 +68,51 @@ const Navbar: FC = () => {
 
   const user = useAppSelector(selectUser());
 
+  const sentinalRef = useRef<HTMLDivElement | null>(null);
+
+  const navbarStickied = !useOnScreen(sentinalRef, true);
+
   return (
-    <NavbarRoot elevation={8} as="header" square>
-      <Container>
-        <NavbarInner>
-          <div>
-            <LogoWrapper to="/">
-              <img src={fullLogo} alt="apartment navigator" height="100%" />
-            </LogoWrapper>
-          </div>
-          <div></div>
-          <div>
-            {!user && (
-              <>
-                <Button variant="text" onClick={authModal.showLogin}>
-                  Log In
-                </Button>
-                <Button variant="text" onClick={authModal.showSignup}>
-                  Sign Up
-                </Button>
-              </>
-            )}
-            {user && (
-              <>
-                <Button variant="text" as={Link} to="/properties/new">
-                  Add a Property
-                </Button>
-                <ProfileButton />
-              </>
-            )}
-          </div>
-        </NavbarInner>
-      </Container>
-    </NavbarRoot>
+    <>
+      <NavbarSentinal ref={sentinalRef} />
+      <NavbarRoot
+        elevation={8}
+        as="header"
+        square
+        style={{ boxShadow: navbarStickied ? undefined : "none" }}
+      >
+        <Container>
+          <NavbarInner>
+            <div>
+              <LogoWrapper to="/">
+                <img src={fullLogo} alt="apartment navigator" height="100%" />
+              </LogoWrapper>
+            </div>
+            <div></div>
+            <div>
+              {!user && (
+                <>
+                  <Button variant="text" onClick={authModal.showLogin}>
+                    Log In
+                  </Button>
+                  <Button variant="text" onClick={authModal.showSignup}>
+                    Sign Up
+                  </Button>
+                </>
+              )}
+              {user && (
+                <>
+                  <Button variant="text" as={Link} to="/properties/new">
+                    Add a Property
+                  </Button>
+                  <ProfileButton />
+                </>
+              )}
+            </div>
+          </NavbarInner>
+        </Container>
+      </NavbarRoot>
+    </>
   );
 };
 
