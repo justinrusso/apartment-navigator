@@ -3,6 +3,8 @@ from .property import Property
 from .property_category import PropertyCategory
 from .property_image import PropertyImage
 from .property_unit import PropertyUnit
+from .review_summary import ReviewSummary
+from .review import Review
 from .unit_price import UnitPrice
 from .unit_category import UnitCategory
 from .user import User
