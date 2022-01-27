@@ -13,7 +13,7 @@ class MultiUnitForm(FlaskForm):
             DataRequired(),
         ],
     )
-    price = FloatField(validators=[DataRequired(), Regexp("^\d*(\.\d{0,2})?$")])
+    price = FloatField(validators=[DataRequired()])
     sqFt = IntegerField(validators=[DataRequired()])
     floorPlanImg = StringField(validators=[])
 
@@ -27,6 +27,6 @@ class SingleUnitForm(FlaskForm):
             DataRequired(),
         ],
     )
-    price = FloatField(validators=[DataRequired(), Regexp("^\d*(\.\d{0,2})?$")])
+    price = FloatField(validators=[DataRequired()])
     sqFt = IntegerField(validators=[DataRequired()])
     floorPlanImg = StringField(validators=[])
