@@ -8,6 +8,7 @@ from app.forms import pick_patched_data, validation_errors_to_dict
 from app.forms.csrf_form import CSRFForm
 from app.forms.property_form import PropertyForm
 from app.forms.property_image_form import PropertyImageForm
+from app.forms.review_form import ReviewForm
 from app.forms.unit_form import MultiUnitForm, SingleUnitForm
 from app.models import (
     db,
@@ -221,6 +222,36 @@ def get_property_reviews(property_id):
         "id": property.id,
         "reviews": [review.to_dict() for review in property.reviews],
     }
+
+
+@properties_routes.route("/<int:property_id>/reviews", methods=["POST"])
+@login_required
+def add_property_review(property_id):
+    form = ReviewForm()
+    form.csrf_token.data = request.cookies["csrf_token"]
+
+    if form.validate_on_submit():
+        property = Property.query.get(property_id)
+
+        if not property:
+            return {"error": "Not Found"}, 404
+
+        review = Review(
+            user_id=current_user.id,
+            rating=form.data["rating"],
+            comment=form.data["comment"],
+        )
+        property.reviews.append(review)
+        property.review_summary.total += 1
+        property.review_summary.total_rating += review.rating
+
+        db.session.add(property)
+        db.session.commit()
+        return {
+            "reviewSummary": property.review_summary.to_dict(),
+            "review": review.to_dict(),
+        }
+    return {"errors": validation_errors_to_dict(form.errors)}, 400
 
 
 @properties_routes.route("/<int:property_id>/units", methods=["POST"])

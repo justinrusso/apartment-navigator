@@ -30,9 +30,10 @@ const ReviewPromptRoot = styled.div`
 
 type ReviewPromptProps = {
   reviewSummary: NormalizedProperty["reviewSummary"];
+  showModal: () => void;
 };
 
-const ReviewPrompt: FC<ReviewPromptProps> = ({ reviewSummary }) => {
+const ReviewPrompt: FC<ReviewPromptProps> = ({ reviewSummary, showModal }) => {
   return (
     <ReviewPromptRoot>
       <div>
@@ -56,7 +57,7 @@ const ReviewPrompt: FC<ReviewPromptProps> = ({ reviewSummary }) => {
         <Typography>
           Share details of your own experience with this property
         </Typography>
-        <Button>Write a Review</Button>
+        <Button onClick={showModal}>Write a Review</Button>
       </div>
     </ReviewPromptRoot>
   );

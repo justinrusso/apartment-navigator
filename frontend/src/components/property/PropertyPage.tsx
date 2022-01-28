@@ -9,6 +9,7 @@ import Paper from "../common/Paper";
 import PropertyUnitCategoryCard from "./PropertyUnitCategoryCard";
 import RatingStars from "../review/RatingStars";
 import ReviewCard from "../review/ReviewCard";
+import ReviewFormDialog from "../review/ReviewFormDialog";
 import ReviewPrompt from "../review/ReviewPrompt";
 import Typography from "../common/Typography";
 import { NormalizedPropertyUnit } from "../../store/normalizers/properties";
@@ -155,6 +156,9 @@ const PropertyPage: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingReviews, setIsLoadingReviews] = useState(false);
 
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [selectedReviewId, setSelectedReviewId] = useState(0);
+
   useEffect(() => {
     if (!propertyId) {
       return;
@@ -283,7 +287,10 @@ const PropertyPage: FC = () => {
             <Typography variant="h2" gutterBottom>
               Property Ratings at {propertyName}
             </Typography>
-            <ReviewPrompt reviewSummary={property.reviewSummary} />
+            <ReviewPrompt
+              reviewSummary={property.reviewSummary}
+              showModal={() => setShowReviewModal(true)}
+            />
             {isLoadingReviews && <LoadingCircle />}
             {!isLoadingReviews && reviews.length > 0 && (
               <div className="reviews-wrapper">
@@ -291,6 +298,13 @@ const PropertyPage: FC = () => {
                   <ReviewCard key={review.id} review={review} />
                 ))}
               </div>
+            )}
+            {showReviewModal && (
+              <ReviewFormDialog
+                property={property}
+                reviewId={selectedReviewId ? selectedReviewId : undefined}
+                onClose={() => setShowReviewModal(false)}
+              />
             )}
           </section>
         </MainContent>

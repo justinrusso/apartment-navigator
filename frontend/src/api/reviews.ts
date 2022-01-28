@@ -7,3 +7,14 @@ export interface ReviewData {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface EditableReviewData {
+  comment: string;
+  rating: number | string;
+}
+
+export interface ReviewSummary {
+  averageRating: number;
+  propertyId: number;
+  total: 4;
+}

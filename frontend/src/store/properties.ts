@@ -29,7 +29,7 @@ import {
   PropertyUnitsApi,
   UpdatePropertyUnitData,
 } from "../api/units";
-import { ReviewData } from "../api/reviews";
+import { EditableReviewData, ReviewData, ReviewSummary } from "../api/reviews";
 import { reviewsSchema } from "./normalizers/reviews";
 
 const initialState = {
@@ -182,6 +182,21 @@ const propertiesSlice = createSlice({
       }
       property.reviews = action.payload.result;
       state.reviews = action.payload.reviews;
+    });
+
+    builder.addCase(addPropertyReview.fulfilled, (state, action) => {
+      const propertyId =
+        typeof action.payload.propertyId === "string"
+          ? parseInt(action.payload.propertyId, 10) || 0
+          : action.payload.propertyId;
+      const property = state.entities[propertyId];
+      if (!property) {
+        // If there is no property for the reviews, why add it?
+        return;
+      }
+      property.reviews?.unshift(action.payload.review.id);
+      property.reviewSummary = action.payload.reviewSummary;
+      state.reviews[action.payload.review.id] = action.payload.review;
     });
   },
 });
@@ -535,5 +550,32 @@ export const selectPropertyReviewsArray =
       .map((reviewId) => state.properties.reviews[reviewId])
       .filter(Boolean);
   };
+
+export const addPropertyReview = createAsyncThunk(
+  `${propertiesSlice.name}/addPropertyReview`,
+  async (
+    { propertyId, data }: FetchPropertyArgs & { data: EditableReviewData },
+    thunkAPI
+  ): Promise<{
+    propertyId: number | string;
+    review: ReviewData;
+    reviewSummary: ReviewSummary;
+  }> => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.createPropertyReview(propertyId, data);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: { review: ReviewData; reviewSummary: ReviewSummary } =
+      await res.json();
+    return {
+      propertyId,
+      review: resData.review,
+      reviewSummary: resData.reviewSummary,
+    };
+  }
+);
 
 export default propertiesSlice.reducer;
