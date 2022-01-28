@@ -7,6 +7,7 @@ import Container from "../common/Container";
 import LoadingCircle from "../common/LoadingCircle";
 import Paper from "../common/Paper";
 import PropertyUnitCategoryCard from "./PropertyUnitCategoryCard";
+import RatingStars from "../review/RatingStars";
 import Typography from "../common/Typography";
 import { NormalizedPropertyUnit } from "../../store/normalizers/properties";
 import { createAddress } from "./utils";
@@ -115,6 +116,17 @@ const MainContent = styled.main`
   }
 `;
 
+const ReviewsSummary = styled(Typography)`
+  align-items: center;
+  display: flex;
+  font-weight: 500;
+  gap: 0.375rem;
+
+  span {
+    line-height: 1em;
+  }
+`;
+
 const PropertyPage: FC = () => {
   const dispatch = useAppDispatch();
 
@@ -193,7 +205,19 @@ const PropertyPage: FC = () => {
             <Typography variant="h1" gutterBottom>
               {propertyName}
             </Typography>
-            <Typography>{createAddress(property)}</Typography>
+            <Typography gutterBottom>{createAddress(property)}</Typography>
+            <ReviewsSummary>
+              <RatingStars
+                rating={property.reviewSummary.averageRating}
+                size="small"
+                disableInput
+              />
+              <span>{property.reviewSummary.averageRating}</span>
+              <span>
+                ({property.reviewSummary.total} review
+                {property.reviewSummary.total !== 1 ? "s" : ""})
+              </span>
+            </ReviewsSummary>
           </section>
           <section>
             <Typography variant="h2" gutterBottom>

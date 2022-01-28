@@ -124,6 +124,11 @@ export interface PropertyApiData {
   city: string;
   state: string;
   zipCode: string;
+  reviewSummary: {
+    propertyId: number;
+    total: number;
+    averageRating: number;
+  };
   images: PropertyImage[];
   units: PropertyUnit[];
   createdAt: string;
