@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { underlinedLink } from "../../theme/mixins";
 
 const AlternateAuthLink = styled.button`
   background: none;
@@ -7,6 +8,8 @@ const AlternateAuthLink = styled.button`
   cursor: pointer;
   outline: none;
   padding: 0;
+
+  ${underlinedLink}
 `;
 
 export default AlternateAuthLink;
