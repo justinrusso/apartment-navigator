@@ -187,7 +187,7 @@ const propertiesSlice = createSlice({
         return;
       }
       property.reviews = action.payload.result;
-      state.reviews = action.payload.reviews;
+      state.reviews = action.payload.reviews || {};
     });
 
     builder.addCase(addPropertyReview.fulfilled, (state, action) => {
@@ -637,8 +637,13 @@ export const editPropertyReview = createAsyncThunk(
   }
 );
 
-export const selectPropertyReview = (reviewId: number) => (state: RootState) =>
-  state.properties.reviews[reviewId];
+export const selectPropertyReview =
+  (reviewId: number) => (state: RootState) => {
+    console.log(state.properties);
+    console.log(state.properties.reviews);
+    console.log(reviewId);
+    return state.properties.reviews[reviewId];
+  };
 
 export const deletePropertyReview = createAsyncThunk(
   `${propertiesSlice.name}/deletePropertyReview`,
