@@ -56,11 +56,6 @@ const resetCss = css`
   h6 {
     overflow-wrap: break-word;
   }
-
-  #root,
-  #__next {
-    isolation: isolate;
-  }
 `;
 
 const GlobalStyle = createGlobalStyle`

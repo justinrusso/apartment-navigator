@@ -14,6 +14,11 @@ import styled from "styled-components";
 import MenuListIconWrapper from "../common/MenuListIconWrapper";
 import { Link } from "react-router-dom";
 
+const MenuWrapper = styled(Paper)`
+  filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.32));
+  z-index: ${(props) => props.theme.zIndex.navbar + 1};
+`;
+
 const Arrow = styled.div`
   position: absolute;
   background: ${(props) => props.theme.palette.background};
@@ -106,14 +111,13 @@ const ProfileButton: FC = () => {
       </Button>
       {menuVisible &&
         createPortal(
-          <Paper
+          <MenuWrapper
             elevation={0}
             ref={floating}
             style={{
               position: strategy,
               top: menuY ?? "",
               left: menuX ?? "",
-              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             }}
           >
             <MenuList>
@@ -135,7 +139,7 @@ const ProfileButton: FC = () => {
                 [staticSide as string]: "-4px",
               }}
             />
-          </Paper>,
+          </MenuWrapper>,
           document.body
         )}
     </>

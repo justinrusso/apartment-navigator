@@ -24,6 +24,7 @@ import {
 } from "../../store/properties";
 import { formatRatingNumber } from "../review/utils";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { selectUser } from "../../store/user";
 
 const ImageGrid = styled.div`
   display: grid;
@@ -141,6 +142,8 @@ const ReviewsSummary = styled(Typography)`
 
 const PropertyPage: FC = () => {
   const dispatch = useAppDispatch();
+
+  const user = useAppSelector(selectUser());
 
   const { propertyId: propertyIdParam } = useParams();
   const propertyId = parseInt(propertyIdParam || "", 10);
@@ -295,7 +298,15 @@ const PropertyPage: FC = () => {
             {!isLoadingReviews && reviews.length > 0 && (
               <div className="reviews-wrapper">
                 {reviews.map((review) => (
-                  <ReviewCard key={review.id} review={review} />
+                  <ReviewCard
+                    key={review.id}
+                    editable={review.userId === user?.id}
+                    review={review}
+                    showEditModal={() => {
+                      setSelectedReviewId(review.id);
+                      setShowReviewModal(true);
+                    }}
+                  />
                 ))}
               </div>
             )}
@@ -303,7 +314,10 @@ const PropertyPage: FC = () => {
               <ReviewFormDialog
                 property={property}
                 reviewId={selectedReviewId ? selectedReviewId : undefined}
-                onClose={() => setShowReviewModal(false)}
+                onClose={() => {
+                  setShowReviewModal(false);
+                  setSelectedReviewId(0);
+                }}
               />
             )}
           </section>

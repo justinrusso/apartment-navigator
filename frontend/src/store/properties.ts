@@ -29,7 +29,12 @@ import {
   PropertyUnitsApi,
   UpdatePropertyUnitData,
 } from "../api/units";
-import { EditableReviewData, ReviewData, ReviewSummary } from "../api/reviews";
+import {
+  EditableReviewData,
+  ReviewData,
+  ReviewsApi,
+  ReviewSummary,
+} from "../api/reviews";
 import { reviewsSchema } from "./normalizers/reviews";
 
 const initialState = {
@@ -194,6 +199,21 @@ const propertiesSlice = createSlice({
         // If there is no property for the reviews, why add it?
         return;
       }
+      property.reviews?.unshift(action.payload.review.id);
+      property.reviewSummary = action.payload.reviewSummary;
+      state.reviews[action.payload.review.id] = action.payload.review;
+    });
+
+    builder.addCase(editPropertyReview.fulfilled, (state, action) => {
+      const propertyId = action.payload.review.propertyId;
+      const property = state.entities[propertyId];
+      if (!property) {
+        // If there is no property for the reviews, why add it?
+        return;
+      }
+      property.reviews = property.reviews?.filter(
+        (id) => id !== action.payload.review.id
+      );
       property.reviews?.unshift(action.payload.review.id);
       property.reviewSummary = action.payload.reviewSummary;
       state.reviews[action.payload.review.id] = action.payload.review;
@@ -577,5 +597,33 @@ export const addPropertyReview = createAsyncThunk(
     };
   }
 );
+
+export const editPropertyReview = createAsyncThunk(
+  `${propertiesSlice.name}/editPropertyReview`,
+  async (
+    { reviewId, data }: { reviewId: number; data: Partial<EditableReviewData> },
+    thunkAPI
+  ): Promise<{
+    review: ReviewData;
+    reviewSummary: ReviewSummary;
+  }> => {
+    let res: Response;
+    try {
+      res = await ReviewsApi.updatePropertyReview(reviewId, data);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: { review: ReviewData; reviewSummary: ReviewSummary } =
+      await res.json();
+    return {
+      review: resData.review,
+      reviewSummary: resData.reviewSummary,
+    };
+  }
+);
+
+export const selectPropertyReview = (reviewId: number) => (state: RootState) =>
+  state.properties.reviews[reviewId];
 
 export default propertiesSlice.reducer;

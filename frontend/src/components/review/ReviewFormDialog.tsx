@@ -10,9 +10,14 @@ import HelperText from "../common/HelperText";
 import InputField from "../common/InputField";
 import RatingStars from "./RatingStars";
 import useFormFields from "../../hooks/form-fields";
-import { addPropertyReview } from "../../store/properties";
+import {
+  addPropertyReview,
+  editPropertyReview,
+  selectPropertyReview,
+} from "../../store/properties";
 import { NormalizedProperty } from "../../store/normalizers/properties";
-import { useAppDispatch } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { ReviewData } from "../../api/reviews";
 
 const getRatingHelperText = (rating: number) => {
   switch (rating) {
@@ -44,11 +49,15 @@ const ReviewFormDialog: FC<ReviewFormDialogProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
+  const review: ReviewData | undefined = useAppSelector(
+    selectPropertyReview(reviewId || 0)
+  );
+
   const [errors, setErrors] = useState<Record<string, string[]>>({});
 
   const { fields, getChangedFields, prestine, setField } = useFormFields({
-    comment: "",
-    rating: "",
+    comment: review?.comment || "",
+    rating: review ? String(review.rating) : "",
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -67,6 +76,19 @@ const ReviewFormDialog: FC<ReviewFormDialogProps> = ({
     }
 
     const changedFields = getChangedFields();
+
+    if (review) {
+      dispatch(
+        editPropertyReview({
+          reviewId: review.id,
+          data: changedFields,
+        })
+      )
+        .unwrap()
+        .then(() => onClose())
+        .catch((errors) => setErrors(errors));
+      return;
+    }
 
     dispatch(
       addPropertyReview({

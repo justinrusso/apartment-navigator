@@ -1,3 +1,19 @@
+import { routeBuilder, fetchApi } from "./util";
+
+const reviewsRoute = routeBuilder("/api/reviews");
+
+export class ReviewsApi {
+  static async updatePropertyReview(
+    reviewId: number,
+    data: Partial<EditableReviewData>
+  ) {
+    return fetchApi(reviewsRoute(`/${reviewId}`), {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+  }
+}
+
 export interface ReviewData {
   id: number;
   propertyId: number;
