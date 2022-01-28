@@ -1,3 +1,5 @@
+from sqlalchemy.sql import func
+
 from .db import db
 
 
@@ -13,6 +15,10 @@ class Review(db.Model):
     )
     rating = db.Column(db.SmallInteger, nullable=False)
     comment = db.Column(db.String, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=func.now(), nullable=False)
+    updated_at = db.Column(
+        db.DateTime, server_default=func.now(), onupdate=func.now(), nullable=False
+    )
 
     __table_args__ = (
         db.UniqueConstraint("property_id", "user_id", name="uc_property_user"),
@@ -25,4 +31,6 @@ class Review(db.Model):
             "userId": self.user_id,
             "rating": self.rating,
             "comment": self.comment,
+            "createdAt": self.created_at,
+            "updatedAt": self.updated_at,
         }
