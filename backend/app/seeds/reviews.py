@@ -46,10 +46,8 @@ def seed_reviews():
             )
             blacklisted_users.append(user_id)
 
-        property.review_summary = ReviewSummary(
-            total=total,
-            total_rating=total_rating,
-        )
+        property.review_summary.total = total
+        property.review_summary.total_rating = total_rating
         db.session.add(property)
     db.session.commit()
 

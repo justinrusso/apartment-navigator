@@ -17,6 +17,7 @@ from app.models import (
     PropertyImage,
     PropertyUnit,
     Review,
+    ReviewSummary,
     UnitCategory,
     UnitPrice,
 )
@@ -78,6 +79,7 @@ def create_property():
             city=result["city"],
             state=result["state"],
             zip_code=result["zip_code"],
+            review_summary=ReviewSummary(total=0, total_rating=0),
         )
 
         #  Write pending changes to db so we can get the property id for unit_prices
