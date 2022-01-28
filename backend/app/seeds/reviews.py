@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 import random
@@ -10,6 +11,10 @@ def seed_reviews():
     f = open(file_path, "r")
     data = json.load(f)
 
+    start_date = datetime.date.today() - datetime.timedelta(days=30)
+    end_date = datetime.date.today()
+    days_between = (end_date - start_date).days
+
     user_ids = [user.id for user in User.query.all()]
 
     for property_id, reviews in data.get("property_reviews", dict()).items():
@@ -21,6 +26,9 @@ def seed_reviews():
         blacklisted_users = [property.owner_id]
 
         for review_data in reviews:
+            random_date = start_date + datetime.timedelta(
+                days=random.randrange(days_between)
+            )
             total += 1
             total_rating += review_data.get("rating")
             user_id = random.choice(
@@ -32,6 +40,8 @@ def seed_reviews():
                     user_id=user_id,
                     rating=review_data.get("rating"),
                     comment=review_data.get("comment"),
+                    created_at=random_date,
+                    updated_at=random_date,
                 )
             )
             blacklisted_users.append(user_id)
