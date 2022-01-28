@@ -22,7 +22,7 @@ class Review(db.Model):
         return {
             "id": self.id,
             "propertyId": self.property_id,
-            "user": self.user.to_dict(),
+            "userId": self.user_id,
             "rating": self.rating,
             "comment": self.comment,
         }
