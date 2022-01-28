@@ -8,6 +8,7 @@ import LoadingCircle from "../common/LoadingCircle";
 import Paper from "../common/Paper";
 import PropertyUnitCategoryCard from "./PropertyUnitCategoryCard";
 import RatingStars from "../review/RatingStars";
+import ReviewPrompt from "../review/ReviewPrompt";
 import Typography from "../common/Typography";
 import { NormalizedPropertyUnit } from "../../store/normalizers/properties";
 import { createAddress } from "./utils";
@@ -257,6 +258,12 @@ const PropertyPage: FC = () => {
             >
               Send an Email
             </Button>
+          </section>
+          <section>
+            <Typography variant="h2" gutterBottom>
+              Property Ratings at {propertyName}
+            </Typography>
+            <ReviewPrompt reviewSummary={property.reviewSummary} />
           </section>
         </MainContent>
         <ContactSidebar as="aside" elevation={2}>
