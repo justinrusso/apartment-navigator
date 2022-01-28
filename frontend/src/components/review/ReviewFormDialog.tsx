@@ -146,7 +146,7 @@ const ReviewFormDialog: FC<ReviewFormDialogProps> = ({
           <Button variant="text" type="button" onClick={onClose}>
             Cancel
           </Button>
-          <Button>Submit Review</Button>
+          <Button>{review ? "Update" : "Submit"} Review</Button>
         </DialogActions>
       </form>
     </Dialog>
