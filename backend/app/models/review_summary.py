@@ -14,5 +14,5 @@ class ReviewSummary(db.Model):
         return {
             "propertyId": self.property_id,
             "total": self.total,
-            "averageRating": (self.total_rating / self.total),
+            "averageRating": (self.total_rating / self.total) if self.total > 0 else 0,
         }
