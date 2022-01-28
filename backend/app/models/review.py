@@ -20,10 +20,6 @@ class Review(db.Model):
         db.DateTime, server_default=func.now(), onupdate=func.now(), nullable=False
     )
 
-    __table_args__ = (
-        db.UniqueConstraint("property_id", "user_id", name="uc_property_user"),
-    )
-
     def to_dict(self):
         return {
             "id": self.id,
