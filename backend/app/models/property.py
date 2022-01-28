@@ -48,7 +48,7 @@ class Property(db.Model):
 
     def to_dict(self):
         if not self.review_summary:
-            self.review_summary = ReviewSummary(total=0, average_rating=0)
+            self.review_summary = ReviewSummary(total=0, total_rating=0)
 
         return {
             "id": self.id,

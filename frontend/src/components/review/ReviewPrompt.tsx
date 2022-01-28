@@ -5,6 +5,7 @@ import Button from "../common/Button";
 import Typography from "../common/Typography";
 import RatingStars from "./RatingStars";
 import { NormalizedProperty } from "../../store/normalizers/properties";
+import { formatRatingNumber } from "./utils";
 
 const ReviewPromptRoot = styled.div`
   display: flex;
@@ -41,7 +42,7 @@ const ReviewPrompt: FC<ReviewPromptProps> = ({ reviewSummary }) => {
           disableInput
         />
         <Typography as="span" variant="h5" className="rating">
-          {reviewSummary.averageRating} Average Rating
+          {formatRatingNumber(reviewSummary.averageRating)} Average Rating
         </Typography>
         <Typography as="span">
           {reviewSummary.total > 0

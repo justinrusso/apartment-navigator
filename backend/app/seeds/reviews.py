@@ -48,7 +48,7 @@ def seed_reviews():
 
         property.review_summary = ReviewSummary(
             total=total,
-            average_rating=(total_rating / total) * 10,
+            total_rating=total_rating,
         )
         db.session.add(property)
     db.session.commit()

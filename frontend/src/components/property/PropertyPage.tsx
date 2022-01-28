@@ -21,6 +21,7 @@ import {
   selectPropertyReviewsArray,
   selectPropertyUnitsByCategories,
 } from "../../store/properties";
+import { formatRatingNumber } from "../review/utils";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 
 const ImageGrid = styled.div`
@@ -230,7 +231,9 @@ const PropertyPage: FC = () => {
                 size="small"
                 disableInput
               />
-              <span>{property.reviewSummary.averageRating}</span>
+              <span>
+                {formatRatingNumber(property.reviewSummary.averageRating)}
+              </span>
               <span>
                 ({property.reviewSummary.total} review
                 {property.reviewSummary.total !== 1 ? "s" : ""})

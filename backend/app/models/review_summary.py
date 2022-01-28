@@ -8,11 +8,11 @@ class ReviewSummary(db.Model):
         db.Integer, db.ForeignKey("properties.id", ondelete="CASCADE"), primary_key=True
     )
     total = db.Column(db.Integer, nullable=False)
-    average_rating = db.Column(db.SmallInteger, nullable=False)
+    total_rating = db.Column(db.Integer, nullable=False)
 
     def to_dict(self):
         return {
             "propertyId": self.property_id,
             "total": self.total,
-            "averageRating": self.average_rating / 10,
+            "averageRating": (self.total_rating / self.total),
         }
