@@ -1,6 +1,7 @@
 from sqlalchemy.sql import func
 
 from .db import db
+from .review_summary import ReviewSummary
 
 
 class Property(db.Model):
@@ -46,6 +47,9 @@ class Property(db.Model):
     )
 
     def to_dict(self):
+        if not self.review_summary:
+            self.review_summary = ReviewSummary(total=0, average_rating=0)
+
         return {
             "id": self.id,
             "owner": self.owner.to_dict(),
