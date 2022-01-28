@@ -7,16 +7,25 @@ import Container from "../common/Container";
 import LoadingCircle from "../common/LoadingCircle";
 import Paper from "../common/Paper";
 import PropertyUnitCategoryCard from "./PropertyUnitCategoryCard";
+import RatingStars from "../review/RatingStars";
+import ReviewCard from "../review/ReviewCard";
+import ReviewFormDialog from "../review/ReviewFormDialog";
+import ReviewPrompt from "../review/ReviewPrompt";
 import Typography from "../common/Typography";
 import { NormalizedPropertyUnit } from "../../store/normalizers/properties";
 import { createAddress } from "./utils";
 import {
   fetchProperty,
+  fetchPropertyReviews,
   selectProperty,
   selectPropertyImages,
+  selectPropertyReviewsArray,
   selectPropertyUnitsByCategories,
 } from "../../store/properties";
+import { formatRatingNumber } from "../review/utils";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { selectUser } from "../../store/user";
+import ReviewDeleteDialog from "../review/ReviewDeleteDialog";
 
 const ImageGrid = styled.div`
   display: grid;
@@ -113,23 +122,47 @@ const MainContent = styled.main`
     flex-direction: column;
     gap: 1rem;
   }
+
+  .reviews-wrapper {
+    display: grid;
+    gap: 1rem;
+    padding-top: 1.5rem;
+  }
+`;
+
+const ReviewsSummary = styled(Typography)`
+  align-items: center;
+  display: flex;
+  font-weight: 500;
+  gap: 0.375rem;
+
+  span {
+    line-height: 1em;
+  }
 `;
 
 const PropertyPage: FC = () => {
   const dispatch = useAppDispatch();
 
-  const { propertyId } = useParams();
-  const property = useAppSelector(
-    selectProperty(parseInt(propertyId || "", 10))
-  );
+  const user = useAppSelector(selectUser());
+
+  const { propertyId: propertyIdParam } = useParams();
+  const propertyId = parseInt(propertyIdParam || "", 10);
+  const property = useAppSelector(selectProperty(propertyId));
   const propertyImages = useAppSelector(
     selectPropertyImages(property?.images || [])
   );
   const unitCategoryMap = useAppSelector(
-    selectPropertyUnitsByCategories(parseInt(propertyId || "", 10))
+    selectPropertyUnitsByCategories(propertyId)
   );
+  const reviews = useAppSelector(selectPropertyReviewsArray(propertyId));
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingReviews, setIsLoadingReviews] = useState(false);
+
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [showReviewDeleteModal, setShowReviewDeleteModal] = useState(false);
+  const [selectedReviewId, setSelectedReviewId] = useState(0);
 
   useEffect(() => {
     if (!propertyId) {
@@ -137,12 +170,19 @@ const PropertyPage: FC = () => {
     }
     (async () => {
       setIsLoading(true);
+      setIsLoadingReviews(true);
       try {
         await dispatch(fetchProperty({ propertyId })).unwrap();
       } catch (e) {
         // TODO: display error page?
       } finally {
         setIsLoading(false);
+      }
+      try {
+        await dispatch(fetchPropertyReviews({ propertyId })).unwrap();
+      } catch (e) {
+      } finally {
+        setIsLoadingReviews(false);
       }
     })();
   }, [dispatch, propertyId]);
@@ -193,7 +233,21 @@ const PropertyPage: FC = () => {
             <Typography variant="h1" gutterBottom>
               {propertyName}
             </Typography>
-            <Typography>{createAddress(property)}</Typography>
+            <Typography gutterBottom>{createAddress(property)}</Typography>
+            <ReviewsSummary>
+              <RatingStars
+                rating={property.reviewSummary.averageRating}
+                size="small"
+                disableInput
+              />
+              <span>
+                {formatRatingNumber(property.reviewSummary.averageRating)}
+              </span>
+              <span>
+                ({property.reviewSummary.total} review
+                {property.reviewSummary.total !== 1 ? "s" : ""})
+              </span>
+            </ReviewsSummary>
           </section>
           <section>
             <Typography variant="h2" gutterBottom>
@@ -233,6 +287,55 @@ const PropertyPage: FC = () => {
             >
               Send an Email
             </Button>
+          </section>
+          <section>
+            <Typography variant="h2" gutterBottom>
+              Property Ratings at {propertyName}
+            </Typography>
+            <ReviewPrompt
+              reviewSummary={property.reviewSummary}
+              showModal={() => setShowReviewModal(true)}
+            />
+            {isLoadingReviews && <LoadingCircle />}
+            {!isLoadingReviews && reviews.length > 0 && (
+              <div className="reviews-wrapper">
+                {reviews.map((review) => (
+                  <ReviewCard
+                    key={review.id}
+                    editable={review.userId === user?.id}
+                    review={review}
+                    showDeleteModal={() => {
+                      setSelectedReviewId(review.id);
+                      setShowReviewDeleteModal(true);
+                    }}
+                    showEditModal={() => {
+                      setSelectedReviewId(review.id);
+                      setShowReviewModal(true);
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+            {showReviewModal && (
+              <ReviewFormDialog
+                property={property}
+                reviewId={selectedReviewId ? selectedReviewId : undefined}
+                onClose={() => {
+                  setShowReviewModal(false);
+                  setSelectedReviewId(0);
+                }}
+              />
+            )}
+            {showReviewDeleteModal && (
+              <ReviewDeleteDialog
+                property={property}
+                reviewId={selectedReviewId ? selectedReviewId : undefined}
+                onClose={() => {
+                  setShowReviewDeleteModal(false);
+                  setSelectedReviewId(0);
+                }}
+              />
+            )}
           </section>
         </MainContent>
         <ContactSidebar as="aside" elevation={2}>

@@ -29,6 +29,14 @@ import {
   PropertyUnitsApi,
   UpdatePropertyUnitData,
 } from "../api/units";
+import {
+  EditableReviewData,
+  ReviewData,
+  ReviewDeleteResponse,
+  ReviewsApi,
+  ReviewSummary,
+} from "../api/reviews";
+import { reviewsSchema } from "./normalizers/reviews";
 
 const initialState = {
   categories: {
@@ -38,6 +46,7 @@ const initialState = {
   entities: {} as Record<number, NormalizedProperty>,
   ids: [] as number[],
   images: {} as Record<number, PropertyImage>,
+  reviews: {} as Record<number, ReviewData>,
   units: {} as Record<number, NormalizedPropertyUnit>,
 };
 
@@ -169,6 +178,59 @@ const propertiesSlice = createSlice({
       );
 
       delete state.units[deletedUnitId];
+    });
+
+    builder.addCase(fetchPropertyReviews.fulfilled, (state, action) => {
+      const property = state.entities[action.payload.propertyId];
+      if (!property) {
+        // If there is no property for these reviews, why add it?
+        return;
+      }
+      property.reviews = action.payload.result;
+      state.reviews = action.payload.reviews || {};
+    });
+
+    builder.addCase(addPropertyReview.fulfilled, (state, action) => {
+      const propertyId =
+        typeof action.payload.propertyId === "string"
+          ? parseInt(action.payload.propertyId, 10) || 0
+          : action.payload.propertyId;
+      const property = state.entities[propertyId];
+      if (!property) {
+        // If there is no property for the reviews, why add it?
+        return;
+      }
+      property.reviews?.unshift(action.payload.review.id);
+      property.reviewSummary = action.payload.reviewSummary;
+      state.reviews[action.payload.review.id] = action.payload.review;
+    });
+
+    builder.addCase(editPropertyReview.fulfilled, (state, action) => {
+      const propertyId = action.payload.review.propertyId;
+      const property = state.entities[propertyId];
+      if (!property) {
+        // If there is no property for the reviews, why add it?
+        return;
+      }
+      property.reviews = property.reviews?.filter(
+        (id) => id !== action.payload.review.id
+      );
+      property.reviews?.unshift(action.payload.review.id);
+      property.reviewSummary = action.payload.reviewSummary;
+      state.reviews[action.payload.review.id] = action.payload.review;
+    });
+
+    builder.addCase(deletePropertyReview.fulfilled, (state, action) => {
+      const propertyId = action.payload.propertyId;
+      const reviewId = action.payload.reviewId;
+      const property = state.entities[propertyId];
+      if (!property) {
+        // If there is no property for the reviews, why add it?
+        return;
+      }
+      property.reviews = property.reviews?.filter((id) => id !== reviewId);
+      property.reviewSummary = action.payload.reviewSummary;
+      delete state.reviews[reviewId];
     });
   },
 });
@@ -476,6 +538,127 @@ export const deletePropertyUnit = createAsyncThunk(
       throw thunkAPI.rejectWithValue(resData.error || resData.errors);
     }
     return unitId;
+  }
+);
+
+type PropertyReviewsResult = {
+  propertyId: number;
+  reviews: Record<string, ReviewData>;
+  result: number[];
+};
+export const fetchPropertyReviews = createAsyncThunk(
+  `${propertiesSlice.name}/fetchPropertyReviews`,
+  async (
+    { propertyId }: FetchPropertyArgs,
+    thunkAPI
+  ): Promise<PropertyReviewsResult> => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.getPropertyReviews(propertyId);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: { id: number; reviews: ReviewData[] } = await res.json();
+    const normalizedData: NormalizedResult<
+      {
+        reviews: Record<number, ReviewData>;
+      },
+      number
+    > = normalize(resData.reviews, reviewsSchema);
+    return {
+      propertyId: propertyId as number,
+      reviews: normalizedData.entities.reviews,
+      result: normalizedData.result as number[],
+    };
+  }
+);
+
+export const selectPropertyReviewsArray =
+  (propertyId: number) => (state: RootState) => {
+    const propertyReviewIds = state.properties.entities[propertyId]?.reviews;
+    if (!propertyReviewIds) {
+      return [];
+    }
+    return propertyReviewIds
+      .map((reviewId) => state.properties.reviews[reviewId])
+      .filter(Boolean);
+  };
+
+export const addPropertyReview = createAsyncThunk(
+  `${propertiesSlice.name}/addPropertyReview`,
+  async (
+    { propertyId, data }: FetchPropertyArgs & { data: EditableReviewData },
+    thunkAPI
+  ): Promise<{
+    propertyId: number | string;
+    review: ReviewData;
+    reviewSummary: ReviewSummary;
+  }> => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.createPropertyReview(propertyId, data);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: { review: ReviewData; reviewSummary: ReviewSummary } =
+      await res.json();
+    return {
+      propertyId,
+      review: resData.review,
+      reviewSummary: resData.reviewSummary,
+    };
+  }
+);
+
+export const editPropertyReview = createAsyncThunk(
+  `${propertiesSlice.name}/editPropertyReview`,
+  async (
+    { reviewId, data }: { reviewId: number; data: Partial<EditableReviewData> },
+    thunkAPI
+  ): Promise<{
+    review: ReviewData;
+    reviewSummary: ReviewSummary;
+  }> => {
+    let res: Response;
+    try {
+      res = await ReviewsApi.updatePropertyReview(reviewId, data);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: { review: ReviewData; reviewSummary: ReviewSummary } =
+      await res.json();
+    return {
+      review: resData.review,
+      reviewSummary: resData.reviewSummary,
+    };
+  }
+);
+
+export const selectPropertyReview = (reviewId: number) => (state: RootState) =>
+  state.properties.reviews[reviewId];
+
+export const deletePropertyReview = createAsyncThunk(
+  `${propertiesSlice.name}/deletePropertyReview`,
+  async (
+    { reviewId }: { reviewId: number },
+    thunkAPI
+  ): Promise<ReviewDeleteResponse> => {
+    let res: Response;
+    try {
+      res = await ReviewsApi.deletePropertyReview(reviewId);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: ReviewDeleteResponse = await res.json();
+    return {
+      propertyId: resData.propertyId,
+      reviewId: resData.reviewId,
+      reviewSummary: resData.reviewSummary,
+    };
   }
 );
 

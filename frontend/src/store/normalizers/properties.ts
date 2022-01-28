@@ -28,6 +28,12 @@ export interface NormalizedProperty {
   city: string;
   state: string;
   zipCode: string;
+  reviews?: number[];
+  reviewSummary: {
+    propertyId: number;
+    total: number;
+    averageRating: number;
+  };
   images: number[];
   units: number[];
   createdAt: string;

@@ -1,7 +1,14 @@
 import json
 import os
 
-from app.models import db, Property, PropertyImage, PropertyUnit, UnitPrice
+from app.models import (
+    db,
+    Property,
+    PropertyImage,
+    PropertyUnit,
+    ReviewSummary,
+    UnitPrice,
+)
 
 
 def seed_properties():
@@ -24,6 +31,8 @@ def seed_properties():
 
         for image_url in property_data.get("images", []):
             property.images.append(PropertyImage(url=image_url))
+
+        property.review_summary = ReviewSummary(total=0, total_rating=0)
 
         #  Write pending changes to db so we can get the property id for unit_prices
         db.session.add(property)

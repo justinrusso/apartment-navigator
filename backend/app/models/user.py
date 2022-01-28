@@ -17,6 +17,9 @@ class User(db.Model, UserMixin):
     properties = db.relationship(
         "Property", backref=db.backref("owner"), passive_deletes=True
     )
+    reviews = db.relationship(
+        "Review", backref=db.backref("user"), passive_deletes=True
+    )
 
     @property
     def password(self):

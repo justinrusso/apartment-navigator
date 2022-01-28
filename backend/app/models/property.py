@@ -1,6 +1,7 @@
 from sqlalchemy.sql import func
 
 from .db import db
+from .review_summary import ReviewSummary
 
 
 class Property(db.Model):
@@ -29,6 +30,18 @@ class Property(db.Model):
     images = db.relationship(
         "PropertyImage", backref=db.backref("property"), passive_deletes=True
     )
+    review_summary = db.relationship(
+        "ReviewSummary",
+        backref=db.backref("property"),
+        passive_deletes=True,
+        uselist=False,
+    )
+    reviews = db.relationship(
+        "Review",
+        backref=db.backref("property"),
+        passive_deletes=True,
+        order_by="desc(Review.updated_at)",
+    )
     units = db.relationship(
         "PropertyUnit", backref=db.backref("property"), passive_deletes=True
     )
@@ -49,4 +62,5 @@ class Property(db.Model):
             "units": [unit.to_dict() for unit in self.units],
             "createdAt": self.created_at,
             "updatedAt": self.updated_at,
+            "reviewSummary": self.review_summary.to_dict(),
         }

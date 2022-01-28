@@ -1,4 +1,5 @@
 import { UserData } from "./auth";
+import { EditableReviewData, ReviewSummary } from "./reviews";
 import { CreatePropertyUnitData, UnitFormErrors } from "./units";
 import { fetchApi, routeBuilder } from "./util";
 
@@ -59,6 +60,20 @@ export class PropertiesApi {
     data: CreatePropertyUnitData
   ) {
     return fetchApi(propertiesRoute(`/${propertyId}/units`), {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+
+  static async getPropertyReviews(propertyId: number | string) {
+    return fetchApi(propertiesRoute(`/${propertyId}/reviews`));
+  }
+
+  static async createPropertyReview(
+    propertyId: number | string,
+    data: EditableReviewData
+  ) {
+    return fetchApi(propertiesRoute(`/${propertyId}/reviews`), {
       method: "POST",
       body: JSON.stringify(data),
     });
@@ -124,6 +139,7 @@ export interface PropertyApiData {
   city: string;
   state: string;
   zipCode: string;
+  reviewSummary: ReviewSummary;
   images: PropertyImage[];
   units: PropertyUnit[];
   createdAt: string;
