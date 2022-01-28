@@ -29,6 +29,8 @@ import {
   PropertyUnitsApi,
   UpdatePropertyUnitData,
 } from "../api/units";
+import { ReviewData } from "../api/reviews";
+import { reviewsSchema } from "./normalizers/reviews";
 
 const initialState = {
   categories: {
@@ -38,6 +40,7 @@ const initialState = {
   entities: {} as Record<number, NormalizedProperty>,
   ids: [] as number[],
   images: {} as Record<number, PropertyImage>,
+  reviews: {} as Record<number, ReviewData>,
   units: {} as Record<number, NormalizedPropertyUnit>,
 };
 
@@ -169,6 +172,16 @@ const propertiesSlice = createSlice({
       );
 
       delete state.units[deletedUnitId];
+    });
+
+    builder.addCase(fetchPropertyReviews.fulfilled, (state, action) => {
+      const property = state.entities[action.payload.propertyId];
+      if (!property) {
+        // If there is no property for these reviews, why add it?
+        return;
+      }
+      property.reviews = action.payload.result;
+      state.reviews = action.payload.reviews;
     });
   },
 });
@@ -478,5 +491,49 @@ export const deletePropertyUnit = createAsyncThunk(
     return unitId;
   }
 );
+
+type PropertyReviewsResult = {
+  propertyId: number;
+  reviews: Record<string, ReviewData>;
+  result: number[];
+};
+export const fetchPropertyReviews = createAsyncThunk(
+  `${propertiesSlice.name}/fetchPropertyReviews`,
+  async (
+    { propertyId }: FetchPropertyArgs,
+    thunkAPI
+  ): Promise<PropertyReviewsResult> => {
+    let res: Response;
+    try {
+      res = await PropertiesApi.getPropertyReviews(propertyId);
+    } catch (errorRes) {
+      const resData = await (errorRes as Response).json();
+      throw thunkAPI.rejectWithValue(resData.error || resData.errors);
+    }
+    const resData: { id: number; reviews: ReviewData[] } = await res.json();
+    const normalizedData: NormalizedResult<
+      {
+        reviews: Record<number, ReviewData>;
+      },
+      number
+    > = normalize(resData.reviews, reviewsSchema);
+    return {
+      propertyId: propertyId as number,
+      reviews: normalizedData.entities.reviews,
+      result: normalizedData.result as number[],
+    };
+  }
+);
+
+export const selectPropertyReviewsArray =
+  (propertyId: number) => (state: RootState) => {
+    const propertyReviewIds = state.properties.entities[propertyId]?.reviews;
+    if (!propertyReviewIds) {
+      return [];
+    }
+    return propertyReviewIds
+      .map((reviewId) => state.properties.reviews[reviewId])
+      .filter(Boolean);
+  };
 
 export default propertiesSlice.reducer;

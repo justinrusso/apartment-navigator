@@ -15,6 +15,7 @@ from app.models import (
     PropertyCategory,
     PropertyImage,
     PropertyUnit,
+    Review,
     UnitCategory,
     UnitPrice,
 )
@@ -206,6 +207,20 @@ def add_property_image(property_id):
         db.session.commit()
         return image.to_dict()
     return {"errors": validation_errors_to_dict(form.errors)}, 400
+
+
+@properties_routes.route("/<int:property_id>/reviews")
+def get_property_reviews(property_id):
+    property = Property.query.options(
+        joinedload(Property.reviews),
+    ).get(property_id)
+    if not property:
+        return {"error": "Not Found"}, 404
+
+    return {
+        "id": property.id,
+        "reviews": [review.to_dict() for review in property.reviews],
+    }
 
 
 @properties_routes.route("/<int:property_id>/units", methods=["POST"])

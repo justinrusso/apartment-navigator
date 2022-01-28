@@ -36,7 +36,10 @@ class Property(db.Model):
         uselist=False,
     )
     reviews = db.relationship(
-        "Review", backref=db.backref("property"), passive_deletes=True
+        "Review",
+        backref=db.backref("property"),
+        passive_deletes=True,
+        order_by="desc(Review.updated_at)",
     )
     units = db.relationship(
         "PropertyUnit", backref=db.backref("property"), passive_deletes=True

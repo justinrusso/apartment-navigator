@@ -63,6 +63,10 @@ export class PropertiesApi {
       body: JSON.stringify(data),
     });
   }
+
+  static async getPropertyReviews(propertyId: number | string) {
+    return fetchApi(propertiesRoute(`/${propertyId}/reviews`));
+  }
 }
 
 export interface CreatePropertyData {
