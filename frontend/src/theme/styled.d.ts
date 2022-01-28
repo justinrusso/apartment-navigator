@@ -62,6 +62,7 @@ declare module "styled-components" {
       h5: TypographyEntry;
       h6: TypographyEntry;
       body1: TypographyEntry;
+      body2: TypographyEntry;
       button: TypographyEntry;
     };
     zIndex: {

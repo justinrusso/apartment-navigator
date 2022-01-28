@@ -8,14 +8,17 @@ import LoadingCircle from "../common/LoadingCircle";
 import Paper from "../common/Paper";
 import PropertyUnitCategoryCard from "./PropertyUnitCategoryCard";
 import RatingStars from "../review/RatingStars";
+import ReviewCard from "../review/ReviewCard";
 import ReviewPrompt from "../review/ReviewPrompt";
 import Typography from "../common/Typography";
 import { NormalizedPropertyUnit } from "../../store/normalizers/properties";
 import { createAddress } from "./utils";
 import {
   fetchProperty,
+  fetchPropertyReviews,
   selectProperty,
   selectPropertyImages,
+  selectPropertyReviewsArray,
   selectPropertyUnitsByCategories,
 } from "../../store/properties";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
@@ -115,6 +118,12 @@ const MainContent = styled.main`
     flex-direction: column;
     gap: 1rem;
   }
+
+  .reviews-wrapper {
+    display: grid;
+    gap: 1rem;
+    padding-top: 1.5rem;
+  }
 `;
 
 const ReviewsSummary = styled(Typography)`
@@ -131,18 +140,19 @@ const ReviewsSummary = styled(Typography)`
 const PropertyPage: FC = () => {
   const dispatch = useAppDispatch();
 
-  const { propertyId } = useParams();
-  const property = useAppSelector(
-    selectProperty(parseInt(propertyId || "", 10))
-  );
+  const { propertyId: propertyIdParam } = useParams();
+  const propertyId = parseInt(propertyIdParam || "", 10);
+  const property = useAppSelector(selectProperty(propertyId));
   const propertyImages = useAppSelector(
     selectPropertyImages(property?.images || [])
   );
   const unitCategoryMap = useAppSelector(
-    selectPropertyUnitsByCategories(parseInt(propertyId || "", 10))
+    selectPropertyUnitsByCategories(propertyId)
   );
+  const reviews = useAppSelector(selectPropertyReviewsArray(propertyId));
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingReviews, setIsLoadingReviews] = useState(false);
 
   useEffect(() => {
     if (!propertyId) {
@@ -150,12 +160,19 @@ const PropertyPage: FC = () => {
     }
     (async () => {
       setIsLoading(true);
+      setIsLoadingReviews(true);
       try {
         await dispatch(fetchProperty({ propertyId })).unwrap();
       } catch (e) {
         // TODO: display error page?
       } finally {
         setIsLoading(false);
+      }
+      try {
+        await dispatch(fetchPropertyReviews({ propertyId })).unwrap();
+      } catch (e) {
+      } finally {
+        setIsLoadingReviews(false);
       }
     })();
   }, [dispatch, propertyId]);
@@ -264,6 +281,14 @@ const PropertyPage: FC = () => {
               Property Ratings at {propertyName}
             </Typography>
             <ReviewPrompt reviewSummary={property.reviewSummary} />
+            {isLoadingReviews && <LoadingCircle />}
+            {!isLoadingReviews && reviews.length > 0 && (
+              <div className="reviews-wrapper">
+                {reviews.map((review) => (
+                  <ReviewCard key={review.id} review={review} />
+                ))}
+              </div>
+            )}
           </section>
         </MainContent>
         <ContactSidebar as="aside" elevation={2}>

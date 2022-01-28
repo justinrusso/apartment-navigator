@@ -144,6 +144,12 @@ const theme: DefaultTheme = {
       fontWeight: 400,
       letterSpacing: "0em",
     },
+    body2: {
+      fontFamily: "var(--sans)",
+      fontSize: "0.875rem",
+      fontWeight: 400,
+      letterSpacing: "0.01071em",
+    },
     button: {
       fontFamily: "var(--sans)",
       fontSize: "0.875rem",
