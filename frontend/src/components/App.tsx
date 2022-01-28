@@ -18,6 +18,7 @@ import HomePage from "./home/HomePage";
 import PropertyCreator from "./property/PropertyCreator";
 import { fetchPropertyCategories } from "../store/properties";
 import { fetchUnitCategories } from "../store/units";
+import Footer from "./Footer";
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -89,6 +90,7 @@ const App: FC = () => {
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
 
+          <Footer />
           <AuthModals />
         </AuthModalProvider>
       </ThemeProvider>
