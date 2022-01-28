@@ -34,12 +34,14 @@ const Arrow = styled.div`
 type ReviewCardProps = {
   editable?: boolean;
   review: ReviewData;
+  showDeleteModal: () => void;
   showEditModal: () => void;
 };
 
 const ReviewCard: FC<ReviewCardProps> = ({
   editable,
   review,
+  showDeleteModal,
   showEditModal,
 }) => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -122,6 +124,9 @@ const ReviewCard: FC<ReviewCardProps> = ({
           >
             <MenuList>
               <MenuItem onClick={showEditModal}>Edit</MenuItem>
+            </MenuList>
+            <MenuList>
+              <MenuItem onClick={showDeleteModal}>Delete</MenuItem>
             </MenuList>
             <Arrow
               ref={arrowRef}

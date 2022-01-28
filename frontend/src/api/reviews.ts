@@ -12,6 +12,12 @@ export class ReviewsApi {
       body: JSON.stringify(data),
     });
   }
+
+  static async deletePropertyReview(reviewId: number) {
+    return fetchApi(reviewsRoute(`/${reviewId}`), {
+      method: "DELETE",
+    });
+  }
 }
 
 export interface ReviewData {
@@ -33,4 +39,10 @@ export interface ReviewSummary {
   averageRating: number;
   propertyId: number;
   total: 4;
+}
+
+export interface ReviewDeleteResponse {
+  propertyId: number;
+  reviewId: number;
+  reviewSummary: ReviewSummary;
 }

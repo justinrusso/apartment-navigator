@@ -25,6 +25,7 @@ import {
 import { formatRatingNumber } from "../review/utils";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { selectUser } from "../../store/user";
+import ReviewDeleteDialog from "../review/ReviewDeleteDialog";
 
 const ImageGrid = styled.div`
   display: grid;
@@ -160,6 +161,7 @@ const PropertyPage: FC = () => {
   const [isLoadingReviews, setIsLoadingReviews] = useState(false);
 
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [showReviewDeleteModal, setShowReviewDeleteModal] = useState(false);
   const [selectedReviewId, setSelectedReviewId] = useState(0);
 
   useEffect(() => {
@@ -302,6 +304,10 @@ const PropertyPage: FC = () => {
                     key={review.id}
                     editable={review.userId === user?.id}
                     review={review}
+                    showDeleteModal={() => {
+                      setSelectedReviewId(review.id);
+                      setShowReviewDeleteModal(true);
+                    }}
                     showEditModal={() => {
                       setSelectedReviewId(review.id);
                       setShowReviewModal(true);
@@ -316,6 +322,16 @@ const PropertyPage: FC = () => {
                 reviewId={selectedReviewId ? selectedReviewId : undefined}
                 onClose={() => {
                   setShowReviewModal(false);
+                  setSelectedReviewId(0);
+                }}
+              />
+            )}
+            {showReviewDeleteModal && (
+              <ReviewDeleteDialog
+                property={property}
+                reviewId={selectedReviewId ? selectedReviewId : undefined}
+                onClose={() => {
+                  setShowReviewDeleteModal(false);
                   setSelectedReviewId(0);
                 }}
               />
