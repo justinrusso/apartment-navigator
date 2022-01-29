@@ -1,3 +1,5 @@
+import placeholderImage from "./property-placeholder.jpg";
+
 import styled from "styled-components";
 import { FC, useState } from "react";
 import { Link } from "react-router-dom";
@@ -112,11 +114,11 @@ const PropertyCard: FC<PropertyCardProps> = ({
     <>
       <CardRoot {...paperProps}>
         <CardLinkWrapper to={to || `/properties/${propertyId}`}>
-          {propertyImage && (
-            <CardMedia
-              style={{ backgroundImage: `url(${propertyImage.url})` }}
-            />
-          )}
+          <CardMedia
+            style={{
+              backgroundImage: `url(${propertyImage?.url || placeholderImage})`,
+            }}
+          />
           <CardContent>
             <Typography as="h3" variant="h4" gutterBottom>
               {propertyName}
