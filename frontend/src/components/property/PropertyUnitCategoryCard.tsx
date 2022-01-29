@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import Button from "../common/Button";
+import Dialog from "../common/Dialog";
 import Paper from "../common/Paper";
 import Typography from "../common/Typography";
 import { NormalizedPropertyUnit } from "../../store/normalizers/properties";
@@ -65,6 +66,9 @@ const PropertyUnitCategoryCard: FC<PropertyUnitCardProps> = ({
   units,
 }) => {
   const unitCategory = units[0]?.unitCategory.name;
+
+  const [selectedUnitId, setSelectedUnitId] = useState(0);
+
   return (
     <CardRoot elevation={3} className={className}>
       <Typography variant="h3" gutterBottom>
@@ -89,16 +93,21 @@ const PropertyUnitCategoryCard: FC<PropertyUnitCardProps> = ({
               <td>{sqFtFormatter.format(unit.sqFt)}</td>
               <td>
                 {unit.floorPlanImg && (
-                  <Button
-                    variant="text"
-                    as="a"
-                    href={unit.floorPlanImg}
-                    target="_blank"
-                  >
+                  <Button onClick={() => setSelectedUnitId(unit.id)}>
                     View Floor Plan
                   </Button>
                 )}
               </td>
+              {unit.floorPlanImg && selectedUnitId === unit.id && (
+                <Dialog
+                  open
+                  onClose={() => setSelectedUnitId(0)}
+                  fullWidth
+                  maxWidth="md"
+                >
+                  <img src={unit.floorPlanImg} alt="floor plan" />
+                </Dialog>
+              )}
             </tr>
           ))}
         </tbody>

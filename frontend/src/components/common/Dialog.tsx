@@ -1,6 +1,6 @@
 import React, { FC, PropsWithChildren } from "react";
 import { createPortal } from "react-dom";
-import styled from "styled-components";
+import styled, { DefaultTheme } from "styled-components";
 
 import Modal, { ModalProps } from "./Modal";
 import Paper, { PaperProps } from "./Paper";
@@ -17,6 +17,7 @@ const DialogContentContainer = styled.div`
 
 interface DialogContentBackgroundProps extends PaperProps {
   fullWidth?: boolean;
+  maxWidth: keyof Omit<DefaultTheme["breakpoints"]["values"], "xs">;
 }
 
 const DialogContentBackground = styled(Paper)<DialogContentBackgroundProps>`
@@ -25,7 +26,7 @@ const DialogContentBackground = styled(Paper)<DialogContentBackgroundProps>`
   flex-direction: column;
   margin: 32px;
   max-height: calc(100% - 64px);
-  max-width: 600px;
+  max-width: ${(props) => props.theme.breakpoints.values[props.maxWidth]}px;
   overflow-y: auto;
   pointer-events: all;
   position: absolute;
@@ -34,19 +35,25 @@ const DialogContentBackground = styled(Paper)<DialogContentBackgroundProps>`
 
 interface DialogProps extends ModalProps {
   fullWidth?: boolean;
+  maxWidth?: keyof Omit<DefaultTheme["breakpoints"]["values"], "xs">;
 }
 
 const Dialog: FC<PropsWithChildren<DialogProps>> = ({
   children,
   hideBackground,
   fullWidth,
+  maxWidth = "sm",
   onClose,
   open,
 }) => {
   return createPortal(
     <Modal hideBackground={hideBackground} onClose={onClose} open={open}>
       <DialogContentContainer>
-        <DialogContentBackground fullWidth={fullWidth} elevation={24}>
+        <DialogContentBackground
+          fullWidth={fullWidth}
+          maxWidth={maxWidth}
+          elevation={24}
+        >
           {children}
         </DialogContentBackground>
       </DialogContentContainer>
