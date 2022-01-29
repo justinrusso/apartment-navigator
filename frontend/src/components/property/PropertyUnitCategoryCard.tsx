@@ -11,6 +11,11 @@ import { currencyFormatter, sqFtFormatter } from "./utils";
 const CardRoot = styled(Paper)`
   padding: 1rem;
 
+  .table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+  }
+
   table {
     min-width: 650px;
     width: 100%;
@@ -74,39 +79,45 @@ const PropertyUnitCategoryCard: FC<PropertyUnitCardProps> = ({
       <Typography variant="h3" gutterBottom>
         {unitCategory}
       </Typography>
-      <table>
-        <thead>
-          <tr>
-            <th>Unit #</th>
-            <th>Baths</th>
-            <th>Price</th>
-            <th>Sq Ft</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {units.map((unit) => (
-            <tr key={unit.id}>
-              <th>{unit.unitNum}</th>
-              <td>{unit.baths / 100}</td>
-              <td>{currencyFormatter.format(unit.price.price)}</td>
-              <td>{sqFtFormatter.format(unit.sqFt)}</td>
-              <td>
-                {unit.floorPlanImg && (
-                  <Button onClick={() => setSelectedUnitId(unit.id)}>
-                    View Floor Plan
-                  </Button>
-                )}
-              </td>
-              {unit.floorPlanImg && selectedUnitId === unit.id && (
-                <Dialog open onClose={() => setSelectedUnitId(0)} maxWidth="md">
-                  <img src={unit.floorPlanImg} alt="floor plan" />
-                </Dialog>
-              )}
+      <div className="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Unit #</th>
+              <th>Baths</th>
+              <th>Price</th>
+              <th>Sq Ft</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {units.map((unit) => (
+              <tr key={unit.id}>
+                <th>{unit.unitNum}</th>
+                <td>{unit.baths / 100}</td>
+                <td>{currencyFormatter.format(unit.price.price)}</td>
+                <td>{sqFtFormatter.format(unit.sqFt)}</td>
+                <td>
+                  {unit.floorPlanImg && (
+                    <Button onClick={() => setSelectedUnitId(unit.id)}>
+                      View Floor Plan
+                    </Button>
+                  )}
+                </td>
+                {unit.floorPlanImg && selectedUnitId === unit.id && (
+                  <Dialog
+                    open
+                    onClose={() => setSelectedUnitId(0)}
+                    maxWidth="md"
+                  >
+                    <img src={unit.floorPlanImg} alt="floor plan" />
+                  </Dialog>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </CardRoot>
   );
 };

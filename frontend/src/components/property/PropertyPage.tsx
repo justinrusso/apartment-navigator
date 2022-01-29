@@ -117,6 +117,7 @@ const MainContent = styled.main`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  width: 100%;
 
   .units-wrapper {
     display: flex;

@@ -86,6 +86,11 @@ const ContentWrapper = styled.div`
       padding-left: 16px;
     }
   }
+
+  .table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+  }
 `;
 
 const UnitsSectionHeadingWrapper = styled.div`
@@ -336,56 +341,58 @@ const PropertyEditPage: FC = () => {
                   </div>
                 )}
               </UnitsSectionHeadingWrapper>
-              <UnitsTable>
-                <thead>
-                  <tr>
-                    <th>Unit #</th>
-                    <th>Bedrooms</th>
-                    <th>Baths</th>
-                    <th>Price</th>
-                    <th>Sq Ft</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortedUnits.map((unit) => (
-                    <tr key={unit.id}>
-                      <th>{unit.unitNum}</th>
-                      <td>{unit.unitCategory.name}</td>
-                      <td>{unit.baths / 100}</td>
-                      <td>{currencyFormatter.format(unit.price.price)}</td>
-                      <td>{sqFtFormatter.format(unit.sqFt)}</td>
-                      <td>
-                        <Button
-                          variant="text"
-                          onClick={() => {
-                            setModals((draft) => {
-                              draft.unit = true;
-                            });
-                            setSelectedUnitId(unit.id);
-                          }}
-                        >
-                          Edit
-                        </Button>
-                        {property.category.id !== 1 && (
+              <div className="table-wrapper">
+                <UnitsTable>
+                  <thead>
+                    <tr>
+                      <th>Unit #</th>
+                      <th>Bedrooms</th>
+                      <th>Baths</th>
+                      <th>Price</th>
+                      <th>Sq Ft</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sortedUnits.map((unit) => (
+                      <tr key={unit.id}>
+                        <th>{unit.unitNum}</th>
+                        <td>{unit.unitCategory.name}</td>
+                        <td>{unit.baths / 100}</td>
+                        <td>{currencyFormatter.format(unit.price.price)}</td>
+                        <td>{sqFtFormatter.format(unit.sqFt)}</td>
+                        <td>
                           <Button
                             variant="text"
-                            color="error"
                             onClick={() => {
                               setModals((draft) => {
-                                draft.deleteUnit = true;
+                                draft.unit = true;
                               });
                               setSelectedUnitId(unit.id);
                             }}
                           >
-                            Delete
+                            Edit
                           </Button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </UnitsTable>
+                          {property.category.id !== 1 && (
+                            <Button
+                              variant="text"
+                              color="error"
+                              onClick={() => {
+                                setModals((draft) => {
+                                  draft.deleteUnit = true;
+                                });
+                                setSelectedUnitId(unit.id);
+                              }}
+                            >
+                              Delete
+                            </Button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </UnitsTable>
+              </div>
               {modals.unit && (
                 <UnitDialog
                   onClose={() => {
