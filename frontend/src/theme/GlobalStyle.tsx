@@ -59,31 +59,29 @@ const resetCss = css`
 `;
 
 const GlobalStyle = createGlobalStyle`
-    ${resetCss}
+  ${resetCss}
 
-    :root {
-      --sans: 'Roboto','Helvetica','Arial',sans-serif;
+  :root {
+    --sans: 'Roboto','Helvetica','Arial',sans-serif;
 
-      ${(props) => {
-        const varMap: Record<string, string> = {};
-        Object.entries(props.theme.palette).forEach(
-          ([paletteColor, palette]) => {
-            if (typeof palette === "object" && (palette as PaletteColor).base) {
-              varMap[`--palette-${paletteColor}-base`] = (
-                palette as PaletteColor
-              ).base!;
-            }
-          }
-        );
-        return varMap;
-      }}
-    }
+    ${(props) => {
+      const varMap: Record<string, string> = {};
+      Object.entries(props.theme.palette).forEach(([paletteColor, palette]) => {
+        if (typeof palette === "object" && (palette as PaletteColor).base) {
+          varMap[`--palette-${paletteColor}-base`] = (
+            palette as PaletteColor
+          ).base!;
+        }
+      });
+      return varMap;
+    }}
+  }
 
-    body {
-      ${(props) => props.theme.typography.body1}
-      color: ${(props) => props.theme.palette.text.primary};
-      background-color: ${(props) => props.theme.palette.background};
-    }
+  body {
+    ${(props) => props.theme.typography.body1}
+    color: ${(props) => props.theme.palette.text.primary};
+    background-color: ${(props) => props.theme.palette.background};
+  }
 
   * {
     scrollbar-width: thin;
