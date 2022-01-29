@@ -99,12 +99,7 @@ const PropertyUnitCategoryCard: FC<PropertyUnitCardProps> = ({
                 )}
               </td>
               {unit.floorPlanImg && selectedUnitId === unit.id && (
-                <Dialog
-                  open
-                  onClose={() => setSelectedUnitId(0)}
-                  fullWidth
-                  maxWidth="md"
-                >
+                <Dialog open onClose={() => setSelectedUnitId(0)} maxWidth="md">
                   <img src={unit.floorPlanImg} alt="floor plan" />
                 </Dialog>
               )}
