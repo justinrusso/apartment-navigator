@@ -345,6 +345,97 @@
           "floor_plan_img": "https://images1.apartments.com/i2/cKa61mlHsgRByRtTRvjZ_knprrYVIgVVWaTIb76Y6n4/102/bay-151-bayonne-nj-floorplan.jpg?p=1"
         }
       ]
+    },
+    {
+      "owner_id": 1,
+      "category_id": 2,
+      "built_in_year": 2017,
+      "name": "Ascent South Lake Union",
+      "address_1": "1145 Republican St",
+      "city": "Seattle",
+      "state": "WA",
+      "zip_code": "98109",
+      "created_at": "2020-01-01 00:00:00.000000",
+      "images": [],
+      "past_unit_prices": [],
+      "units": [
+        {
+          "unit_num": "2208",
+          "unit_category_id": 2,
+          "baths": 100,
+          "price": {
+            "price": 347900
+          },
+          "sq_ft": 669,
+          "floor_plan_img": "https://images1.apartments.com/i2/TPicZNZu0JylTZ0e3ijO9m9y5TgXkeVvjcFaV_pnhhE/111/ascent-south-lake-union-seattle-wa-floorplan.jpg?p=1"
+        },
+        {
+          "unit_num": "708",
+          "unit_category_id": 2,
+          "baths": 100,
+          "price": {
+            "price": 287900
+          },
+          "sq_ft": 669,
+          "floor_plan_img": "https://images1.apartments.com/i2/TPicZNZu0JylTZ0e3ijO9m9y5TgXkeVvjcFaV_pnhhE/111/ascent-south-lake-union-seattle-wa-floorplan.jpg?p=1"
+        },
+        {
+          "unit_num": "318",
+          "unit_category_id": 2,
+          "baths": 100,
+          "price": {
+            "price": 296500
+          },
+          "sq_ft": 776,
+          "floor_plan_img": "https://images1.apartments.com/i2/SsC1yAmz-gocNG1Y9zxwMX7bw-7UrYbJWueAr95a-ZY/111/ascent-south-lake-union-seattle-wa-floorplan.jpg?p=1"
+        },
+        {
+          "unit_num": "2009",
+          "unit_category_id": 3,
+          "baths": 200,
+          "price": {
+            "price": 381900
+          },
+          "sq_ft": 1070,
+          "floor_plan_img": "https://images1.apartments.com/i2/zvI4fXhwMWQ5xQb8lfu3bjzzMNMi5PtWqZ0rXqp5vK8/111/ascent-south-lake-union-seattle-wa-floorplan.jpg?p=1"
+        },
+        {
+          "unit_num": "1206",
+          "unit_category_id": 3,
+          "baths": 200,
+          "price": {
+            "price": 403400
+          },
+          "sq_ft": 1067,
+          "floor_plan_img": "https://images1.apartments.com/i2/698IY2BPZnvZQpdmPT_6X4SIAOSZaAsn1ttxwTIRRX4/111/ascent-south-lake-union-seattle-wa-floorplan.jpg?p=1"
+        }
+      ]
+    },
+    {
+      "owner_id": 1,
+      "category_id": 1,
+      "built_in_year": 2010,
+      "address_1": "1920 N 42nd St",
+      "city": "Seattle",
+      "state": "WA",
+      "zip_code": "98103",
+      "created_at": "2019-09-20 00:00:00.000000",
+      "images": [
+        "https://images1.apartments.com/i2/Im-o9qnPfd6cnkPEsFLnuDNzQ4eFiis1xBp-pyYy0sE/111/1920-n-42nd-st-seattle-wa-primary-photo.png?p=1",
+        "https://images1.apartments.com/i2/gtbff711HUPcc9oKimELMwaUChm3fZknbcphdrkVuPc/113/1920-n-42nd-st-seattle-wa-building-photo.jpg?p=1",
+        "https://images1.apartments.com/i2/xbT_fdPc4X4PhoYJQZKQ8GWn306k1uPJW8hspMsnadI/113/1920-n-42nd-st-seattle-wa-building-photo.jpg?p=1"
+      ],
+      "past_unit_prices": [],
+      "units": [
+        {
+          "unit_category_id": 4,
+          "baths": 200,
+          "price": {
+            "price": 425000
+          },
+          "sq_ft": 2300
+        }
+      ]
     }
   ]
 }
