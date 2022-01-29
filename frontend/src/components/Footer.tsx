@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { FC } from "react";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
-import { MdCode, MdPerson } from "react-icons/md";
+import { MdPerson } from "react-icons/md";
+import { VscCode } from "react-icons/vsc";
 
 import Container from "./common/Container";
 import IconButton from "./common/IconButton";
@@ -71,7 +72,7 @@ const Footer: FC = () => {
               href="https://github.com/justinrusso/apartment-navigator/"
               target="_blank"
             >
-              <MdCode />
+              <VscCode />
             </IconButton>
           </div>
         </div>
