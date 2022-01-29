@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { FC } from "react";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
-import { MdPerson } from "react-icons/md";
+import { MdCode, MdPerson } from "react-icons/md";
 
 import Container from "./common/Container";
 import IconButton from "./common/IconButton";
@@ -54,6 +54,13 @@ const Footer: FC = () => {
             </IconButton>
             <IconButton
               as="a"
+              href="https://www.linkedin.com/in/justin-k-russo/"
+              target="_blank"
+            >
+              <FaLinkedinIn />
+            </IconButton>
+            <IconButton
+              as="a"
               href="https://github.com/justinrusso/"
               target="_blank"
             >
@@ -61,10 +68,10 @@ const Footer: FC = () => {
             </IconButton>
             <IconButton
               as="a"
-              href="https://www.linkedin.com/in/justin-k-russo/"
+              href="https://github.com/justinrusso/apartment-navigator/"
               target="_blank"
             >
-              <FaLinkedinIn />
+              <MdCode />
             </IconButton>
           </div>
         </div>
