@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import Button from "../common/Button";
 import Container from "../common/Container";
 import LoadingCircle from "../common/LoadingCircle";
+import ManagePropertyBar from "./ManagePropertyBar";
 import Paper from "../common/Paper";
 import PropertyUnitCategoryCard from "./PropertyUnitCategoryCard";
 import RatingStars from "../review/RatingStars";
@@ -226,6 +227,9 @@ const PropertyPage: FC = () => {
             />
           ))}
         </ImageGrid>
+      )}
+      {user?.id === property.owner.id && (
+        <ManagePropertyBar property={property} />
       )}
       <MainContentWrapper>
         <MainContent>

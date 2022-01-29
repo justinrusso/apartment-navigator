@@ -33,7 +33,7 @@ const DialogContentBackground = styled(Paper)<DialogContentBackgroundProps>`
   width: ${(props) => props.fullWidth && "calc(100% - 64px)"};
 `;
 
-interface DialogProps extends ModalProps {
+export interface DialogProps extends ModalProps {
   fullWidth?: boolean;
   maxWidth?: keyof Omit<DefaultTheme["breakpoints"]["values"], "xs">;
 }
