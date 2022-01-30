@@ -1,13 +1,14 @@
 import fullLogo from "./full-logo.png";
 
-import { FC, useRef } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { FC, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import Button from "../common/Button";
 import Container from "../common/Container";
 import Paper from "../common/Paper";
 import ProfileButton from "./ProfileButton";
+import SearchBar from "../search/SearchBar";
 import { useAppSelector } from "../../hooks/redux";
 import { useAuthModal } from "../../context/AuthModalProvider";
 import { selectUser } from "../../store/user";
@@ -30,18 +31,31 @@ const NavbarRoot = styled(Paper)`
   z-index: ${(props) => props.theme.zIndex.navbar};
 `;
 
-const NavbarInner = styled.div`
+type NavbarInnerProps = { isHome?: boolean };
+const NavbarInner = styled.div<NavbarInnerProps>`
   align-items: center;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  gap: 0.5rem;
+  grid-template-columns: auto auto;
   min-height: 3.5rem;
+  padding: 0.75rem 0;
+
+  .search-bar-wrapper {
+    grid-column: span 2;
+    order: 1;
+
+    ${(props) => props.theme.breakpoints.up("md", props.theme)} {
+      grid-column: span 1;
+      order: unset;
+    }
+  }
 
   & > * {
     display: flex;
     align-items: center;
   }
 
-  & > *:nth-child(3n) {
+  .justify-end {
     justify-self: end;
   }
 
@@ -56,6 +70,11 @@ const NavbarInner = styled.div`
   ${(props) => props.theme.breakpoints.up("sm", props.theme)} {
     min-height: 4rem;
   }
+
+  ${(props) => props.theme.breakpoints.up("md", props.theme)} {
+    ${(props) => !props.isHome && { gridTemplateColumns: "1fr auto 1fr" }}
+    padding: 0;
+  }
 `;
 
 const LogoWrapper = styled(Link)`
@@ -64,6 +83,9 @@ const LogoWrapper = styled(Link)`
 `;
 
 const Navbar: FC = () => {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   const authModal = useAuthModal();
 
   const user = useAppSelector(selectUser());
@@ -82,14 +104,18 @@ const Navbar: FC = () => {
         style={{ boxShadow: navbarStickied ? undefined : "none" }}
       >
         <Container>
-          <NavbarInner>
+          <NavbarInner isHome={isHome}>
             <div>
               <LogoWrapper to="/">
                 <img src={fullLogo} alt="apartment navigator" height="100%" />
               </LogoWrapper>
             </div>
-            <div></div>
-            <div>
+            {!isHome && (
+              <div className="search-bar-wrapper">
+                <SearchBar />
+              </div>
+            )}
+            <div className="justify-end">
               {!user && (
                 <>
                   <Button variant="text" onClick={authModal.showLogin}>

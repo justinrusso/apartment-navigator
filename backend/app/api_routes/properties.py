@@ -29,7 +29,13 @@ properties_routes = Blueprint("properties", __name__, url_prefix="/properties")
 
 @properties_routes.route("/")
 def index():
-    properties = Property.query.all()
+    key = request.args.get("key")
+
+    filters = []
+    if key:
+        filters.append(Property.name.ilike(f"%{key}%"))
+
+    properties = Property.query.filter(*filters).all()
     return {"properties": [property.to_dict() for property in properties]}
 
 
