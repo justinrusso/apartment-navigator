@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from flask_login import current_user, login_required
 from marshmallow import ValidationError
 from munch import DefaultMunch
+from sqlalchemy import or_
 from sqlalchemy.orm import joinedload
 
 from app.forms import pick_patched_data, validation_errors_to_dict
@@ -33,7 +34,13 @@ def index():
 
     filters = []
     if key:
-        filters.append(Property.name.ilike(f"%{key}%"))
+        filters.append(
+            or_(
+                Property.name.ilike(f"%{key}%"),
+                Property.city.ilike(f"%{key}%"),
+                Property.state.ilike(f"%{key}%"),
+            )
+        )
 
     properties = Property.query.filter(*filters).all()
     return {"properties": [property.to_dict() for property in properties]}
