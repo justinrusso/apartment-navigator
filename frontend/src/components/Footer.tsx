@@ -14,9 +14,16 @@ const FooterRoot = styled.footer`
   border-top: 1px solid ${(props) => props.theme.palette.divider};
 
   .inner-wrapper {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: 1fr;
+    text-align: center;
+
+    ${(props) => props.theme.breakpoints.up("sm", props.theme)} {
+      grid-template-columns: 1fr auto;
+      text-align: left;
+    }
   }
 
   .author {
