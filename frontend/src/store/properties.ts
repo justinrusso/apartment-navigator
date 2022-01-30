@@ -312,6 +312,9 @@ export const editProperty = createAsyncThunk(
   }
 );
 
+type FetchPropertiesArgs = {
+  searchParams?: URLSearchParams;
+};
 type FetchPropertiesResult = NormalizedResult<
   {
     images: Record<number, PropertyImage>;
@@ -322,10 +325,13 @@ type FetchPropertiesResult = NormalizedResult<
 >;
 export const fetchProperties = createAsyncThunk(
   `${propertiesSlice.name}/fetchProperties`,
-  async (args, thunkAPI): Promise<FetchPropertiesResult> => {
+  async (
+    { searchParams }: FetchPropertiesArgs | undefined = {},
+    thunkAPI
+  ): Promise<FetchPropertiesResult> => {
     let res: Response;
     try {
-      res = await PropertiesApi.getProperties();
+      res = await PropertiesApi.getProperties(searchParams);
     } catch (errorRes) {
       const resData = await (errorRes as Response).json();
       throw thunkAPI.rejectWithValue(resData.errors);

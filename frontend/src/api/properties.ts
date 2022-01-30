@@ -22,8 +22,12 @@ export class PropertiesApi {
     });
   }
 
-  static async getProperties() {
-    return fetchApi(propertiesRoute());
+  static async getProperties(searchParams?: URLSearchParams) {
+    return fetchApi(
+      searchParams
+        ? propertiesRoute(`?${searchParams.toString()}`)
+        : propertiesRoute()
+    );
   }
 
   static async getProperty(propertyId: number | string) {
