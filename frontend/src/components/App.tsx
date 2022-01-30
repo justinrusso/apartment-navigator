@@ -11,6 +11,7 @@ import PropertyEditPage from "./property/PropertyEditPage";
 import PropertiesManagementPage from "./property/PropertiesManagementPage";
 import PropertyPage from "./property/PropertyPage";
 import RequireAuth from "./auth/RequireAuth";
+import SearchPage from "./search/SearchPage";
 import theme from "../theme";
 import { authenticateUser } from "../store/user";
 import { useAppDispatch } from "../hooks/redux";
@@ -47,6 +48,7 @@ const App: FC = () => {
           <Routes>
             <Route path="/">
               <Route index element={<HomePage />} />
+              <Route path="search" element={<SearchPage />} />
               <Route path="properties">
                 <Route
                   path="new"

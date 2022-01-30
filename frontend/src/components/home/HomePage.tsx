@@ -1,14 +1,17 @@
 import HeroBackground from "./hero-background.jfif";
 
+import styled from "styled-components";
+
 import Container from "../common/Container";
 import Grid from "../common/Grid";
 import LoadingCircle from "../common/LoadingCircle";
-import styled from "styled-components";
+import Paper from "../common/Paper";
+import PropertyCard from "../property/PropertyCard";
+import SearchBar from "../search/SearchBar";
 import Typography from "../common/Typography";
 import { FC, useEffect, useState } from "react";
 import { fetchProperties, selectPropertyIds } from "../../store/properties";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import PropertyCard from "../property/PropertyCard";
 
 const HeroSection = styled.section`
   height: 55vmin;
@@ -21,6 +24,16 @@ const HeroSection = styled.section`
   .hero-content-wrapper {
     z-index: 10;
     color: #fff;
+
+    h2 {
+      text-align: center;
+    }
+
+    .hero-content-inner {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   .hero-background {
@@ -42,6 +55,10 @@ const HeroSection = styled.section`
     position: absolute;
     right: 0;
     top: 0;
+  }
+
+  .search-bar-wrapper {
+    width: 100%;
   }
 `;
 
@@ -68,9 +85,14 @@ const HomePage: FC = () => {
       <HeroSection>
         <div className="hero-content-wrapper">
           <Container>
-            <Typography variant="h2" gutterBottom color="inherit">
-              Discover Your New Apartment
-            </Typography>
+            <div className="hero-content-inner">
+              <Typography variant="h2" gutterBottom color="inherit">
+                Discover Your New Apartment
+              </Typography>
+              <Paper className="search-bar-wrapper" elevation={1}>
+                <SearchBar />
+              </Paper>
+            </div>
           </Container>
         </div>
         <div className="hero-background" />
