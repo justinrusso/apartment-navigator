@@ -37,6 +37,7 @@ def index():
         filters.append(
             or_(
                 Property.name.ilike(f"%{key}%"),
+                Property.address_1.ilike(f"%{key}%"),
                 Property.city.ilike(f"%{key}%"),
                 Property.state.ilike(f"%{key}%"),
             )
