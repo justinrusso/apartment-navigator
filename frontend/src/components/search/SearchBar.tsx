@@ -75,7 +75,7 @@ const SearchBar: FC<SearchBarProps> = ({ className }) => {
         <MdSearch />
       </SearchIconButton>
       <Input
-        placeholder="Search by property name"
+        placeholder="Search for properties"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
