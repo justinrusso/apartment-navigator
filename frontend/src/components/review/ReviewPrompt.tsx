@@ -1,11 +1,14 @@
 import styled from "styled-components";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 import Button from "../common/Button";
 import Typography from "../common/Typography";
 import RatingStars from "./RatingStars";
 import { NormalizedProperty } from "../../store/normalizers/properties";
 import { formatRatingNumber } from "./utils";
+import { useAppSelector } from "../../hooks/redux";
+import { selectUser } from "../../store/user";
+import { useAuthModal } from "../../context/AuthModalProvider";
 
 const ReviewPromptRoot = styled.div`
   display: flex;
@@ -34,6 +37,27 @@ type ReviewPromptProps = {
 };
 
 const ReviewPrompt: FC<ReviewPromptProps> = ({ reviewSummary, showModal }) => {
+  const authModal = useAuthModal();
+  const user = useAppSelector(selectUser());
+
+  const [modalShowPending, setModalShowPending] = useState(false);
+
+  useEffect(() => {
+    if (modalShowPending && user) {
+      showModal();
+      setModalShowPending(false);
+    }
+  }, [modalShowPending, showModal, user]);
+
+  const handleWriteReview = () => {
+    if (!user) {
+      setModalShowPending(true);
+      authModal.showLogin();
+      return;
+    }
+    showModal();
+  };
+
   return (
     <ReviewPromptRoot>
       <div>
@@ -57,7 +81,7 @@ const ReviewPrompt: FC<ReviewPromptProps> = ({ reviewSummary, showModal }) => {
         <Typography>
           Share details of your own experience with this property
         </Typography>
-        <Button onClick={showModal}>Write a Review</Button>
+        <Button onClick={handleWriteReview}>Write a Review</Button>
       </div>
     </ReviewPromptRoot>
   );
