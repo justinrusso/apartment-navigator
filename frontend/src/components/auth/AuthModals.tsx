@@ -17,8 +17,10 @@ const AuthModals: FC = () => {
   const navigate = useNavigate();
 
   const handleSuccess = () => {
-    const from = (location.state as LocationState)?.from?.pathname || "/";
-    navigate(from, { replace: true });
+    const from = (location.state as LocationState)?.from?.pathname;
+    if (from) {
+      navigate(from, { replace: true });
+    }
   };
 
   return (
