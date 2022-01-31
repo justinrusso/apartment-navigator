@@ -4,15 +4,22 @@ Apartment Navigator is the place to find your next amazing place to live! Inspir
 
 Website: [https://apartment-navigator.herokuapp.com/](https://apartment-navigator.herokuapp.com/)
 
+![Home page](https://github.com/justinrusso/apartment-navigator/blob/main/docs/images/ss-home.jpg?raw=true)
+![Top of property page](https://github.com/justinrusso/apartment-navigator/blob/main/docs/images/ss-property-1.png?raw=true)
+![Property page reviews](https://github.com/justinrusso/apartment-navigator/blob/main/docs/images/ss-property-2.png?raw=true)
+![Manage property page](https://github.com/justinrusso/apartment-navigator/blob/main/docs/images/ss-manage-property.png?raw=true)
+
 ## Technologies Used
 
 ### Frontend
+
 - TypeScript / JavaScript
 - React
 - Redux
 - Styled-Components
 
 ### Backend
+
 - Python
 - Flask
 - WTForms
