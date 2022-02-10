@@ -67,7 +67,7 @@ const propertiesSlice = createSlice({
       state.ids.push(action.payload.result as number);
     });
     builder.addCase(fetchProperties.fulfilled, (state, action) => {
-      state.entities = action.payload.entities.properties;
+      state.entities = action.payload.entities.properties || {};
       state.ids = Array.isArray(action.payload.result)
         ? action.payload.result
         : [action.payload.result];
@@ -75,7 +75,7 @@ const propertiesSlice = createSlice({
       state.units = action.payload.entities.units;
     });
     builder.addCase(fetchUserOwnedProperties.fulfilled, (state, action) => {
-      state.entities = action.payload.entities.properties;
+      state.entities = action.payload.entities.properties || {};
       state.ids = Array.isArray(action.payload.result)
         ? action.payload.result
         : [action.payload.result];
