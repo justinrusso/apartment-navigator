@@ -103,6 +103,12 @@ const GlobalStyle = createGlobalStyle`
       background-color: ${(props) => props.theme.palette.text.disabled};
     }
   }
+
+  #root {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+  }
 `;
 
 export default GlobalStyle;

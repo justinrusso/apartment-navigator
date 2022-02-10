@@ -81,7 +81,7 @@ const HomePage: FC = () => {
   }, [dispatch]);
 
   return (
-    <>
+    <div>
       <HeroSection>
         <div className="hero-content-wrapper">
           <Container>
@@ -116,7 +116,7 @@ const HomePage: FC = () => {
           )}
         </Container>
       </Section>
-    </>
+    </div>
   );
 };
 

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@floating-ui/react-dom": "^0.4.3",
+    "@react-google-maps/api": "^2.7.0",
     "@reduxjs/toolkit": "^1.7.1",
     "immer": "^9.0.12",
     "normalizr": "^3.6.1",
