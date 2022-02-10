@@ -23,6 +23,7 @@ from app.models import (
     UnitPrice,
 )
 from app.schemas.property_schema import MultiPropertySchema, SinglePropertySchema
+from app.utils.maps import Address
 
 
 properties_routes = Blueprint("properties", __name__, url_prefix="/properties")
@@ -82,6 +83,15 @@ def create_property():
         except ValidationError as error:
             return {"errors": error.messages}, 400
 
+        address = Address(
+            address_1=result["address_1"],
+            address_2=result["address_2"],
+            city=result["city"],
+            state=result["state"],
+            zip_code=result["zip_code"],
+        )
+        lat, lng = address.geocode_lat_lng()
+
         property = Property(
             owner_id=result["owner_id"],
             category_id=result["category_id"],
@@ -92,6 +102,8 @@ def create_property():
             city=result["city"],
             state=result["state"],
             zip_code=result["zip_code"],
+            lat=lat,
+            lng=lng,
             review_summary=ReviewSummary(total=0, total_rating=0),
         )
 
