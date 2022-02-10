@@ -182,6 +182,24 @@ def edit_property(property_id):
     ]
 
     if form.validate_on_submit():
+        if (
+            property.address_1 != form.data["address1"]
+            or property.address_2 != form.data["address2"]
+            or property.city != form.data["city"]
+            or property.state != form.data["state"]
+            or property.zip_code != form.data["zipCode"]
+        ):
+            address = Address(
+                address_1=form.data["address1"],
+                address_2=form.data["address2"],
+                city=form.data["city"],
+                state=form.data["state"],
+                zip_code=form.data["zipCode"],
+            )
+            lat, lng = address.geocode_lat_lng()
+            property.lat = lat
+            property.lng = lng
+
         property.built_in_year = form.data["builtInYear"]
         property.name = form.data["name"]
         property.address_1 = form.data["address1"]
@@ -189,6 +207,7 @@ def edit_property(property_id):
         property.city = form.data["city"]
         property.state = form.data["state"]
         property.zip_code = form.data["zipCode"]
+
         db.session.add(property)
         db.session.commit()
         return property.to_dict()
