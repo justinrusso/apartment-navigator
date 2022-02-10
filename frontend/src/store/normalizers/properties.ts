@@ -28,6 +28,8 @@ export interface NormalizedProperty {
   city: string;
   state: string;
   zipCode: string;
+  lat: number;
+  lng: number;
   reviews?: number[];
   reviewSummary: {
     propertyId: number;

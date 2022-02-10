@@ -143,6 +143,8 @@ export interface PropertyApiData {
   city: string;
   state: string;
   zipCode: string;
+  lat: number;
+  lng: number;
   reviewSummary: ReviewSummary;
   images: PropertyImage[];
   units: PropertyUnit[];
