@@ -9,6 +9,7 @@ from app.models import (
     ReviewSummary,
     UnitPrice,
 )
+from app.utils.maps import Address
 
 
 def seed_properties():
@@ -17,15 +18,28 @@ def seed_properties():
     data = json.load(f)
 
     for property_data in data.get("properties", []):
+        address = Address(
+            address_1=property_data.get("address_1"),
+            address_2=property_data.get("address_2"),
+            city=property_data.get("city"),
+            state=property_data.get("state"),
+            zip_code=property_data.get("zip_code"),
+        )
+
+        lat, lng = address.geocode_lat_lng()
+
         property = Property(
             owner_id=property_data.get("owner_id"),
             category_id=property_data.get("category_id"),
             built_in_year=property_data.get("built_in_year"),
             name=property_data.get("name"),
             address_1=property_data.get("address_1"),
+            address_2=property_data.get("address_2"),
             city=property_data.get("city"),
             state=property_data.get("state"),
             zip_code=property_data.get("zip_code"),
+            lat=lat,
+            lng=lng,
             created_at=property_data.get("created_at"),
         )
 
