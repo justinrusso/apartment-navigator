@@ -49,9 +49,10 @@ const CardLinkWrapper = styled(Link)`
   }
 `;
 
-const CardMedia = styled.div`
+type CardMediaProps = { wide?: boolean };
+const CardMedia = styled.div<CardMediaProps>`
   width: 100%;
-  padding-top: 62.5%;
+  padding-top: ${(props) => (props.wide ? "200px" : "62.5%")};
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -71,12 +72,14 @@ interface PropertyCardProps extends PaperProps {
   propertyId: number;
   showActions?: boolean;
   to?: string;
+  wide?: boolean;
 }
 
 const PropertyCard: FC<PropertyCardProps> = ({
   propertyId,
   showActions,
   to,
+  wide,
   ...paperProps
 }) => {
   const property = useAppSelector(selectProperty(propertyId));
@@ -96,6 +99,7 @@ const PropertyCard: FC<PropertyCardProps> = ({
       <CardRoot {...paperProps}>
         <CardLinkWrapper to={to || `/properties/${propertyId}`}>
           <CardMedia
+            wide={wide}
             style={{
               backgroundImage: `url(${propertyImage?.url || placeholderImage})`,
             }}

@@ -20,6 +20,7 @@ faker = "*"
 gunicorn = "*"
 munch = "*"
 marshmallow = "*"
+googlemaps = "*"
 
 [dev-packages]
 black = "*"

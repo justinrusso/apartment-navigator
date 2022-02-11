@@ -1,7 +1,6 @@
 from sqlalchemy.sql import func
 
 from .db import db
-from .review_summary import ReviewSummary
 
 
 class Property(db.Model):
@@ -21,6 +20,8 @@ class Property(db.Model):
     city = db.Column(db.String, nullable=False)
     state = db.Column(db.String, nullable=False)
     zip_code = db.Column(db.String, nullable=False)
+    lat = db.Column(db.DECIMAL, nullable=False)
+    lng = db.Column(db.DECIMAL, nullable=False)
     created_at = db.Column(db.DateTime, server_default=func.now(), nullable=False)
     updated_at = db.Column(
         db.DateTime, server_default=func.now(), onupdate=func.now(), nullable=False
@@ -58,6 +59,8 @@ class Property(db.Model):
             "city": self.city,
             "state": self.state,
             "zipCode": self.zip_code,
+            "lat": self.lat,
+            "lng": self.lng,
             "images": [image.to_dict() for image in self.images],
             "units": [unit.to_dict() for unit in self.units],
             "createdAt": self.created_at,

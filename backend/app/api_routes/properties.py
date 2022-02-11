@@ -23,6 +23,7 @@ from app.models import (
     UnitPrice,
 )
 from app.schemas.property_schema import MultiPropertySchema, SinglePropertySchema
+from app.utils.maps import Address
 
 
 properties_routes = Blueprint("properties", __name__, url_prefix="/properties")
@@ -83,6 +84,15 @@ def create_property():
         except ValidationError as error:
             return {"errors": error.messages}, 400
 
+        address = Address(
+            address_1=result["address_1"],
+            address_2=result["address_2"],
+            city=result["city"],
+            state=result["state"],
+            zip_code=result["zip_code"],
+        )
+        lat, lng = address.geocode_lat_lng()
+
         property = Property(
             owner_id=result["owner_id"],
             category_id=result["category_id"],
@@ -93,6 +103,8 @@ def create_property():
             city=result["city"],
             state=result["state"],
             zip_code=result["zip_code"],
+            lat=lat,
+            lng=lng,
             review_summary=ReviewSummary(total=0, total_rating=0),
         )
 
@@ -171,6 +183,24 @@ def edit_property(property_id):
     ]
 
     if form.validate_on_submit():
+        if (
+            property.address_1 != form.data["address1"]
+            or property.address_2 != form.data["address2"]
+            or property.city != form.data["city"]
+            or property.state != form.data["state"]
+            or property.zip_code != form.data["zipCode"]
+        ):
+            address = Address(
+                address_1=form.data["address1"],
+                address_2=form.data["address2"],
+                city=form.data["city"],
+                state=form.data["state"],
+                zip_code=form.data["zipCode"],
+            )
+            lat, lng = address.geocode_lat_lng()
+            property.lat = lat
+            property.lng = lng
+
         property.built_in_year = form.data["builtInYear"]
         property.name = form.data["name"]
         property.address_1 = form.data["address1"]
@@ -178,6 +208,7 @@ def edit_property(property_id):
         property.city = form.data["city"]
         property.state = form.data["state"]
         property.zip_code = form.data["zipCode"]
+
         db.session.add(property)
         db.session.commit()
         return property.to_dict()
