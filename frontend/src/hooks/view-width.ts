@@ -41,12 +41,6 @@ export function useViewWidth(): UseViewWidthHook {
     (val: keyof DefaultTheme["breakpoints"]["values"]) => {
       const width = window.innerWidth;
 
-      console.log(
-        width,
-        theme.breakpoints.values[val],
-        width > theme.breakpoints.values[val]
-      );
-
       return width > theme.breakpoints.values[val];
     },
     [theme.breakpoints.values]
