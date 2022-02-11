@@ -75,11 +75,11 @@ const SearchPage: FC = () => {
         <LoadingCircle />
       ) : (
         <Grid style={{ height: "100%", width: "100%" }}>
-          <Grid item md={7}>
-            {!isMapLoaded ? (
-              <LoadingCircle />
-            ) : (
-              breakpointUp("md") && (
+          {breakpointUp("md") && (
+            <Grid item md={7}>
+              {!isMapLoaded ? (
+                <LoadingCircle />
+              ) : (
                 <GoogleMap
                   options={{
                     streetViewControl: false,
@@ -108,9 +108,9 @@ const SearchPage: FC = () => {
                     />
                   ))}
                 </GoogleMap>
-              )
-            )}
-          </Grid>
+              )}
+            </Grid>
+          )}
           <Grid
             item
             md={5}
@@ -120,7 +120,7 @@ const SearchPage: FC = () => {
               {propertyIds.length > 0 ? (
                 propertyIds.map((propertyId) => (
                   <Grid item key={propertyId} id={`property-${propertyId}`}>
-                    <PropertyCard propertyId={propertyId} elevation={4} />
+                    <PropertyCard propertyId={propertyId} elevation={4} wide />
                   </Grid>
                 ))
               ) : (
