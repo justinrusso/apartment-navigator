@@ -65,6 +65,12 @@ const SearchPage: FC = () => {
       );
     });
     map.fitBounds(bounds);
+
+    const zoomLevel = map.getZoom() || 0;
+
+    if (zoomLevel > 15) {
+      map.setZoom(15);
+    }
   }, [map, properties]);
 
   const { breakpointUp } = useViewWidth();
