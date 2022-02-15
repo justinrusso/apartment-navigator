@@ -47,6 +47,19 @@ const CardLinkWrapper = styled(Link)`
       opacity: ${(props) => props.theme.palette.action.hoverOpacity};
     }
   }
+
+  &:before {
+    content: "";
+    position: absolute;
+    inset: 0px;
+    border-left: 0.5rem solid ${(props) => props.theme.palette.primary.light};
+    opacity: 0;
+    transition: opacity 250ms
+      ${(props) => props.theme.transitions.easing.easeInOut} 0ms;
+  }
+  &:focus:before {
+    opacity: 1;
+  }
 `;
 
 type CardMediaProps = { wide?: boolean };
