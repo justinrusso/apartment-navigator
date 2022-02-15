@@ -61,6 +61,7 @@ const PropertyMap: FC<PropertyMapProps> = ({
     const propertyCardContainer = document.querySelector(
       `#property-${propertyId}`
     );
+    propertyCardContainer?.querySelector("a")?.focus();
     propertyCardContainer?.scrollIntoView({ behavior: "smooth" });
   }, []);
 
