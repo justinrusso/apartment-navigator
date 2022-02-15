@@ -7,6 +7,7 @@ import Container from "../common/Container";
 import LoadingCircle from "../common/LoadingCircle";
 import ManagePropertyBar from "./ManagePropertyBar";
 import Paper from "../common/Paper";
+import PropertyMap from "../maps/PropertyMap";
 import PropertyUnitCategoryCard from "./PropertyUnitCategoryCard";
 import RatingStars from "../review/RatingStars";
 import ReviewCard from "../review/ReviewCard";
@@ -123,6 +124,11 @@ const MainContent = styled.main`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .map-wrapper {
+    height: 100%;
+    min-height: 26rem;
   }
 
   .reviews-wrapper {
@@ -292,6 +298,15 @@ const PropertyPage: FC = () => {
             >
               Send an Email
             </Button>
+          </section>
+          <section>
+            <Typography variant="h2" gutterBottom>
+              Location
+            </Typography>
+            <Typography gutterBottom>{createAddress(property)}</Typography>
+            <div className="map-wrapper">
+              <PropertyMap properties={property} />
+            </div>
           </section>
           <section>
             <Typography variant="h2" gutterBottom>

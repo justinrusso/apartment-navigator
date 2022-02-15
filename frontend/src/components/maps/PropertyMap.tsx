@@ -1,15 +1,24 @@
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 
 import LoadingCircle from "../common/LoadingCircle";
 import mapStyles from "./propertyMapStyles.json";
 import { NormalizedProperty } from "../../store/normalizers/properties";
 
 type PropertyMapProps = {
-  properties: NormalizedProperty[];
+  enableMarkerClicks?: boolean;
+  properties: NormalizedProperty | NormalizedProperty[];
 };
 
-const PropertyMap: FC<PropertyMapProps> = ({ properties }) => {
+const PropertyMap: FC<PropertyMapProps> = ({
+  enableMarkerClicks,
+  properties: _properties,
+}) => {
+  const properties: NormalizedProperty[] = useMemo(
+    () => (Array.isArray(_properties) ? _properties : [_properties]),
+    [_properties]
+  );
+
   const { isLoaded: isMapLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY || "",
@@ -38,12 +47,22 @@ const PropertyMap: FC<PropertyMapProps> = ({ properties }) => {
     });
     map.fitBounds(bounds);
 
-    const zoomLevel = map.getZoom() || 0;
+    const idleListener = map.addListener("idle", () => {
+      const zoomLevel = map.getZoom() || 0;
 
-    if (zoomLevel > 15) {
-      map.setZoom(15);
-    }
+      if (zoomLevel > 15) {
+        map.setZoom(15);
+      }
+      window.google.maps.event.removeListener(idleListener);
+    });
   }, [map, properties]);
+
+  const handleMarkerClick = useCallback((propertyId) => {
+    const propertyCardContainer = document.querySelector(
+      `#property-${propertyId}`
+    );
+    propertyCardContainer?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
   return !isMapLoaded ? (
     <LoadingCircle />
@@ -68,11 +87,7 @@ const PropertyMap: FC<PropertyMapProps> = ({ properties }) => {
             lat: Number(property.lat),
             lng: Number(property.lng),
           }}
-          onClick={() =>
-            document
-              .querySelector(`#property-${property.id}`)
-              ?.scrollIntoView({ behavior: "smooth" })
-          }
+          onClick={() => enableMarkerClicks && handleMarkerClick(property.id)}
         />
       ))}
     </GoogleMap>
