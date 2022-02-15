@@ -47,7 +47,7 @@ const SearchPage: FC = () => {
         <Grid style={{ height: "100%", width: "100%" }}>
           {breakpointUp("md") && (
             <Grid item md={7}>
-              <PropertyMap properties={properties} />
+              <PropertyMap enableMarkerClicks properties={properties} />
             </Grid>
           )}
           <Grid
