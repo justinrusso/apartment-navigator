@@ -2,7 +2,6 @@ from flask import Blueprint
 from flask_login import current_user, login_required
 
 from app.apis import s3
-from app.forms import validation_errors_to_dict
 from app.forms.csrf_form import CSRFForm
 from app.models import PropertyImage, db
 
@@ -29,4 +28,4 @@ def delete_image(image_id):
         db.session.delete(image)
         db.session.commit()
         return {"id": image_id}
-    return {"errors": validation_errors_to_dict(form.errors)}, 400
+    return {"errors": form.errors}, 400

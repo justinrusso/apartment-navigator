@@ -6,7 +6,7 @@ from sqlalchemy import or_
 from sqlalchemy.orm import joinedload
 
 from app.apis import s3
-from app.forms import pick_patched_data, validation_errors_to_dict
+from app.forms import pick_patched_data
 from app.forms.csrf_form import CSRFForm
 from app.forms.property_form import (
     PropertyFormBase,
@@ -147,7 +147,7 @@ def create_property():
 
         db.session.commit()
         return property.to_dict()
-    return {"errors": validation_errors_to_dict(form.errors)}, 400
+    return {"errors": form.errors}, 400
 
 
 @properties_routes.route("/<int:property_id>", methods=["PATCH"])
@@ -225,7 +225,7 @@ def edit_property(property_id):
         db.session.add(property)
         db.session.commit()
         return property.to_dict()
-    return {"errors": validation_errors_to_dict(form.errors)}, 400
+    return {"errors": form.errors}, 400
 
 
 @properties_routes.route("/<int:property_id>", methods=["DELETE"])
@@ -248,7 +248,7 @@ def delete_property(property_id):
         db.session.delete(property)
         db.session.commit()
         return {"id": property_id}
-    return {"errors": validation_errors_to_dict(form.errors)}, 400
+    return {"errors": form.errors}, 400
 
 
 @properties_routes.route("/<int:property_id>/images", methods=["POST"])
@@ -276,7 +276,7 @@ def add_property_image(property_id):
         db.session.add(property)
         db.session.commit()
         return image.to_dict()
-    return {"errors": validation_errors_to_dict(form.errors)}, 400
+    return {"errors": form.errors}, 400
 
 
 @properties_routes.route("/<int:property_id>/reviews")
@@ -320,7 +320,7 @@ def add_property_review(property_id):
             "reviewSummary": property.review_summary.to_dict(),
             "review": review.to_dict(),
         }
-    return {"errors": validation_errors_to_dict(form.errors)}, 400
+    return {"errors": form.errors}, 400
 
 
 @properties_routes.route("/<int:property_id>/units", methods=["POST"])
@@ -356,7 +356,7 @@ def add_property_unit(property_id):
         db.session.add(property)
         db.session.commit()
         return unit.to_dict()
-    return {"errors": validation_errors_to_dict(form.errors)}, 400
+    return {"errors": form.errors}, 400
 
 
 @properties_routes.route("/categories")
