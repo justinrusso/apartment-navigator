@@ -18,7 +18,10 @@ export class PropertiesApi {
   static async createProperty(data: CreatePropertyData) {
     return fetchApi(propertiesRoute(), {
       method: "POST",
-      body: JSON.stringify(data),
+      body: objectToFormData(data),
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
   }
 
@@ -96,7 +99,7 @@ export interface CreatePropertyData {
   city: string;
   state: string;
   zipCode: string;
-  images?: string[];
+  images?: File[];
   units?: CreatePropertyUnitData[];
 }
 

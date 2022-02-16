@@ -1,3 +1,5 @@
+import { serialize as serializeObjectToFormData } from "./utils/formDataSerializer";
+
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;
 }
@@ -46,15 +48,5 @@ export function routeBuilder(basePath: string) {
 }
 
 export function objectToFormData(data: Record<any, any>) {
-  const formData = new FormData();
-  Object.entries(data).forEach(([k, v]) => {
-    if (Array.isArray(v)) {
-      v.forEach((el) => {
-        formData.append(k, el);
-      });
-    } else {
-      formData.append(k, v);
-    }
-  });
-  return formData;
+  return serializeObjectToFormData(data);
 }
