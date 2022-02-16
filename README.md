@@ -27,6 +27,7 @@ Website: [https://apartment-navigator.herokuapp.com/](https://apartment-navigato
 - PostgreSQL
 - Docker
 - Heroku
+- AWS S3
 
 ## Development
 
