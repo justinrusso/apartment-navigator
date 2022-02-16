@@ -1,7 +1,24 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
-from wtforms.validators import DataRequired, URL
+from flask_wtf.file import FileField, FileRequired, FileAllowed
+
+
+ALLOWED_IMAGE_EXTENSIONS = [
+    "apng",
+    "gif",
+    "jpg",
+    "jpeg",
+    "jfif",
+    "pjpeg",
+    "pjp",
+    "png",
+    "webp",
+]
 
 
 class PropertyImageForm(FlaskForm):
-    imageUrl = StringField(validators=[DataRequired(), URL()])
+    image = FileField(
+        validators=[
+            FileRequired(),
+            FileAllowed(ALLOWED_IMAGE_EXTENSIONS, "Unrecognized image format."),
+        ]
+    )

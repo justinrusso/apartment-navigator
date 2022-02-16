@@ -5,6 +5,7 @@ from munch import DefaultMunch
 from sqlalchemy import or_
 from sqlalchemy.orm import joinedload
 
+from app.apis import s3
 from app.forms import pick_patched_data, validation_errors_to_dict
 from app.forms.csrf_form import CSRFForm
 from app.forms.property_form import PropertyForm
@@ -248,7 +249,12 @@ def add_property_image(property_id):
         if property.owner.id != current_user.id:
             return {"error": "Forbidden"}, 403
 
-        image = PropertyImage(url=form.data["imageUrl"])
+        unique_filename = s3.get_unique_filename(form.data["image"].filename)
+        try:
+            image_url = s3.upload_file(form.data["image"], unique_filename)
+        except Exception:
+            return {"errors": {"image": "Failed to upload image. Please try again."}}
+        image = PropertyImage(url=image_url)
         property.images.append(image)
 
         db.session.add(property)
