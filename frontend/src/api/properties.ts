@@ -1,7 +1,7 @@
 import { UserData } from "./auth";
 import { EditableReviewData, ReviewSummary } from "./reviews";
 import { CreatePropertyUnitData, UnitFormErrors } from "./units";
-import { fetchApi, routeBuilder } from "./util";
+import { fetchApi, objectToFormData, routeBuilder } from "./util";
 
 const propertiesRoute = routeBuilder("/api/properties");
 
@@ -55,7 +55,10 @@ export class PropertiesApi {
   ) {
     return fetchApi(propertiesRoute(`/${propertyId}/images`), {
       method: "POST",
-      body: JSON.stringify(data),
+      body: objectToFormData(data),
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
   }
 
@@ -158,7 +161,7 @@ export interface UnitCategory {
 }
 
 export interface CreatePropertyImageData {
-  imageUrl: string;
+  image: File;
 }
 
 export interface PropertyFormErrors {

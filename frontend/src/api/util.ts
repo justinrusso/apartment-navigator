@@ -12,8 +12,14 @@ export async function fetchApi(
     if (!revisedOptions.headers) {
       revisedOptions.headers = {};
     }
+
     revisedOptions.headers["Content-Type"] =
       revisedOptions.headers["Content-Type"] || "application/json";
+
+    // Since multipart is a bit unique, allow it to be created automatically
+    if (revisedOptions.headers["Content-Type"] === "multipart/form-data") {
+      delete revisedOptions.headers["Content-Type"];
+    }
   }
 
   const res = await fetch(url, revisedOptions);
@@ -37,4 +43,18 @@ export function routeBuilder(basePath: string) {
     }
     return `${basePath}${path}`;
   };
+}
+
+export function objectToFormData(data: Record<any, any>) {
+  const formData = new FormData();
+  Object.entries(data).forEach(([k, v]) => {
+    if (Array.isArray(v)) {
+      v.forEach((el) => {
+        formData.append(k, el);
+      });
+    } else {
+      formData.append(k, v);
+    }
+  });
+  return formData;
 }

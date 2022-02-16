@@ -448,7 +448,7 @@ export const deleteProperty = createAsyncThunk(
 
 interface AddPropertyImageArgs {
   propertyId: number | string;
-  imageUrl: string;
+  image: File;
 }
 export const addPropertyImage = createAsyncThunk(
   `${propertiesSlice.name}/addPropertyImage`,
@@ -456,7 +456,7 @@ export const addPropertyImage = createAsyncThunk(
     let res: Response;
     try {
       res = await PropertiesApi.createPropertyImage(data.propertyId, {
-        imageUrl: data.imageUrl,
+        image: data.image,
       });
     } catch (errorRes) {
       const resData = await (errorRes as Response).json();
