@@ -8,7 +8,11 @@ from sqlalchemy.orm import joinedload
 from app.apis import s3
 from app.forms import pick_patched_data, validation_errors_to_dict
 from app.forms.csrf_form import CSRFForm
-from app.forms.property_form import PropertyForm
+from app.forms.property_form import (
+    PropertyFormBase,
+    MultiUnitPropertyForm,
+    SingleUnitPropertyForm,
+)
 from app.forms.property_image_form import PropertyImageForm
 from app.forms.review_form import ReviewForm
 from app.forms.unit_form import MultiUnitForm, SingleUnitForm
@@ -68,42 +72,35 @@ def get_property(property_id):
 @properties_routes.route("/", methods=["POST"])
 @login_required
 def create_property():
-    form = CSRFForm()
-
-    body_data: dict = request.get_json()
-    body_data["ownerId"] = current_user.id
-
-    PropertySchema = (
-        SinglePropertySchema
-        if int(body_data["categoryId"]) == 1
-        else MultiPropertySchema
+    form = PropertyFormBase()
+    form = (
+        SingleUnitPropertyForm()
+        if form.data["categoryId"] == 1
+        else MultiUnitPropertyForm()
     )
+    form.ownerId.data = current_user.id
+    form.categoryId.choices = [(c.id, c.name) for c in PropertyCategory.query.all()]
 
     if form.validate_on_submit():
-        try:
-            result = PropertySchema().load(body_data)
-        except ValidationError as error:
-            return {"errors": error.messages}, 400
-
         address = Address(
-            address_1=result["address_1"],
-            address_2=result["address_2"],
-            city=result["city"],
-            state=result["state"],
-            zip_code=result["zip_code"],
+            address_1=form.data["address1"],
+            address_2=form.data["address2"],
+            city=form.data["city"],
+            state=form.data["state"],
+            zip_code=form.data["zipCode"],
         )
         lat, lng = address.geocode_lat_lng()
 
         property = Property(
-            owner_id=result["owner_id"],
-            category_id=result["category_id"],
-            built_in_year=result["built_in_year"],
-            name=result["name"],
-            address_1=result["address_1"],
-            address_2=result["address_2"],
-            city=result["city"],
-            state=result["state"],
-            zip_code=result["zip_code"],
+            owner_id=form.data["ownerId"],
+            category_id=form.data["categoryId"],
+            built_in_year=form.data["builtInYear"],
+            name=form.data["name"],
+            address_1=form.data["address1"],
+            address_2=form.data["address2"],
+            city=form.data["city"],
+            state=form.data["state"],
+            zip_code=form.data["zipCode"],
             lat=lat,
             lng=lng,
             review_summary=ReviewSummary(total=0, total_rating=0),
@@ -113,23 +110,38 @@ def create_property():
         db.session.add(property)
         db.session.flush()
 
-        if result["images"]:
-            for image_url in result["images"]:
+        if form.data["images"]:
+            images_errored = False
+            image_upload_errors = list([[] for i in range(len(form.data["images"]))])
+            for index, image_file in enumerate(form.data["images"]):
+                unique_filename = s3.get_unique_filename(image_file.filename)
+                try:
+                    image_url = s3.upload_file(image_file, unique_filename)
+                except Exception:
+                    images_errored = True
+                    image_upload_errors[index] = [
+                        "Failed to upload image. Please try again."
+                    ]
+                    continue
                 property.images.append(PropertyImage(url=image_url))
-        if result["units"]:
-            for unit_data in result["units"]:
+            if images_errored:
+                for image in property.images:
+                    s3.delete_file(image.url.replace(s3.BASE_PATH, ""))
+                return {"errors": {"images": image_upload_errors}}, 500
+        if form.data["units"]:
+            for unit_data in form.data["units"]:
                 unit = PropertyUnit(
-                    unit_num=unit_data["unit_num"],
-                    unit_category_id=unit_data["unit_category_id"],
+                    unit_num=unit_data["unitNum"],
+                    unit_category_id=unit_data["unitCategoryId"],
                     baths=unit_data["baths"],
                     price=UnitPrice(
                         property_id=property.id,
-                        unit_category_id=unit_data["unit_category_id"],
+                        unit_category_id=unit_data["unitCategoryId"],
                         price=unit_data["price"],
-                        sq_ft=unit_data["sq_ft"],
+                        sq_ft=unit_data["sqFt"],
                     ),
-                    sq_ft=unit_data["sq_ft"],
-                    floor_plan_img=unit_data["floor_plan_img"],
+                    sq_ft=unit_data["sqFt"],
+                    floor_plan_img=unit_data["floorPlanImg"],
                 )
                 property.units.append(unit)
 
@@ -150,7 +162,7 @@ def edit_property(property_id):
 
     body_data = request.get_json()
 
-    form = PropertyForm(
+    form = PropertyFormBase(
         formdata=None,
         obj=DefaultMunch.fromDict(
             {
