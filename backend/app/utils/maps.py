@@ -29,8 +29,6 @@ class Address:
     def geocode_lat_lng(self):
         result = gmaps.geocode(self.format_address_string())
 
-        print(result[0])
-
         return (
             result[0]["geometry"]["location"]["lat"],
             result[0]["geometry"]["location"]["lng"],
