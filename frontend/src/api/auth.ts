@@ -1,4 +1,4 @@
-import { fetchApi, routeBuilder } from "./util";
+import { fetchApi, routeBuilder } from "./utils";
 
 const authRoute = routeBuilder("/api/auth");
 

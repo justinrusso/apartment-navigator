@@ -1,7 +1,7 @@
 import { UserData } from "./auth";
 import { EditableReviewData, ReviewSummary } from "./reviews";
 import { CreatePropertyUnitData, UnitFormErrors } from "./units";
-import { fetchApi, objectToFormData, routeBuilder } from "./util";
+import { fetchApi, objectToFormData, routeBuilder } from "./utils";
 
 const propertiesRoute = routeBuilder("/api/properties");
 

@@ -1,4 +1,4 @@
-import { serialize as serializeObjectToFormData } from "./utils/formDataSerializer";
+import { serialize as serializeObjectToFormData } from "./formDataSerializer";
 
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;

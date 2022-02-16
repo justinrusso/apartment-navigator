@@ -1,4 +1,4 @@
-import { routeBuilder, fetchApi } from "./util";
+import { routeBuilder, fetchApi } from "./utils";
 
 const reviewsRoute = routeBuilder("/api/reviews");
 
