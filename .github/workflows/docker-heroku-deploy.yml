@@ -14,8 +14,6 @@ jobs:
 
       - name: Build, Push and Release a Docker container to Heroku.
         uses: gonuit/heroku-docker-deploy@v1.3.3
-        env:
-          REACT_APP_GOOGLE_API_KEY: ${{ secrets.REACT_APP_GOOGLE_API_KEY }}
         with:
           email: ${{ secrets.HEROKU_EMAIL }}
 
@@ -25,3 +23,6 @@ jobs:
 
           # Name of the heroku application to which the build is to be sent.
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+
+          # Pass REACT_APP args here
+          docker_options: "--build-arg REACT_APP_GOOGLE_API_KEY=${{secrets.REACT_APP_GOOGLE_API_KEY}}"

@@ -6,6 +6,9 @@ COPY frontend/. .
 # You have to set this because it should be set during build time.
 ENV REACT_APP_BASE_URL=https://apartment-navigator.herokuapp.com/
 
+ARG REACT_APP_GOOGLE_API_KEY
+ENV REACT_APP_GOOGLE_API_KEY=$REACT_APP_GOOGLE_API_KEY
+
 # Build our React App
 RUN npm install
 RUN npm run build
