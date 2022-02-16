@@ -1,6 +1,5 @@
 from flask import Blueprint, request
 from flask_login import current_user, login_required
-from marshmallow import ValidationError
 from munch import DefaultMunch
 from sqlalchemy import or_
 from sqlalchemy.orm import joinedload
@@ -27,7 +26,6 @@ from app.models import (
     UnitCategory,
     UnitPrice,
 )
-from app.schemas.property_schema import MultiPropertySchema, SinglePropertySchema
 from app.utils.maps import Address
 
 
