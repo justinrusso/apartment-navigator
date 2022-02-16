@@ -1,11 +1,13 @@
 import styled from "styled-components";
-import { FC, FormEvent, useState } from "react";
+import { FC, FormEvent, useEffect, useMemo, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { useImmer } from "use-immer";
 
 import Button from "../common/Button";
 import Container from "../common/Container";
+import DropperInput from "../dropper/DropperInput";
 import Grid from "../common/Grid";
+import HelperText from "../common/HelperText";
 import IconButton from "../common/IconButton";
 import InputField from "../common/InputField";
 import Paper from "../common/Paper";
@@ -16,7 +18,6 @@ import { addProperty } from "../../store/properties";
 import { useAppDispatch } from "../../hooks/redux";
 import { useNavigate } from "react-router-dom";
 import { CreatePropertyData } from "../../api/properties";
-import HelperText from "../common/HelperText";
 
 const ContentWrapper = styled.div`
   padding: 2rem 0;
@@ -53,13 +54,6 @@ const ContentWrapper = styled.div`
       margin-top: 1.5rem;
       width: 100%;
     }
-
-    .add-image-wrapper {
-      display: flex;
-      align-items: center;
-      padding-top: 1rem;
-      gap: 1rem;
-    }
   }
 
   .centered {
@@ -83,6 +77,20 @@ const Image = styled.div`
   }
 `;
 
+const ImagePlaceholder = styled(Image)`
+  background-color: ${(props) => props.theme.palette.divider};
+  cursor: pointer;
+
+  > .placeholder-inner {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    inset: 0;
+    justify-content: center;
+    position: absolute;
+  }
+`;
+
 interface PropertyCreatorFormErrors {
   name?: string[];
   address1?: string[];
@@ -90,18 +98,15 @@ interface PropertyCreatorFormErrors {
   city?: string[];
   state?: string[];
   zipCode?: string[];
-  images?: Record<number, string[]>;
-  units?: Record<
-    number,
-    {
-      unitNum: string[];
-      unitCategoryId: string[];
-      baths: string[];
-      price: string[];
-      sqFt: string[];
-      floorPlanImg: string[];
-    }
-  >;
+  images?: string[][];
+  units?: {
+    unitNum: string[];
+    unitCategoryId: string[];
+    baths: string[];
+    price: string[];
+    sqFt: string[];
+    floorPlanImg: string[];
+  }[];
   builtInYear?: string[];
   categoryId?: string[];
 }
@@ -118,8 +123,7 @@ const PropertyCreator: FC = () => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
-  const [images, setImages] = useState<string[]>([]);
-  const [newImageUrl, setNewImageUrl] = useState("");
+  const [images, setImages] = useState<File[]>([]);
   const [units, setUnits] = useImmer<
     Exclude<CreatePropertyData["units"], undefined>
   >([
@@ -162,11 +166,6 @@ const PropertyCreator: FC = () => {
     setImages(images.filter((_, i) => i !== index));
   };
 
-  const handleAddImage = () => {
-    setImages([...images, newImageUrl]);
-    setNewImageUrl("");
-  };
-
   const handleAddUnit = () => {
     setUnits((draft) => {
       draft.push({
@@ -179,6 +178,18 @@ const PropertyCreator: FC = () => {
       });
     });
   };
+
+  const previews = useMemo(() => {
+    return images.map((image) => URL.createObjectURL(image));
+  }, [images]);
+
+  useEffect(() => {
+    return () => {
+      previews.forEach((preview) => {
+        URL.revokeObjectURL(preview);
+      });
+    };
+  }, [previews]);
 
   return (
     <Container>
@@ -320,9 +331,9 @@ const PropertyCreator: FC = () => {
                   Property Images
                 </Typography>
                 <Grid columnSpacing="0.75rem" rowSpacing="0.75rem">
-                  {images.map((imageUrl, i) => (
+                  {previews.map((preview, i) => (
                     <Grid item xs={6} key={i}>
-                      <Image style={{ backgroundImage: `url(${imageUrl})` }}>
+                      <Image style={{ backgroundImage: `url(${preview})` }}>
                         <IconButton
                           className="delete-button"
                           color="error"
@@ -333,28 +344,42 @@ const PropertyCreator: FC = () => {
                           <MdDelete />
                         </IconButton>
                       </Image>
-                      {errors.images?.[i] && (
+                      {(errors.images?.[i]?.length || 0) > 0 && (
                         <HelperText showIcon error>
                           {errors.images?.[i].join(" ")}
                         </HelperText>
                       )}
                     </Grid>
                   ))}
+                  <Grid item xs={6}>
+                    <DropperInput
+                      accept={[
+                        "image/avif",
+                        "image/gif",
+                        "image/jpeg",
+                        "image/png",
+                        "image/webp",
+                      ]}
+                      multiple
+                      onDrop={(acceptedFiles) => {
+                        setImages([...images, ...acceptedFiles]);
+                      }}
+                      placeholder={
+                        <ImagePlaceholder>
+                          <div className="placeholder-inner">
+                            <Typography variant="h5" as="p" gutterBottom>
+                              Drag & Drop
+                            </Typography>
+                            <Typography gutterBottom>or</Typography>
+                            <Typography variant="h5" as="p" gutterBottom>
+                              Click to Add Image
+                            </Typography>
+                          </div>
+                        </ImagePlaceholder>
+                      }
+                    />
+                  </Grid>
                 </Grid>
-                <div className="add-image-wrapper">
-                  <InputField
-                    label="Image Url"
-                    id="property-add-image-url"
-                    value={newImageUrl}
-                    onChange={(e) => setNewImageUrl(e.target.value)}
-                    inputProps={{
-                      type: "text",
-                    }}
-                  />
-                  <Button type="button" onClick={handleAddImage}>
-                    Add Image
-                  </Button>
-                </div>
               </section>
               <section>
                 <Typography variant="h3" gutterBottom>

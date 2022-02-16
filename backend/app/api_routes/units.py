@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from flask_login import current_user, login_required
 from munch import DefaultMunch
 
-from app.forms import pick_patched_data, validation_errors_to_dict
+from app.forms import pick_patched_data
 from app.forms.csrf_form import CSRFForm
 from app.forms.unit_form import MultiUnitForm, SingleUnitForm
 from app.models import PropertyUnit, UnitCategory, UnitPrice, db
@@ -66,7 +66,7 @@ def edit_unit(unit_id):
         db.session.add(unit)
         db.session.commit()
         return unit.to_dict()
-    return {"errors": validation_errors_to_dict(form.errors)}, 400
+    return {"errors": form.errors}, 400
 
 
 @units_routes.route("/<int:unit_id>", methods=["DELETE"])
@@ -85,7 +85,7 @@ def delete_unit(unit_id):
         db.session.delete(unit)
         db.session.commit()
         return {"id": unit_id}
-    return {"errors": validation_errors_to_dict(form.errors)}, 400
+    return {"errors": form.errors}, 400
 
 
 @units_routes.route("/categories")

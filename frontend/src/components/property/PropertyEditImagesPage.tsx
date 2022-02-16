@@ -32,6 +32,7 @@ const ContentWrapper = styled.div`
   .add-image-button-wrapper {
     display: flex;
     justify-content: end;
+    padding-bottom: 0.5rem;
   }
 `;
 

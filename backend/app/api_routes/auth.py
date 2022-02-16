@@ -2,7 +2,6 @@ from flask import Blueprint, request
 from flask_login import current_user, login_user, logout_user
 from sqlalchemy import or_
 
-from app.forms import validation_errors_to_dict
 from app.forms.login_form import LoginForm
 from app.forms.signup_form import SignupForm
 from app.models import db, User
@@ -32,7 +31,7 @@ def login():
         ).first()
         login_user(user)
         return user.to_dict()
-    return {"errors": validation_errors_to_dict(form.errors)}, 401
+    return {"errors": form.errors}, 401
 
 
 @auth_routes.route("/login/demo")
@@ -59,7 +58,7 @@ def signup():
         db.session.commit()
         login_user(user)
         return user.to_dict()
-    return {"errors": validation_errors_to_dict(form.errors)}, 401
+    return {"errors": form.errors}, 401
 
 
 @auth_routes.route("/logout")

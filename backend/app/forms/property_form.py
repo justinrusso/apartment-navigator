@@ -1,12 +1,26 @@
 from datetime import date
-from flask_wtf import FlaskForm
-from wtforms import IntegerField, SelectField, StringField
+from flask_wtf.file import FileField, FileRequired, FileAllowed
+from wtforms import (
+    FieldList,
+    FormField,
+    IntegerField,
+    SelectField,
+    StringField,
+)
 from wtforms.validators import DataRequired, NumberRange
 
-from app.forms import ListField
+from app.models import PropertyCategory
+
+from .base_form import BaseForm
+from .property_image_form import ALLOWED_IMAGE_EXTENSIONS
+from .unit_form import MultiUnitForm, SingleUnitForm
 
 
-class PropertyForm(FlaskForm):
+class PropertyFormBase(BaseForm):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.categoryId.choices = [(c.id, c.name) for c in PropertyCategory.query.all()]
+
     ownerId = IntegerField(validators=[DataRequired()])
     categoryId = SelectField(coerce=int, validators=[DataRequired()])
     builtInYear = IntegerField(
@@ -18,5 +32,19 @@ class PropertyForm(FlaskForm):
     city = StringField(validators=[DataRequired()])
     state = StringField(validators=[DataRequired()])
     zipCode = StringField(validators=[DataRequired()])
-    images = ListField()
-    units = ListField()
+    images = FieldList(
+        FileField(
+            validators=[
+                FileRequired(),
+                FileAllowed(ALLOWED_IMAGE_EXTENSIONS, "Unrecognized image format."),
+            ]
+        )
+    )
+
+
+class MultiUnitPropertyForm(PropertyFormBase):
+    units = FieldList(FormField(MultiUnitForm))
+
+
+class SingleUnitPropertyForm(PropertyFormBase):
+    units = FieldList(FormField(SingleUnitForm))

@@ -1,13 +1,15 @@
 import styled from "styled-components";
-import { FC, FormEvent, useState } from "react";
+import { FC, FormEvent, useEffect, useMemo, useState } from "react";
 
 import Button from "../../common/Button";
 import Dialog from "../../common/Dialog";
 import DialogActions from "../../common/DialogActions";
 import DialogContent from "../../common/DialogContent";
 import DialogTitle from "../../common/DialogTitle";
+import DropperInput from "../../dropper/DropperInput";
 import Grid from "../../common/Grid";
-import InputField from "../../common/InputField";
+import HelperText from "../../common/HelperText";
+import Typography from "../../common/Typography";
 import useFormFields from "../../../hooks/form-fields";
 import { PropertyEditorDialogProps } from ".";
 import { useAppDispatch } from "../../../hooks/redux";
@@ -22,6 +24,10 @@ const Image = styled.div`
   width: 100%;
 `;
 
+const PlaceholderWrapper = styled.div`
+  text-align: center;
+`;
+
 const PropertyImageDialog: FC<PropertyEditorDialogProps> = ({
   onClose,
   open,
@@ -32,7 +38,7 @@ const PropertyImageDialog: FC<PropertyEditorDialogProps> = ({
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const { fields, getChangedFields, prestine, setField } = useFormFields({
-    imageUrl: "",
+    image: new File([], ""),
   });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -45,14 +51,14 @@ const PropertyImageDialog: FC<PropertyEditorDialogProps> = ({
 
     const changedFields = getChangedFields();
 
-    if (!changedFields.imageUrl) {
+    if (!changedFields.image) {
       return;
     }
 
     dispatch(
       addPropertyImage({
         propertyId: property.id,
-        imageUrl: changedFields.imageUrl,
+        image: changedFields.image,
       })
     )
       .unwrap()
@@ -60,31 +66,70 @@ const PropertyImageDialog: FC<PropertyEditorDialogProps> = ({
       .catch((errors) => setErrors(errors));
   };
 
+  const preview = useMemo(() => {
+    if (fields.image.name === "") {
+      return null;
+    }
+    return URL.createObjectURL(fields.image);
+  }, [fields.image]);
+
+  useEffect(() => {
+    return () => {
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
+
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
       <DialogTitle>Add New Image</DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
           <Grid columnSpacing="1rem" rowSpacing="1.25rem">
-            {fields.imageUrl && (
-              <Grid item>
-                <Image style={{ backgroundImage: `url(${fields.imageUrl})` }} />
-              </Grid>
-            )}
             <Grid item>
-              <InputField
-                label="Image Url"
-                fullWidth
-                id="property-imageUrl"
-                value={fields.imageUrl}
-                onChange={(e) => setField("imageUrl", e.target.value)}
-                inputProps={{
-                  type: "text",
+              <DropperInput
+                accept={[
+                  "image/avif",
+                  "image/gif",
+                  "image/jpeg",
+                  "image/png",
+                  "image/webp",
+                ]}
+                maxFiles={1}
+                noClick
+                onDrop={(acceptedFiles) => {
+                  setField(
+                    "image",
+                    acceptedFiles.length > 0
+                      ? acceptedFiles[0]
+                      : new File([], "")
+                  );
                 }}
-                error={!!errors.imageUrl}
-                helperText={errors.imageUrl}
+                placeholder={(open) => (
+                  <PlaceholderWrapper>
+                    <Typography gutterBottom>Drag & Drop an Image</Typography>
+                    <Typography gutterBottom>or</Typography>
+                    <Button variant="outlined" type="button" onClick={open}>
+                      Browse Files
+                    </Button>
+                  </PlaceholderWrapper>
+                )}
               />
             </Grid>
+            {errors.image && (
+              <Grid item>
+                <HelperText error showIcon>
+                  {errors.image}
+                </HelperText>
+              </Grid>
+            )}
+            {preview && (
+              <Grid item>
+                <Typography>Preview:</Typography>
+                <Image style={{ backgroundImage: `url(${preview})` }} />
+              </Grid>
+            )}
           </Grid>
         </DialogContent>
         <DialogActions>

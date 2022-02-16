@@ -1,7 +1,7 @@
 import { UserData } from "./auth";
 import { EditableReviewData, ReviewSummary } from "./reviews";
 import { CreatePropertyUnitData, UnitFormErrors } from "./units";
-import { fetchApi, routeBuilder } from "./util";
+import { fetchApi, objectToFormData, routeBuilder } from "./utils";
 
 const propertiesRoute = routeBuilder("/api/properties");
 
@@ -18,7 +18,10 @@ export class PropertiesApi {
   static async createProperty(data: CreatePropertyData) {
     return fetchApi(propertiesRoute(), {
       method: "POST",
-      body: JSON.stringify(data),
+      body: objectToFormData(data),
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
   }
 
@@ -55,7 +58,10 @@ export class PropertiesApi {
   ) {
     return fetchApi(propertiesRoute(`/${propertyId}/images`), {
       method: "POST",
-      body: JSON.stringify(data),
+      body: objectToFormData(data),
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
   }
 
@@ -93,7 +99,7 @@ export interface CreatePropertyData {
   city: string;
   state: string;
   zipCode: string;
-  images?: string[];
+  images?: File[];
   units?: CreatePropertyUnitData[];
 }
 
@@ -158,7 +164,7 @@ export interface UnitCategory {
 }
 
 export interface CreatePropertyImageData {
-  imageUrl: string;
+  image: File;
 }
 
 export interface PropertyFormErrors {

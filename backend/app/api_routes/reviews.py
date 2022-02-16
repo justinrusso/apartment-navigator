@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from flask_login import current_user, login_required
 from munch import DefaultMunch
 
-from app.forms import pick_patched_data, validation_errors_to_dict
+from app.forms import pick_patched_data
 from app.forms.csrf_form import CSRFForm
 from app.forms.review_form import ReviewForm
 from app.models import Review, db
@@ -47,7 +47,7 @@ def update_review(review_id):
             "review": review.to_dict(),
             "reviewSummary": review.property.review_summary.to_dict(),
         }
-    return {"errors": validation_errors_to_dict(form.errors)}, 400
+    return {"errors": form.errors}, 400
 
 
 @reviews_routes.route("/<int:review_id>", methods=["DELETE"])
@@ -77,4 +77,4 @@ def delete_review(review_id):
             "reviewId": review_id,
             "reviewSummary": review_summary.to_dict(),
         }
-    return {"errors": validation_errors_to_dict(form.errors)}, 400
+    return {"errors": form.errors}, 400
