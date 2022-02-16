@@ -229,6 +229,10 @@ def delete_property(property_id):
         if property.owner.id != current_user.id:
             return {"error": "Forbidden"}, 403
 
+        for image in property.images:
+            if image.url.startswith(s3.BASE_PATH):
+                s3.delete_file(image.url.replace(s3.BASE_PATH, ""))
+
         db.session.delete(property)
         db.session.commit()
         return {"id": property_id}

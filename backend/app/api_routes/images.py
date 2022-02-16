@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask_login import current_user, login_required
 
+from app.apis import s3
 from app.forms import validation_errors_to_dict
 from app.forms.csrf_form import CSRFForm
 from app.models import PropertyImage, db
@@ -11,7 +12,7 @@ images_routes = Blueprint("images", __name__, url_prefix="/images")
 
 @images_routes.route("/<int:image_id>", methods=["DELETE"])
 @login_required
-def user_owned_properties(image_id):
+def delete_image(image_id):
     form = CSRFForm()
 
     if form.validate_on_submit():
@@ -21,6 +22,9 @@ def user_owned_properties(image_id):
             return {"error": "Not Found"}, 404
         if image.property.owner.id != current_user.id:
             return {"error": "Forbidden"}, 403
+
+        if image.url.startswith(s3.BASE_PATH):
+            s3.delete_file(image.url.replace(s3.BASE_PATH, ""))
 
         db.session.delete(image)
         db.session.commit()

@@ -3,6 +3,7 @@ import os
 import uuid
 
 BUCKET_NAME = os.environ.get("S3_BUCKET_NAME")
+BASE_PATH = f"https://{BUCKET_NAME}.s3.amazonaws.com/"
 
 
 s3_client = boto3.client(
@@ -27,4 +28,8 @@ def upload_file(file, filename):
         ExtraArgs={"ContentType": file.content_type},
     )
 
-    return f"https://{BUCKET_NAME}.s3.amazonaws.com/{filename}"
+    return f"{BASE_PATH}{filename}"
+
+
+def delete_file(filename):
+    s3_client.delete_object(Bucket=BUCKET_NAME, Key=filename)
